@@ -1,24 +1,32 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./shared/home";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navbar from "./shared/navigation/navbar";
 import "./App.css";
-import AddTicket from "./ticket/addTicket";
+import NAVCONSTANTS from "./_constants/NavigationConstants";
 
-function App() {
-  return (
-    <Router>
-      <Navbar />
-      <div className="contentBody">
+class App extends Component {
+  renderNavigations = () => {
+    return NAVCONSTANTS.NAV.map((links, index) => {
+      return (
+        <Route
+          exact
+          path={links.href}
+          component={links.component}
+          key={index}
+        />
+      );
+    });
+  };
+  render() {
+    return (
+      <Router>
+        <Navbar />
         <React.Fragment>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/addTicket" component={AddTicket} />
-          </Switch>
+          <span>{this.renderNavigations()}</span>
         </React.Fragment>
-      </div>
-    </Router>
-  );
+      </Router>
+    );
+  }
 }
 
 export default App;
