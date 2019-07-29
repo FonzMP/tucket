@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 // const schema = require("./schema/schema");
 require("dotenv").config();
 
@@ -9,6 +10,12 @@ const serverUrl = `mongodb://${process.env.mongoUser}:${
   process.env.mongoPassword
 }@ds255857.mlab.com:55857/tucket`;
 
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+app.use(bodyParser.json());
 app.use(cors());
 
 // db connect configuration
@@ -29,7 +36,7 @@ app.get("/hello", function(req, res) {
 });
 
 app.post("/tickets/new", function(req, res) {
-  console.log("request ", req);
+  console.log("request ", req.body.ticket);
 });
 
 app.get("/tickets", function(req, res) {
