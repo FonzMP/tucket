@@ -1,5 +1,6 @@
 import Home from "../components/shared/home";
-import CreateTicket from "../components/ticket/CreateTicket";
+import CreateTicket from "../components/ticket/createTicket";
+import GetTickets from "../components/ticket/getTickets";
 
 const NAVCONSTANTS = {
   NAV: [
@@ -12,6 +13,11 @@ const NAVCONSTANTS = {
       display: "Create",
       href: "/ticket/new",
       component: CreateTicket
+    },
+    {
+      display: "Tickets",
+      href: "/tickets",
+      component: GetTickets
     }
   ]
 };

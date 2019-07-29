@@ -28,12 +28,15 @@ app.get("/hello", function(req, res) {
   res.send({ tacos: "delicious" });
 });
 
-app.post("/ticket/new", function(req, res) {
+app.post("/tickets/new", function(req, res) {
   console.log("request ", req);
 });
 
 app.get("/tickets", function(req, res) {
-  res.send({ id: "_13dad2ada2kfa", subject: "Tacos", content: "Here" });
+  res.send([
+    { id: "_13dad2ada2kfa", title: "Tacos", description: "Here" },
+    { id: "_13dad2ada2kfa", title: "Burritos", description: "Also good" }
+  ]);
 });
 
 app.listen(4000, () => {
