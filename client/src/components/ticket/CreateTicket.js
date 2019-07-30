@@ -6,7 +6,7 @@ class CreateTicket extends Component {
     super();
     this.state = {
       title: "",
-      content: ""
+      description: ""
     };
   }
 
@@ -16,31 +16,37 @@ class CreateTicket extends Component {
   sendTicket = () => {
     ticketServices
       .createTicket(this.state)
-      .then(result => console.log("result from creation ", result));
+      .then(result => result);
   };
   render() {
     return (
       <div>
-        <label htmlFor="title">
-          Title:
+        <div className="form-group">
+          <label htmlFor="title">
+            Title:
           <input
-            id="title"
-            type="text"
-            value={this.state.title}
-            onChange={this.handleOnChange}
-          />
-        </label>
-        <label htmlFor="content">
-          Content:
+              id="title"
+              type="text"
+              value={this.state.title}
+              onChange={this.handleOnChange}
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">
+            Description:
           <input
-            id="content"
-            type="text"
-            value={this.state.content}
-            onChange={this.handleOnChange}
-          />
-        </label>
-        <button onClick={this.sendTicket}>Create Ticket</button>
-      </div>
+              id="description"
+              type="text"
+              value={this.state.description}
+              onChange={this.handleOnChange}
+            />
+          </label>
+        </div>
+        <div className="form-group">
+          <button onClick={this.sendTicket}>Create Ticket</button>
+        </div>
+      </div >
     );
   }
 }

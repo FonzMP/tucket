@@ -5,10 +5,12 @@ const bodyParser = require("body-parser");
 // const schema = require("./schema/schema");
 require("dotenv").config();
 
+const Ticket = require('./models/ticket')
+
 const app = express();
 const serverUrl = `mongodb://${process.env.mongoUser}:${
   process.env.mongoPassword
-}@ds255857.mlab.com:55857/tucket`;
+  }@ds255857.mlab.com:55857/tucket`;
 
 app.use(
   bodyParser.urlencoded({
@@ -30,20 +32,25 @@ mongoose.connection
     console.log("error connecting ");
   });
 
-// app graphql connection
-app.get("/hello", function(req, res) {
-  res.send({ tacos: "delicious" });
+app.post("/tickets/new", function (req, res) {
+  const ticket = req.body.ticket
+  Ticket.create(ticket, function (err, successTicket) {
+    if (err) {
+      console.log('error in ticket creation ', err)
+    } else {
+      res.send(successTicket)
+    }
+  })
 });
 
-app.post("/tickets/new", function(req, res) {
-  console.log("request ", req.body.ticket);
-});
-
-app.get("/tickets", function(req, res) {
-  res.send([
-    { id: "_13dad2ada2kfa", title: "Tacos", description: "Here" },
-    { id: "_13dad2ada2kfa", title: "Burritos", description: "Also good" }
-  ]);
+app.get("/tickets", function (req, res) {
+  Ticket.find({}, function (err, allTickets) {
+    if (err) {
+      console.log('error in ticket creation ', err)
+    } else {
+      res.send(allTickets)
+    }
+  })
 });
 
 app.listen(4000, () => {

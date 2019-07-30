@@ -24,6 +24,6 @@ function createTicket(ticket) {
     .then(response => response)
     .catch(err => console.log("error on ticket creation, ", err));
 }
-function getTicket() {}
-function updateTicket() {}
-function deleteTicket() {}
+function getTicket() { }
+function updateTicket() { }
+function deleteTicket() { }
