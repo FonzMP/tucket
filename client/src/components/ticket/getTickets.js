@@ -36,8 +36,8 @@ class GetTickets extends Component {
     return this.state.tickets !== undefined ? (
       <div>{this.renderTickets()}</div>
     ) : (
-      <div>Loading....</div>
-    );
+        <div>Loading....</div>
+      );
   }
 }
 

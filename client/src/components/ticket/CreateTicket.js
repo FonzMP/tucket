@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { ticketServices } from "../../services/ticket.service";
+import TICKETCONSTANTS from '../../_constants/TicketConstants'
+
+const t = TICKETCONSTANTS
 
 class CreateTicket extends Component {
   constructor() {
@@ -22,29 +25,33 @@ class CreateTicket extends Component {
     return (
       <div>
         <div className="form-group">
-          <label htmlFor="title">
+          <label htmlFor={t.TITLE}>
             Title:
           <input
-              id="title"
+              id={t.TITLE}
               type="text"
               value={this.state.title}
               onChange={this.handleOnChange}
+              placeholder={t.TITLEPLACE}
             />
           </label>
         </div>
         <div className="form-group">
-          <label htmlFor="description">
+          <label htmlFor={t.DESCRIPTION}>
             Description:
-          <input
-              id="description"
+          <textarea
+              id={t.DESCRIPTION}
               type="text"
+              rows="5"
+              columns="55"
               value={this.state.description}
               onChange={this.handleOnChange}
+              placeholder={t.DESCPLACE}
             />
           </label>
         </div>
         <div className="form-group">
-          <button onClick={this.sendTicket}>Create Ticket</button>
+          <button onClick={this.sendTicket}>{t.CREATE_BUTTON}</button>
         </div>
       </div >
     );

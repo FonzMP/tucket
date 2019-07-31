@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const Ticket = require('./models/ticket')
+const Project = require('./models/project')
 
 const app = express();
 const serverUrl = `mongodb://${process.env.mongoUser}:${
@@ -42,13 +43,32 @@ app.post("/tickets/new", function (req, res) {
     }
   })
 });
+app.post("/projects/new", function (req, res) {
+  const project = req.body.project
+  Project.create(project, function (err, successProject) {
+    if (err) {
+      console.log('error in project creation ', err)
+    } else {
+      res.send(successProject)
+    }
+  })
+});
 
 app.get("/tickets", function (req, res) {
   Ticket.find({}, function (err, allTickets) {
     if (err) {
-      console.log('error in ticket creation ', err)
+      console.log('error in ticket get ', err)
     } else {
       res.send(allTickets)
+    }
+  })
+});
+app.get("/projects", function (req, res) {
+  Project.find({}, function (err, allProjects) {
+    if (err) {
+      console.log('error in project get ', err)
+    } else {
+      res.send(allProjects)
     }
   })
 });
