@@ -3,3 +3,45 @@
   text-align: center;
   width: 100%;
 }
+
+.content-wrapper {
+  min-height: calc(100vh - 200px);
+  width: 90%;
+  margin: 0 auto;
+}
+
+.header-content {
+  height: 100px;
+  padding-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.footer-content {
+  height: 100px;
+}
+
+.nav-link, .sub-nav-link {
+  text-decoration: none;
+  color: black;
+  padding: 6px 6px;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(0,0,0,0);
+  border-left: 1px solid rgba(0,0,0,0);
+  border-top: 1px solid rgba(0,0,0,0);
+  border-right: 1px solid rgba(0,0,0,0);
+}
+
+.active {
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-bottom: 1px solid white;
+}
+
+.navbar, .sub-navbar {
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding-bottom: 6px;
+}
+
+

@@ -1,19 +1,18 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import NAVCONSTANTS from "../../_constants/NavigationConstants";
+import { NavLink } from "react-router-dom";
 
 class Navbar extends Component {
   renderLinks = () => {
-    return NAVCONSTANTS.NAV.map((link, index) => {
+    return this.props.links.map((link, index) => {
       return (
-        <Link to={link.href} key={index}>
+        <NavLink exact to={link.href} key={index} className="nav-link" activeClassName="active">
           {link.display}
-        </Link>
+        </NavLink>
       );
     });
   };
   render() {
-    return <div>{this.renderLinks()}</div>;
+    return <div className="navbar">{this.renderLinks()}</div>;
   }
 }
 

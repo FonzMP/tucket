@@ -1,4 +1,5 @@
 import Home from "../components/shared/home";
+import TicketHome from '../components/ticket/ticketHome'
 import CreateTicket from "../components/ticket/createTicket";
 import GetTickets from "../components/ticket/getTickets";
 
@@ -7,17 +8,26 @@ const NAVCONSTANTS = {
     {
       display: "Home",
       href: "/",
-      component: Home
-    },
-    {
-      display: "Create",
-      href: "/ticket/new",
-      component: CreateTicket
+      component: Home,
+      key: "HomeLinks"
     },
     {
       display: "Tickets",
       href: "/tickets",
-      component: GetTickets
+      component: TicketHome,
+      key: "TicketLinks",
+    },
+    {
+      display: "Create",
+      href: "/tickets/new",
+      component: CreateTicket,
+      key: "CreateTicketLink"
+    },
+    {
+      display: "All Tickets",
+      href: "/tickets/all",
+      component: GetTickets,
+      key: "GetTicketLink"
     }
   ]
 };
