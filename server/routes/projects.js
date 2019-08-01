@@ -13,6 +13,17 @@ router.use(
   })
 );
 
+router.get("/:id", function (req, res) {
+  const id = req.params.id
+  Project.findById(id, function (err, project) {
+    if (err) {
+      console.log('error in project creation ', err)
+    } else {
+      res.send(project)
+    }
+  })
+});
+
 router.post("/new", function (req, res) {
   const project = req.body.project
   Project.create(project, function (err, successProject) {
