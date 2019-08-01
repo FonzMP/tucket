@@ -24,6 +24,13 @@ function createTicket(ticket) {
     .then(response => response)
     .catch(err => console.log("error on ticket creation, ", err));
 }
-function getTicket() { }
+function getTicket(id) {
+  const url = `http://localhost:4000/tickets/${id}`
+  console.log('url here ', url)
+  return fetch(url)
+    .then(response => response.json())
+    .then(response => response)
+    .catch(err => console.log("error on getTicket"));
+}
 function updateTicket() { }
 function deleteTicket() { }

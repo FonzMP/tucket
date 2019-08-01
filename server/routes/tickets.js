@@ -13,6 +13,18 @@ router.use(
   })
 );
 
+router.get("/:id", function (req, res) {
+  console.log('id ', req.params.id)
+  const id = req.params.id
+  Ticket.findById(id, function (err, ticket) {
+    if (err) {
+      console.log('error in ticket get ', err)
+    } else {
+      res.send(ticket)
+    }
+  })
+});
+
 router.post("/new", function (req, res) {
   const ticket = req.body.ticket
   Ticket.create(ticket, function (err, successTicket) {
@@ -33,5 +45,6 @@ router.get("/", function (req, res) {
     }
   })
 });
+
 
 module.exports = router;
