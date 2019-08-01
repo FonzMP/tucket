@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ticketServices } from "../../services/ticket.service";
+import { Link } from 'react-router-dom'
 
 class GetTicket extends Component {
   constructor() {
@@ -29,6 +30,7 @@ class GetTicket extends Component {
           {this.state.ticket.title}
         </h1>
         <p>{this.state.ticket.description}</p>
+        <Link to="/tickets">Back</Link>
       </div>
     ) : (
         <div>Loading....</div>
