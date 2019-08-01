@@ -24,16 +24,16 @@ class GetProjects extends Component {
   renderProjects = () => {
     return this.state.projects.map(project => {
       return (
-        <span key={project.name}>
-          <h3>{project.name}</h3>
-        </span>
+        <div className="project-item-wrap">
+          <h4 className="project-name">{project.name}</h4>
+        </div>
       );
     });
   };
 
   render() {
     return this.state.projects !== undefined ? (
-      <div>{this.renderProjects()}</div>
+      <div className="project-wrapper">{this.renderProjects()}</div>
     ) : (
         <div>Loading....</div>
       );
