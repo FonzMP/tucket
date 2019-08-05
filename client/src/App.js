@@ -4,19 +4,19 @@ import Header from "./components/shared/header";
 import Navbar from "./components/shared/navigation/navbar";
 import Footer from "./components/shared/footer";
 import "./App.css";
-import "./assets/stylesheets/projects.scss"
-import "./assets/stylesheets/navigation.scss"
+import "./assets/stylesheets/projects.scss";
+import "./assets/stylesheets/navigation.scss";
 import NAVCONSTANTS from "./_constants/NavigationConstants";
 import GetTicket from "./components/ticket/getTicket";
 import GetTickets from "./components/ticket/getTickets";
-import CreateTicket from './components/ticket/createTicket'
+import CreateTicket from "./components/ticket/createTicket";
 import GetProject from "./components/project/getProject";
 import GetProjects from "./components/project/getProjects";
 import CreateProject from "./components/project/createProject";
 import Home from "./components/shared/home";
+import ProjectHome from "./components/project/projectHome";
 
 class App extends Component {
-
   render() {
     return (
       <Router>
@@ -24,46 +24,15 @@ class App extends Component {
         <div className="content-wrapper">
           <Navbar links={NAVCONSTANTS.NAV} />
           <Switch>
-            <Route
-              exact
-              path='/'
-              component={Home}
-            />
-            <Route
-              exact
-              path='/tickets'
-              component={GetTickets}
-            />
-            <Route
-              exact
-              path='/tickets/new'
-              component={CreateTicket}
-            />
-            <Route
-              exact
-              path='/tickets/:id'
-              component={GetTicket}
-            />
-            <Route
-              exact
-              path='/projects'
-              component={GetProjects}
-            />
-            <Route
-              exact
-              path='/projects/all'
-              component={GetProjects}
-            />
-            <Route
-              exact
-              path='/projects/new'
-              component={CreateProject}
-            />
-            <Route
-              exact
-              path='/projects/:id'
-              component={GetProject}
-            />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/tickets" component={GetTickets} />
+            <Route exact path="/tickets/new" component={CreateTicket} />
+            <Route exact path="/tickets/:id" component={GetTicket} />
+            <Route exact path="/projects" component={GetProjects} />
+            <Route exact path="/projects/all" component={GetProjects} />
+            <Route exact path="/projects/new" component={CreateProject} />
+            <Route exact path="/projects/home" component={ProjectHome} />
+            <Route exact path="/projects/:id" component={GetProject} />
           </Switch>
         </div>
         <Footer />
