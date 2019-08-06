@@ -2,7 +2,8 @@ export const projectServices = {
   getProject,
   getProjects,
   createProject,
-  deleteProject
+  deleteProject,
+  editProject
 };
 
 function getProjects() {
@@ -37,6 +38,19 @@ function deleteProject(id) {
     headers: {
       "Content-type": "applicatoin/json"
     }
+  })
+    .then(response => response.json())
+    .then(response => response)
+    .catch(err => console.log('error on ticket deletion', err)))
+}
+
+function editProject(id, project) {
+  return (fetch(`http://localhost:4000/projects/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({ project })
   })
     .then(response => response.json())
     .then(response => response)

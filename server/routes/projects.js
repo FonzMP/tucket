@@ -35,6 +35,24 @@ router.delete("/:id", function (req, res) {
   })
 })
 
+router.put("/:id", function (req, res) {
+  const id = req.params.id
+  const projectIn = req.body.project
+  Project.findByIdAndUpdate(id, projectIn, function (err, succ) {
+    if (err) {
+      console.log('error in project deletion', err)
+    } else {
+      Project.findById(id, function (err, project) {
+        if (project) {
+          res.send(project)
+        } else {
+          console.log('missed finding after update ', err)
+        }
+      })
+    }
+  })
+})
+
 router.post("/new", function (req, res) {
   const project = req.body.project
   Project.create(project, function (err, successProject) {
