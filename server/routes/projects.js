@@ -24,6 +24,17 @@ router.get("/:id", function (req, res) {
   })
 });
 
+router.delete("/:id", function (req, res) {
+  const id = req.params.id
+  Project.findByIdAndDelete(id, function (err, project) {
+    if (err) {
+      console.log('error in project deletion', err)
+    } else {
+      res.send(project)
+    }
+  })
+})
+
 router.post("/new", function (req, res) {
   const project = req.body.project
   Project.create(project, function (err, successProject) {

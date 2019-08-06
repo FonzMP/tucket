@@ -6,6 +6,10 @@ class GetProjects extends Component {
     this.props.setProject(project)
   }
 
+  deleteTicket = (id) => {
+    this.props.delete(id)
+  }
+
   renderProjects = () => {
     return this.props.projects.map(project => {
       return (
@@ -14,9 +18,9 @@ class GetProjects extends Component {
           <div className="mock-link" onClick={() => this.setProjectsOne(project)}>View</div>
           <div className="edit-delete">
             <span className="mock-link">Edit</span>
-            <span className="mock-link">Delete</span>
+            <span className="mock-link" onClick={() => this.deleteTicket(project._id)}>Delete</span>
           </div>
-        </div>
+        </div >
       );
     });
   };

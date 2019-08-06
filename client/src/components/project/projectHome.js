@@ -58,6 +58,14 @@ class ProjectHome extends Component {
       projects: [...this.state.projects, project]
     })
   }
+  deleteProject = (id) => {
+    projectServices.deleteProject(id).then(result => {
+      let projectUpdate = this.state.projects.filter(proj => proj._id !== result._id)
+      this.setState({
+        projects: projectUpdate
+      })
+    })
+  }
   render() {
     return (
       <div>
@@ -84,7 +92,7 @@ class ProjectHome extends Component {
               )}
           </div>
           <div className="project-container">
-            {this.state.window === 1 ? this.state.loadingProjects === true ? <h3>Loading</h3> : <GetProjects projects={this.state.projects} setProject={this.setProject} /> : null}
+            {this.state.window === 1 ? this.state.loadingProjects === true ? <h3>Loading</h3> : <GetProjects projects={this.state.projects} setProject={this.setProject} delete={this.deleteProject} /> : null}
             {this.state.window === 2 ? <CreateProject grabNew={this.grabNewProject} /> : null}
             {this.state.window === 3 ? <GetProject project={this.state.project} setHome={this.resetHome} /> : null}
           </div>
