@@ -14,7 +14,6 @@ router.use(
 );
 
 router.get("/:id", function (req, res) {
-  console.log('id ', req.params.id)
   const id = req.params.id
   Ticket.findById(id, function (err, ticket) {
     if (err) {

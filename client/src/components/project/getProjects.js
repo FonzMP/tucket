@@ -11,7 +11,11 @@ class GetProjects extends Component {
       return (
         <div className="project-item-wrap" key={project.name}>
           <h4 className="project-name">{project.name}</h4>
-          <div onClick={() => this.setProjectsOne(project)}>View</div>
+          <div className="mock-link" onClick={() => this.setProjectsOne(project)}>View</div>
+          <div className="edit-delete">
+            <span className="mock-link">Edit</span>
+            <span className="mock-link">Delete</span>
+          </div>
         </div>
       );
     });

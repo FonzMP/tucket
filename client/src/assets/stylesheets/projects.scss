@@ -6,6 +6,7 @@
 
 .project-item-wrap {
   border: 1px solid black;
+  position: relative;
 }
 
 .project-flex {
@@ -30,4 +31,22 @@
   margin: 0 0 0 5%;
   float: right;
   width: 75%;
+}
+
+.edit-delete {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  span {
+    margin-right: 6px;
+  }
+
+}
+
+.mock-link {
+  color: blue;
+  &:hover {
+    cursor: pointer;
+  }
 }

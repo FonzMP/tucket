@@ -19,7 +19,7 @@ class CreateProject extends Component {
   sendProject = () => {
     projectServices
       .createProject(this.state)
-      .then(result => result);
+      .then(result => this.props.grabNew(result));
   };
   render() {
     return (

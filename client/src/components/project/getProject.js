@@ -8,7 +8,7 @@ class GetProject extends Component {
     return (
       <div className="project-wrapper">
         <h4>{this.props.project.name}</h4>
-        <div onClick={this.returnHome} >Back</div>
+        <div className="mock-link" onClick={this.returnHome} >Back</div>
       </div>
     )
   }
