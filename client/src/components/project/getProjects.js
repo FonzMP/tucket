@@ -44,7 +44,7 @@ class GetProjects extends Component {
       return (
         <div className="project-item-wrap" key={project.name}>
           <h4 className="project-name">{project.name}</h4>
-          <div className="mock-link" onClick={() => this.setProjectsOne(project)}>View</div>
+          <span className="mock-link" onClick={() => this.setProjectsOne(project)}>View</span>
           <div className="edit-delete">
             <span className="mock-link" onClick={() => this.setEdit(project._id)}>Edit</span>
             <span className="mock-link" onClick={() => this.deleteTicket(project._id)}>Delete</span>
