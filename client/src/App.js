@@ -11,8 +11,6 @@ import GetTicket from "./components/ticket/getTicket";
 import GetTickets from "./components/ticket/getTickets";
 import CreateTicket from "./components/ticket/createTicket";
 import GetProject from "./components/project/getProject";
-import GetProjects from "./components/project/getProjects";
-import CreateProject from "./components/project/createProject";
 import Home from "./components/shared/home";
 import ProjectHome from "./components/project/projectHome";
 
@@ -28,10 +26,7 @@ class App extends Component {
             <Route exact path="/tickets" component={GetTickets} />
             <Route exact path="/tickets/new" component={CreateTicket} />
             <Route exact path="/tickets/:id" component={GetTicket} />
-            <Route exact path="/projects" component={GetProjects} />
-            <Route exact path="/projects/all" component={GetProjects} />
-            <Route exact path="/projects/new" component={CreateProject} />
-            <Route exact path="/projects/home" component={ProjectHome} />
+            <Route exact path="/projects" component={ProjectHome} />
             <Route exact path="/projects/:id" component={GetProject} />
           </Switch>
         </div>
