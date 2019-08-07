@@ -76,9 +76,8 @@ class ProjectHome extends Component {
   }
   deleteProject = (id) => {
     projectServices.deleteProject(id).then(result => {
-      let projectUpdate = this.state.projects.map(proj => proj._id !== result._id)
       this.setState({
-        projects: projectUpdate
+        projects: this.state.projects.filter(proj => proj._id !== result._id)
       })
     })
   }

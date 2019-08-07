@@ -13,6 +13,14 @@
 .project-item-wrap {
   border: 1px solid black;
   position: relative;
+  .mock-link#first-link {
+    margin-left: 8px;
+  }
+  .mock-link {
+    box-sizing: content-box;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
 }
 
 .project-flex {

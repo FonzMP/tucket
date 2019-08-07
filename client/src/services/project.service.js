@@ -36,7 +36,7 @@ function deleteProject(id) {
   return (fetch(`http://localhost:4000/projects/${id}`, {
     method: "DELETE",
     headers: {
-      "Content-type": "applicatoin/json"
+      "Content-type": "application/json"
     }
   })
     .then(response => response.json())
