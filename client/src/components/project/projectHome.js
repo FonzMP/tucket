@@ -12,7 +12,8 @@ class ProjectHome extends Component {
       loadingProject: false,
       loadingProjects: true,
       projects: null,
-      project: null
+      project: null,
+      ticketsDeleted: null
     };
   }
 
@@ -76,8 +77,10 @@ class ProjectHome extends Component {
   }
   deleteProject = (id) => {
     projectServices.deleteProject(id).then(result => {
+      console.log('result from delete in project service ', result)
       this.setState({
-        projects: this.state.projects.filter(proj => proj._id !== result._id)
+        projects: this.state.projects.filter(proj => proj._id !== result.project._id),
+        ticketsDeleted: result.deleted
       })
     })
   }

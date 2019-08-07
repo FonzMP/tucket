@@ -4,6 +4,7 @@ const cors = require("cors");
 const router = express.Router();
 
 const Project = require('../models/project')
+const Ticket = require('../models/ticket')
 
 router.use(cors())
 
@@ -26,11 +27,33 @@ router.get("/:id", function (req, res) {
 
 router.delete("/:id", function (req, res) {
   const id = req.params.id
-  Project.findByIdAndDelete(id, function (err, project) {
+  let errDetails = [];
+  let deleted = [];
+  Project.findById(id, function (err, projectFound) {
+    if (projectFound && projectFound.tickets.length > 0) {
+      projectFound.tickets.map(ticket => {
+        Ticket.findByIdAndDelete(ticket._id, (errDel, ticketDeleted) => {
+          if (errDel) {
+            errDetails.push(errDetails)
+            console.log('error deleting ticket with id in project ', projectFound + ", " + errDel)
+          } else {
+            deleted.push(ticketDeleted.title)
+          }
+        })
+      })
+    }
     if (err) {
-      console.log('error in project deletion', err)
+      console.log('trouble locating project in project deletion ', err)
     } else {
-      res.send(project)
+      Project.findByIdAndDelete(id, function (err, project) {
+        if (err) {
+          console.log('error in project deletion', err)
+        } else {
+          if (projectFound && project) {
+            res.send({ project: projectFound, deleted: deleted, error: errDetails });
+          }
+        }
+      })
     }
   })
 })
