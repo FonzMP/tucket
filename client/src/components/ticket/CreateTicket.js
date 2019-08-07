@@ -17,13 +17,11 @@ class CreateTicket extends Component {
     this.setState({ [event.target.id]: event.target.value });
   };
   sendTicket = () => {
-    ticketServices
-      .createTicket(this.state)
-      .then(result => result);
+    this.props.addTicket(this.state)
   };
   render() {
     return (
-      <div>
+      <div className="create-ticket-container">
         <div className="form-group">
           <label htmlFor={t.TITLE}>
             Title:
@@ -43,7 +41,6 @@ class CreateTicket extends Component {
               id={t.DESCRIPTION}
               type="text"
               rows="5"
-              columns="55"
               value={this.state.description}
               onChange={this.handleOnChange}
               placeholder={t.DESCPLACE}

@@ -16,12 +16,6 @@ const NAVCONSTANTS = {
       href: "/projects",
       component: ProjectHome,
       key: "ProjectHomeLink"
-    },
-    {
-      display: "Tickets",
-      href: "/tickets",
-      component: GetTickets,
-      key: "GetTicketsLink"
     }
   ]
 };

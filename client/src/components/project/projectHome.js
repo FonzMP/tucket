@@ -58,6 +58,13 @@ class ProjectHome extends Component {
       projects: [...this.state.projects, project]
     })
   }
+  projectRefresh = () => {
+    projectServices.getProjects().then(response => {
+      this.setState({
+        projects: response
+      })
+    })
+  }
   editProject = (newProject) => {
     // need to fix edit to not change list order
     projectServices.editProject(newProject._id, newProject).then(result => {
@@ -103,7 +110,7 @@ class ProjectHome extends Component {
           <div className="project-container">
             {this.state.window === 1 ? this.state.loadingProjects === true ? <h3>Loading</h3> : <GetProjects projects={this.state.projects} setProject={this.setProject} delete={this.deleteProject} editProject={this.editProject} /> : null}
             {this.state.window === 2 ? <CreateProject grabNew={this.grabNewProject} /> : null}
-            {this.state.window === 3 ? <GetProject project={this.state.project} setHome={this.resetHome} /> : null}
+            {this.state.window === 3 ? <GetProject project={this.state.project} setHome={this.resetHome} refreshProjects={this.projectRefresh} /> : null}
           </div>
         </div>
       </div>

@@ -1,5 +1,11 @@
 @import "./variables.scss";
 
+.project-wrapper {
+  h4 {
+    margin: 0;
+  }
+}
+
 .project-head {
   margin: 0 0 12px 0;
 }
@@ -46,6 +52,10 @@
 
 .mock-link {
   color: blue;
+  margin-left: 8px;
+  &:first-of-type {
+    margin-left: 0;
+  }
   &:hover {
     cursor: pointer;
   }

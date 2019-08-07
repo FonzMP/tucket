@@ -6,6 +6,7 @@ import Footer from "./components/shared/footer";
 import "./App.css";
 import "./assets/stylesheets/projects.scss";
 import "./assets/stylesheets/navigation.scss";
+import "./assets/stylesheets/tickets.scss";
 import NAVCONSTANTS from "./_constants/NavigationConstants";
 import GetTicket from "./components/ticket/getTicket";
 import GetTickets from "./components/ticket/getTickets";

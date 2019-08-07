@@ -12,13 +12,13 @@ function getTickets() {
     .then(response => response)
     .catch(err => console.log("error on getTickets"));
 }
-function createTicket(ticket) {
+function createTicket(project, ticket) {
   return fetch("http://localhost:4000/tickets/new", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ ticket })
+    body: JSON.stringify({ project, ticket })
   })
     .then(response => response.json())
     .then(response => response)

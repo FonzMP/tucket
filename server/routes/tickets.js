@@ -4,6 +4,7 @@ const cors = require("cors");
 const router = express.Router();
 
 const Ticket = require('../models/ticket')
+const Project = require('../models/project')
 
 router.use(cors())
 
@@ -26,11 +27,20 @@ router.get("/:id", function (req, res) {
 
 router.post("/new", function (req, res) {
   const ticket = req.body.ticket
+  const project = req.body.project
   Ticket.create(ticket, function (err, successTicket) {
     if (err) {
       console.log('error in ticket creation ', err)
     } else {
-      res.send(successTicket)
+      Project.findById(project._id, function (err, successProject) {
+        if (err) {
+          console.log('error finding associated project ', err)
+        } else {
+          successProject.tickets.push(successTicket)
+          successProject.save()
+          res.send(successProject)
+        }
+      })
     }
   })
 });
