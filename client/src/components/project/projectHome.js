@@ -77,7 +77,6 @@ class ProjectHome extends Component {
   }
   deleteProject = (id) => {
     projectServices.deleteProject(id).then(result => {
-      console.log('result from delete in project service ', result)
       this.setState({
         projects: this.state.projects.filter(proj => proj._id !== result.project._id),
         ticketsDeleted: result.deleted
@@ -91,20 +90,20 @@ class ProjectHome extends Component {
         <div className="project-flex">
           <div className="view-link-container">
             {this.state.window === 1 || this.state.window === 3 ? (
-              <span className="view-link" onClick={() => this.openProject(null)}>
+              <span className="view-link" id="hide-all" onClick={() => this.openProject(null)}>
                 Hide Projects
               </span>
             ) : (
-                <span className="view-link" onClick={() => this.openProject(1)}>
+                <span className="view-link" id="show-all" onClick={() => this.openProject(1)}>
                   All Projects
               </span>
               )}
             {this.state.window === 2 ? (
-              <span className="view-link" onClick={() => this.openProject(null)}>
+              <span className="view-link" id="close-project-create" onClick={() => this.openProject(null)}>
                 Close Project
               </span>
             ) : (
-                <span className="view-link" onClick={() => this.openProject(2)}>
+                <span className="view-link" id="open-project-create" onClick={() => this.openProject(2)}>
                   Create Project
               </span>
               )}

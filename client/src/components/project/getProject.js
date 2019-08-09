@@ -33,7 +33,7 @@ class GetProject extends Component {
   }
   displayTickets = () => {
     return this.state.project.tickets.map(ticket => {
-      return <GetTicket ticket={ticket} />
+      return <GetTicket ticket={ticket} key={ticket.title} />
     })
 
   }

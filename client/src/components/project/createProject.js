@@ -26,7 +26,7 @@ class CreateProject extends Component {
       <div>
         <div className="form-group">
           <label htmlFor={p.NAME}>
-            Name:
+            Project Name:
           <input
               id={p.NAME}
               type="text"
