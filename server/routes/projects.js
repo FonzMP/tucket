@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const router = express.Router();
+const winston = require("winston");
 
 const Project = require('../models/project')
 const Ticket = require('../models/ticket')
@@ -13,6 +14,25 @@ router.use(
     extended: true
   })
 );
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.json(),
+    winston.format.colorize({ all: true })
+  ),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    new winston.transports.File({ filename: './logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ]
+})
+
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new winston.transports.Console({
+    format: winston.format.simple()
+  }));
+}
 
 router.get("/:id", function (req, res) {
   const id = req.params.id
@@ -27,15 +47,14 @@ router.get("/:id", function (req, res) {
 
 router.delete("/:id", function (req, res) {
   const id = req.params.id
-  let errDetails = [];
   let deleted = [];
   Project.findById(id, function (err, projectFound) {
     if (projectFound && projectFound.tickets.length > 0) {
       projectFound.tickets.map(ticket => {
         Ticket.findByIdAndDelete(ticket._id, (errDel, ticketDeleted) => {
           if (errDel) {
-            errDetails.push(errDetails)
-            console.log('error deleting ticket with id in project ', projectFound + ", " + errDel)
+            logger.log('error', "error deleting ticket associated with project of id: " + id + " by error " + errDel.message)
+            console.log('error deleting ticket with id in project ', projectFound + ", " + errDel.message)
           } else {
             deleted.push(ticketDeleted.title)
           }
@@ -43,7 +62,8 @@ router.delete("/:id", function (req, res) {
       })
     }
     if (err) {
-      console.log('trouble locating project in project deletion ', err)
+      console.log('trouble locating project in project deletion ', err.message)
+      logger.log('error', 'trouble locating project in project deletion of id: ' + id + ' of error: ' + err.message)
     } else {
       Project.findByIdAndDelete(id, function (err, project) {
         if (err) {

@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 // const schema = require("./schema/schema");
 require("dotenv").config();
 
+
 const tickets = require('./routes/tickets')
 const projects = require('./routes/projects')
 
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 app.use('/tickets', tickets)
 app.use('/projects', projects)
 app.use(cors());
+
 
 // db connect configuration
 mongoose.connect(serverUrl, { useNewUrlParser: true }).catch(err => {
