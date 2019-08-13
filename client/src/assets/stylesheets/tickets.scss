@@ -1,9 +1,10 @@
 .create-ticket-container {
-  border: 1px solid red;
   box-sizing: border-box;
   padding: 16px 8px;
 
-  label, input, textarea {
+  label,
+  input,
+  textarea {
     display: block;
     width: 100%;
     max-width: 300px;
@@ -21,7 +22,9 @@
 .project-ticket-container {
   border: 1px solid black;
   padding: 12px 22px;
-  h1, p {
+  position: relative;
+  h1,
+  p {
     margin: 0;
   }
 }

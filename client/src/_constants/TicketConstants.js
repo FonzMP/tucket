@@ -3,7 +3,8 @@ const TICKETCONSTANTS = {
   TITLEPLACE: "Title",
   DESCRIPTION: "description",
   DESCPLACE: "Description",
-  CREATE_BUTTON: "Create Ticket"
+  CREATE_BUTTON: "Create Ticket",
+  EDIT_BUTTON: "Edit Ticket"
 };
 
 export default TICKETCONSTANTS;

@@ -3,7 +3,8 @@ export const projectServices = {
   getProjects,
   createProject,
   deleteProject,
-  editProject
+  editProject,
+  editTicket
 };
 
 function getProjects() {
@@ -33,7 +34,7 @@ function getProject(id) {
 }
 
 function deleteProject(id) {
-  return (fetch(`http://localhost:4000/projects/${id}`, {
+  return fetch(`http://localhost:4000/projects/${id}`, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json"
@@ -41,11 +42,11 @@ function deleteProject(id) {
   })
     .then(response => response.json())
     .then(response => response)
-    .catch(err => console.log('error on ticket deletion', err)))
+    .catch(err => console.log("error on ticket deletion", err));
 }
 
 function editProject(id, project) {
-  return (fetch(`http://localhost:4000/projects/${id}`, {
+  return fetch(`http://localhost:4000/projects/${id}`, {
     method: "PUT",
     headers: {
       "Content-type": "application/json"
@@ -54,5 +55,18 @@ function editProject(id, project) {
   })
     .then(response => response.json())
     .then(response => response)
-    .catch(err => console.log('error on ticket deletion', err)))
+    .catch(err => console.log("error on ticket deletion", err));
+}
+
+function editTicket(id, ticket) {
+  return fetch(`http://localhost:4000/projects/${id}/ticket`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({ ticket })
+  })
+    .then(response => response.json())
+    .then(response => response)
+    .catch(err => console.log("error on editing ticket ", err));
 }
