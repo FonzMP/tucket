@@ -32,6 +32,17 @@ class GetProject extends Component {
       this.props.refreshProjects();
     });
   };
+
+  deleteTicketProject = ticketId => {
+    const projectId = this.state.project._id;
+    projectServices.deleteTicket(projectId, ticketId).then(response => {
+      this.setState({
+        project: response,
+        addTicket: false
+      });
+    });
+  };
+
   displayTickets = () => {
     return this.state.project.tickets.map(ticket => {
       return (
@@ -39,6 +50,7 @@ class GetProject extends Component {
           ticket={ticket}
           key={ticket.title}
           editTicket={this.sendEditTicket}
+          deleteTicket={this.deleteTicketProject}
         />
       );
     });
@@ -46,7 +58,6 @@ class GetProject extends Component {
 
   sendEditTicket = ticket => {
     projectServices.editTicket(this.state.project._id, ticket).then(project => {
-      console.log("project here ", project);
       this.setState({
         project
       });

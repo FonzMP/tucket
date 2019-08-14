@@ -4,7 +4,8 @@ export const projectServices = {
   createProject,
   deleteProject,
   editProject,
-  editTicket
+  editTicket,
+  deleteTicket
 };
 
 function getProjects() {
@@ -59,7 +60,7 @@ function editProject(id, project) {
 }
 
 function editTicket(id, ticket) {
-  return fetch(`http://localhost:4000/projects/${id}/ticket`, {
+  return fetch(`http://localhost:4000/projects/${id}/tickets`, {
     method: "PUT",
     headers: {
       "Content-type": "application/json"
@@ -69,4 +70,19 @@ function editTicket(id, ticket) {
     .then(response => response.json())
     .then(response => response)
     .catch(err => console.log("error on editing ticket ", err));
+}
+
+function deleteTicket(projectId, ticketId) {
+  return fetch(
+    `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json"
+      }
+    }
+  )
+    .then(response => response.json())
+    .then(response => response)
+    .catch(err => console.log("error on deleting ticket from project ", err));
 }

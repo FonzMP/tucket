@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import EditTicket from "./editTicket";
+import { projectServices } from "../../services/project.service";
 
 class GetTicket extends Component {
   constructor() {
@@ -29,6 +30,10 @@ class GetTicket extends Component {
       editView: false,
       currentId: null
     });
+  };
+
+  deleteTicket = id => {
+    this.props.deleteTicket(id);
   };
 
   render() {

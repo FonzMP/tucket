@@ -145,7 +145,7 @@ router.put("/:id", function(req, res) {
   });
 });
 
-router.put("/:id/ticket", function(req, res) {
+router.put("/:id/tickets", function(req, res) {
   const id = req.params.id;
   const ticket = req.body.ticket;
   Project.findById(id, function(err, projectFound) {
@@ -166,23 +166,31 @@ router.put("/:id/ticket", function(req, res) {
       });
       tickets.push(ticket);
       projectFound.tickets = tickets;
-      // Project.findByIdAndUpdate(id, projectFound, function(
-      //   errUpdate,
-      //   updatedProject
-      // ) {
-      //   if (errUpdate) {
-      //     logger.log(
-      //       "error",
-      //       "error in saving project with id: " +
-      //         id +
-      //         " after updating ticket, with error: " +
-      //         errUpdate
-      //     );
-      //   } else {
-      //     console.log("updated project ", updatedProject);
-      //     res.send(updatedProject);
-      //   }
-      // });
+      projectFound.save();
+      res.send(projectFound);
+    }
+  });
+});
+
+router.delete("/:id/tickets/:ticketId", function(req, res) {
+  const projectId = req.params.id;
+  const ticketId = req.params.ticketId;
+  Project.findById(projectId, function(err, projectFound) {
+    if (err) {
+      logger.log(
+        "error",
+        "Error finding project while locating project with id: " +
+          projectId +
+          " for ticket deletion with ticket id: " +
+          ticketId +
+          " of error: " +
+          err
+      );
+    } else {
+      const tickets = projectFound.tickets.filter(ticket => {
+        return ticket._id != ticketId;
+      });
+      projectFound.tickets = tickets;
       projectFound.save();
       res.send(projectFound);
     }
