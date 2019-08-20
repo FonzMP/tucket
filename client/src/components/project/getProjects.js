@@ -1,56 +1,74 @@
 import React, { Component } from "react";
-import EditProject from './editProject'
+import EditProject from "./editProject";
 
 class GetProjects extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       editView: false,
       currentId: null
-    }
+    };
   }
 
-  setProjectsOne = (project) => {
-    this.props.setProject(project)
-  }
+  setProjectsOne = project => {
+    this.props.setProject(project);
+  };
 
-  setEdit = (id) => {
+  setEdit = id => {
     if (id === this.state.currentId) {
       this.setState({
         editView: false,
         currentId: null
-      })
+      });
     } else {
       this.setState({
         editView: true,
         currentId: id
-      })
+      });
     }
-  }
-  getEdit = (project) => {
-    this.props.editProject(project)
+  };
+  getEdit = project => {
+    this.props.editProject(project);
     this.setState({
       editView: false,
       currentId: null
-    })
-  }
+    });
+  };
 
-  deleteTicket = (id) => {
-    this.props.delete(id)
-  }
+  deleteTicket = id => {
+    this.props.delete(id);
+  };
 
   renderProjects = () => {
     return this.props.projects.map(project => {
       return (
         <div className="project-item-wrap" key={project.name}>
           <h4 className="project-name">{project.name}</h4>
-          <span className="mock-link" id="first-link" onClick={() => this.setProjectsOne(project)}>View</span>
+          <span
+            className="mock-link"
+            id="first-link"
+            onClick={() => this.setProjectsOne(project)}
+          >
+            View
+          </span>
           <div className="edit-delete">
-            <span className="mock-link" onClick={() => this.setEdit(project._id)}>Edit</span>
-            <span className="mock-link" onClick={() => this.deleteTicket(project._id)}>Delete</span>
+            <span
+              className="mock-link"
+              onClick={() => this.setEdit(project._id)}
+            >
+              Edit
+            </span>
+            <span
+              className="mock-link"
+              onClick={() => this.deleteTicket(project._id)}
+            >
+              Delete
+            </span>
           </div>
-          {this.state.editView && project._id === this.state.currentId ? <EditProject project={project} getEdit={this.getEdit} /> : null}
-        </div >
+          {this.state.editView && project._id === this.state.currentId ? (
+            <EditProject project={project} getEdit={this.getEdit} />
+          ) : null}
+        </div>
       );
     });
   };
@@ -62,8 +80,8 @@ class GetProjects extends Component {
         <span>{this.renderProjects()}</span>
       </span>
     ) : (
-        <div>Loading....</div>
-      );
+      <div>Loading....</div>
+    );
   }
 }
 

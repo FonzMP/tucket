@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
-import PROJECTCONSTANTS from '../../_constants/ProjectConstants'
-import { projectServices } from '../../services/project.service'
+import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
 
 const p = PROJECTCONSTANTS;
 
@@ -9,7 +8,7 @@ class EditProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: props.project.name,
+      name: props.project.name
     };
   }
 
@@ -17,8 +16,8 @@ class EditProject extends Component {
     this.setState({ [event.target.id]: event.target.value });
   };
   editProject = () => {
-    const project = { ...this.props.project, name: this.state.name }
-    this.props.getEdit(project)
+    const project = { ...this.props.project, name: this.state.name };
+    this.props.getEdit(project);
   };
   render() {
     return (
@@ -26,7 +25,7 @@ class EditProject extends Component {
         <div className="form-group">
           <label htmlFor={p.NAME}>
             Name:
-          <input
+            <input
               id={p.NAME}
               type="text"
               value={this.state.name}
@@ -38,7 +37,7 @@ class EditProject extends Component {
         <div className="form-group">
           <button onClick={this.editProject}>{p.EDIT_BUTTON}</button>
         </div>
-      </div >
+      </div>
     );
   }
 }

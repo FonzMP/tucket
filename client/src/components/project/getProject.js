@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import CreateTicket from "../ticket/createTicket";
 import { ticketServices } from "../../services/ticket.service";
 import { projectServices } from "../../services/project.service";
-import GetTicket from "../ticket/getTicket";
+import GetTickets from "../ticket/getTickets";
 
 class GetProject extends Component {
   constructor(props) {
@@ -33,6 +33,10 @@ class GetProject extends Component {
     });
   };
 
+  setTicket = ticket => {
+    this.props.setTicket(ticket);
+  };
+
   deleteTicketProject = ticketId => {
     const projectId = this.state.project._id;
     projectServices.deleteTicket(projectId, ticketId).then(response => {
@@ -46,9 +50,10 @@ class GetProject extends Component {
   displayTickets = () => {
     return this.state.project.tickets.map(ticket => {
       return (
-        <GetTicket
+        <GetTickets
           ticket={ticket}
           key={ticket.title}
+          setTicket={this.setTicket}
           editTicket={this.sendEditTicket}
           deleteTicket={this.deleteTicketProject}
         />

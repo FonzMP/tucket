@@ -20,7 +20,14 @@
     box-sizing: content-box;
     display: inline-block;
     margin-bottom: 6px;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 4px 8px;
   }
+}
+
+.project-name {
+  margin-left: 6px;
 }
 
 .project-flex {
@@ -55,12 +62,17 @@
   span {
     margin-right: 6px;
   }
-
 }
 
 .mock-link {
   color: blue;
   margin-left: 8px;
+  box-sizing: content-box;
+  display: inline-block;
+  margin-bottom: 6px;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 4px 8px;
   &:first-of-type {
     margin-left: 0;
   }

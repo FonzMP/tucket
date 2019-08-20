@@ -1,7 +1,6 @@
 import Home from "../components/shared/home";
 // import TicketHome from '../components/ticket/ticketHome'
 import ProjectHome from "../components/project/projectHome";
-import GetTickets from '../components/ticket/getTickets'
 
 const NAVCONSTANTS = {
   NAV: [

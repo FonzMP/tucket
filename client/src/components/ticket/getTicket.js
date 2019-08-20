@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import EditTicket from "./editTicket";
-import { projectServices } from "../../services/project.service";
 
 class GetTicket extends Component {
   constructor() {
@@ -24,6 +23,10 @@ class GetTicket extends Component {
     }
   };
 
+  setTicketsOne = ticket => {
+    this.props.setTicket(ticket);
+  };
+
   getEdit = ticket => {
     this.props.editTicket(ticket);
     this.setState({
@@ -42,13 +45,6 @@ class GetTicket extends Component {
       <div className="project-ticket-container">
         <h1>{ticket.title}</h1>
         <p>{ticket.description}</p>
-        <span
-          className="mock-link"
-          id="first-link"
-          onClick={() => this.setTicketsOne(ticket)}
-        >
-          View
-        </span>
         <div className="edit-delete">
           <span className="mock-link" onClick={() => this.setEdit(ticket._id)}>
             Edit

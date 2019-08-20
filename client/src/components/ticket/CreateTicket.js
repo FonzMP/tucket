@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { ticketServices } from "../../services/ticket.service";
-import TICKETCONSTANTS from '../../_constants/TicketConstants'
+import TICKETCONSTANTS from "../../_constants/TicketConstants";
 
-const t = TICKETCONSTANTS
+const t = TICKETCONSTANTS;
 
 class CreateTicket extends Component {
   constructor() {
@@ -17,7 +16,7 @@ class CreateTicket extends Component {
     this.setState({ [event.target.id]: event.target.value });
   };
   sendTicket = () => {
-    this.props.addTicket(this.state)
+    this.props.addTicket(this.state);
   };
   render() {
     return (
@@ -25,7 +24,7 @@ class CreateTicket extends Component {
         <div className="form-group">
           <label htmlFor={t.TITLE}>
             Title:
-          <input
+            <input
               id={t.TITLE}
               type="text"
               value={this.state.title}
@@ -37,7 +36,7 @@ class CreateTicket extends Component {
         <div className="form-group">
           <label htmlFor={t.DESCRIPTION}>
             Description:
-          <textarea
+            <textarea
               id={t.DESCRIPTION}
               type="text"
               rows="5"
@@ -50,7 +49,7 @@ class CreateTicket extends Component {
         <div className="form-group">
           <button onClick={this.sendTicket}>{t.CREATE_BUTTON}</button>
         </div>
-      </div >
+      </div>
     );
   }
 }
