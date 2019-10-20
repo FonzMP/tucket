@@ -96,6 +96,22 @@ class ProjectHome extends Component {
       });
     });
   };
+  resetToProject = () => {
+    this.setState({
+      window: 3
+    });
+  };
+  sendEditTicket = ticket => {
+    projectServices.editTicket(this.state.project._id, ticket).then(result => {
+      console.log("result ", result);
+      const updateList = this.state.projects.filter(
+        proj => proj._id !== result._id
+      );
+      this.setState({
+        projects: [...updateList, result]
+      });
+    });
+  };
   render() {
     return (
       <div>
@@ -162,7 +178,11 @@ class ProjectHome extends Component {
               />
             ) : null}
             {this.state.window === 4 ? (
-              <GetTicket ticket={this.state.ticket} />
+              <GetTicket
+                ticket={this.state.ticket}
+                resetWindow={this.resetToProject}
+                editTicket={this.sendEditTicket}
+              />
             ) : null}
           </div>
         </div>

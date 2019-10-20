@@ -54,18 +54,9 @@ class GetProject extends Component {
           ticket={ticket}
           key={ticket.title}
           setTicket={this.setTicket}
-          editTicket={this.sendEditTicket}
           deleteTicket={this.deleteTicketProject}
         />
       );
-    });
-  };
-
-  sendEditTicket = ticket => {
-    projectServices.editTicket(this.state.project._id, ticket).then(project => {
-      this.setState({
-        project
-      });
     });
   };
 
