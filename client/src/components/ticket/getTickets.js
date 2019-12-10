@@ -1,79 +1,62 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import EditTicket from "./editTicket";
 
-class GetTickets extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ticket: this.props.ticket
-    };
-  }
+function GetTickets(props) {
+  const [ticket, setTicket] = useState(props.ticket);
+  const [currentId, setCurrentId] = useState(null);
+  const [editView, setEditView] = useState(false);
 
-  setEdit = id => {
-    if (id === this.state.currentId) {
-      this.setState({
-        editView: false,
-        currentId: null
-      });
+  function setEdit() {
+    const id = ticket._id;
+    if (id === currentId) {
+      setEditView(false);
+      setCurrentId(null);
     } else {
-      this.setState({
-        editView: true,
-        currentId: id
-      });
+      setEditView(true);
+      setCurrentId(id);
     }
-  };
-
-  setTicketsOne = ticket => {
-    this.props.setTicket(ticket);
-  };
-
-  getEdit = ticket => {
-    this.props.editTicket(ticket);
-    this.setState({
-      editView: false,
-      currentId: null
-    });
-  };
-
-  deleteTicket = id => {
-    this.props.deleteTicket(id);
-  };
-
-  render() {
-    return this.state.ticket !== undefined ? (
-      <div className="project-ticket-container">
-        <h1>{this.state.ticket.title}</h1>
-        <p>{this.state.ticket.description}</p>
-        <span
-          className="mock-link"
-          id="first-link"
-          onClick={() => this.setTicketsOne(this.state.ticket)}
-        >
-          View
-        </span>
-        <div className="edit-delete">
-          <span
-            className="mock-link"
-            onClick={() => this.setEdit(this.state.ticket._id)}
-          >
-            Edit
-          </span>
-          <span
-            className="mock-link"
-            onClick={() => this.deleteTicket(this.state.ticket._id)}
-          >
-            Delete
-          </span>
-        </div>
-        {this.state.editView &&
-        this.state.ticket._id === this.state.currentId ? (
-          <EditTicket ticket={this.state.ticket} sendEdit={this.getEdit} />
-        ) : null}
-      </div>
-    ) : (
-      <div>Loading....</div>
-    );
   }
+
+  function setTicketsOne() {
+    props.setTicket(ticket);
+  }
+
+  function getEdit(ticket) {
+    props.editTicket(ticket);
+    setEditView(false);
+    setCurrentId(null);
+  }
+
+  function deleteTicket() {
+    props.deleteTicket(ticket._id);
+  }
+
+  return ticket !== undefined ? (
+    <div className="project-ticket-container">
+      <h1>{ticket.title}</h1>
+      <p>{ticket.description}</p>
+      <span
+        className="mock-link"
+        id="first-link"
+        onClick={() => setTicketsOne()}
+      >
+        View
+      </span>
+      <div className="edit-delete">
+        <span className="mock-link" onClick={() => setEdit()}>
+          Edit
+        </span>
+        <span className="mock-link" onClick={() => deleteTicket()}>
+          Delete
+        </span>
+      </div>
+      {editView && ticket._id === currentId ? (
+        <EditTicket ticket={ticket} sendEdit={getEdit} />
+      ) : null}
+    </div>
+  ) : (
+    <div>Loading....</div>
+  );
 }
 
 export default GetTickets;
