@@ -1,187 +1,132 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import CreateProject from "./createProject";
 import GetProjects from "./getProjects";
 import GetProject from "./getProject";
 import GetTicket from "../ticket/getTicket";
 import { projectServices } from "../../services/project.service";
 
-class ProjectHome extends Component {
-  constructor() {
-    super();
-    this.state = {
-      window: 1,
-      loadingProject: false,
-      loadingProjects: true,
-      projects: null,
-      project: null,
-      ticket: null,
-      ticketsDeleted: null
-    };
-  }
+function ProjectHome() {
+  const [window, setWindow] = useState(1);
+  const [loadingProject, setLoadingProject] = useState(false);
+  const [loadingProjects, setLoadingProjects] = useState(false);
+  const [project, setProject] = useState(null);
+  const [projects, setProjects] = useState(null);
+  const [ticket, setTicket] = useState(null);
+  const [ticketsDeleted, setTicketsDeleted] = useState(null);
 
-  componentDidMount() {
-    this.setState({
-      loadingProjects: true
-    });
-    this.getProjects();
-  }
+  useEffect(() => {
+    setLoadingProjects(true);
+    getProjects();
+  }, []);
 
-  openProject(index) {
+  function openProject(index) {
     if (index === 3) {
       projectServices.getProject();
     } else {
-      this.setState({
-        window: index
-      });
+      setWindow(index);
     }
   }
-  getProjects = () => {
+  function getProjects() {
     projectServices.getProjects().then(projects => {
-      this.setState({
-        projects: projects,
-        loadingProjects: false
-      });
+      setProjects(projects);
+      setLoadingProjects(false);
     });
-  };
+  }
 
-  setProject = project => {
-    this.setState({
-      project: project,
-      window: 3
-    });
-  };
+  function setProjectView(project) {
+    setProject(project);
+    setWindow(3);
+  }
 
-  setTicket = ticket => {
-    this.setState({
-      ticket: ticket,
-      window: 4
-    });
-  };
+  function setTicketView(ticket) {
+    setTicket(ticket);
+    setWindow(4);
+  }
 
-  resetHome = () => {
-    this.setState({
-      window: 1
-    });
-  };
-  grabNewProject = project => {
-    this.setState({
-      projects: [...this.state.projects, project]
-    });
-  };
-  projectRefresh = () => {
+  function resetHome() {
+    setWindow(1);
+  }
+
+  function grabNewProject(project) {
+    setProjects(...projects, project);
+  }
+  function projectRefresh() {
     projectServices.getProjects().then(response => {
-      this.setState({
-        projects: response
-      });
+      setProjects(response);
     });
-  };
-  editProject = newProject => {
+  }
+  function editProject(newProject) {
     // need to fix edit to not change list order
-    projectServices.editProject(newProject._id, newProject).then(result => {
-      const updateList = this.state.projects.filter(
-        proj => proj._id !== result._id
-      );
-      this.setState({
-        projects: [...updateList, result]
-      });
+    projectServices.editProject(newProject).then(result => {
+      const updateList = projects.filter(proj => proj._id !== result._id);
+      setProjects(...updateList, result);
     });
-  };
-  deleteProject = id => {
-    
-  };
-  resetToProject = () => {
-    this.setState({
-      window: 3
+  }
+  function deleteProject(id) {
+    console.log("fix delete", id);
+  }
+  function resetToProject() {
+    setWindow(3);
+  }
+  function sendEditTicket(ticket) {
+    projectServices.editTicket(project._id, ticket).then(result => {
+      const updateList = projects.filter(proj => proj._id !== result._id);
+      setProjects(...updateList, result);
     });
-  };
-  sendEditTicket = ticket => {
-    projectServices.editTicket(this.state.project._id, ticket).then(result => {
-      console.log("result ", result);
-      const updateList = this.state.projects.filter(
-        proj => proj._id !== result._id
-      );
-      this.setState({
-        projects: [...updateList, result]
-      });
-    });
-  };
-  render() {
-    return (
-      <div>
-        <h1>Projects</h1>
-        <div className="project-flex">
-          <div className="view-link-container">
-            {this.state.window === 1 || this.state.window === 3 ? (
-              <span
-                className="view-link"
-                id="hide-all"
-                onClick={() => this.openProject(null)}
-              >
-                Hide Projects
-              </span>
+  }
+  return (
+    <div className="projectHomeWrapper">
+      <div className="project-flex">
+        <div className="view-link-container">
+          <span
+            className={
+              (window === 1 || window === 3 ? "activeLink" : "") + " view-link"
+            }
+            onClick={() => setWindow(1)}
+          >
+            Projects
+          </span>
+          <span
+            className={(window === 2 ? "activeLink" : "") + " view-link"}
+            id="open-project-create"
+            onClick={() => openProject(2)}
+          >
+            Create Project
+          </span>
+        </div>
+        <div className="project-container">
+          {window === 1 ? (
+            loadingProjects === true ? (
+              <h3>Loading</h3>
             ) : (
-              <span
-                className="view-link"
-                id="show-all"
-                onClick={() => this.openProject(1)}
-              >
-                All Projects
-              </span>
-            )}
-            {this.state.window === 2 ? (
-              <span
-                className="view-link"
-                id="close-project-create"
-                onClick={() => this.openProject(null)}
-              >
-                Close Project
-              </span>
-            ) : (
-              <span
-                className="view-link"
-                id="open-project-create"
-                onClick={() => this.openProject(2)}
-              >
-                Create Project
-              </span>
-            )}
-          </div>
-          <div className="project-container">
-            {this.state.window === 1 ? (
-              this.state.loadingProjects === true ? (
-                <h3>Loading</h3>
-              ) : (
-                <GetProjects
-                  projects={this.state.projects}
-                  setProject={this.setProject}
-                  delete={this.deleteProject}
-                  editProject={this.editProject}
-                />
-              )
-            ) : null}
-            {this.state.window === 2 ? (
-              <CreateProject grabNew={this.grabNewProject} />
-            ) : null}
-            {this.state.window === 3 ? (
-              <GetProject
-                project={this.state.project}
-                setHome={this.resetHome}
-                refreshProjects={this.projectRefresh}
-                setTicket={this.setTicket}
+              <GetProjects
+                projects={projects}
+                setProject={setProjectView}
+                delete={deleteProject}
+                editProject={editProject}
               />
-            ) : null}
-            {this.state.window === 4 ? (
-              <GetTicket
-                ticket={this.state.ticket}
-                resetWindow={this.resetToProject}
-                editTicket={this.sendEditTicket}
-              />
-            ) : null}
-          </div>
+            )
+          ) : null}
+          {window === 2 ? <CreateProject grabNew={grabNewProject} /> : null}
+          {window === 3 ? (
+            <GetProject
+              project={project}
+              setHome={resetHome}
+              refreshProjects={projectRefresh}
+              setTicket={setTicket}
+            />
+          ) : null}
+          {window === 4 ? (
+            <GetTicket
+              ticket={ticket}
+              resetWindow={resetToProject}
+              editTicket={sendEditTicket}
+            />
+          ) : null}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default ProjectHome;

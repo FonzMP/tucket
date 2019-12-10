@@ -46,8 +46,8 @@ function deleteProject(id) {
     .catch(err => console.log("error on ticket deletion", err));
 }
 
-function editProject(id, project) {
-  return fetch(`http://localhost:4000/projects/${id}`, {
+function editProject(project) {
+  return fetch(`http://localhost:4000/projects/${project._id}`, {
     method: "PUT",
     headers: {
       "Content-type": "application/json"

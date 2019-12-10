@@ -29,39 +29,44 @@ function GetProjects(props) {
   }
 
   function renderProjects() {
-    return props.projects.map(project => {
-      return (
-        <div className="project-item-wrap" key={project.name}>
-          <h4 className="project-name">{project.name}</h4>
-          <span
-            className="mock-link"
-            id="first-link"
-            onClick={() => setProjectsOne(project)}
-          >
-            View
-          </span>
-          <div className="edit-delete">
-            <span className="mock-link" onClick={() => setEdit(project._id)}>
-              Edit
-            </span>
-            <span
-              className="mock-link"
-              onClick={() => deleteTicket(project._id)}
-            >
-              Delete
-            </span>
+    if (props.projects !== null) {
+      return props.projects.map(project => {
+        return (
+          <div className="project-item-wrap" key={project.name}>
+            <h4 className="project-name">{project.name}</h4>
+            <div className="projectButtonWrap">
+              <span
+                className="mock-link"
+                onClick={() => setProjectsOne(project)}
+              >
+                View
+              </span>
+              <div className="edit-delete">
+                <span
+                  className="mock-link"
+                  onClick={() => setEdit(project._id)}
+                >
+                  Edit
+                </span>
+                <span
+                  className="mock-link"
+                  onClick={() => deleteTicket(project._id)}
+                >
+                  Delete
+                </span>
+              </div>
+            </div>
+            {editView && project._id === currentId ? (
+              <EditProject project={project} getEdit={getEdit} />
+            ) : null}
           </div>
-          {editView && project._id === currentId ? (
-            <EditProject project={project} getEdit={getEdit} />
-          ) : null}
-        </div>
-      );
-    });
+        );
+      });
+    }
   }
 
   return props.projects !== undefined ? (
     <span>
-      <h3 className="project-head">All Projects</h3>
       <span>{renderProjects()}</span>
     </span>
   ) : (

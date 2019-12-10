@@ -10,7 +10,7 @@ function CreateProject() {
   function handleOnChange(e) {
     setProject({ ...project, [e.target.id]: e.target.value });
   }
-  function sendProject() {
+  function createProject() {
     projectServices
       .createProject(this.state)
       .then(result => this.props.grabNew(result));
@@ -30,7 +30,9 @@ function CreateProject() {
         </label>
       </div>
       <div className="form-group">
-        <button onClick={sendProject}>{p.CREATE_BUTTON}</button>
+        <span className="mock-link" onClick={() => createProject()}>
+          View
+        </span>
       </div>
     </div>
   );

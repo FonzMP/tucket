@@ -125,7 +125,6 @@ router.put("/:id", function(req, res) {
           " of error: " +
           err.message
       );
-      console.log("error in project deletion", err);
     } else {
       Project.findById(id, function(err, project) {
         if (project) {
@@ -138,7 +137,6 @@ router.put("/:id", function(req, res) {
               " of error: " +
               err.message
           );
-          console.log("missed finding after update ", err);
         }
       });
     }
@@ -202,7 +200,6 @@ router.post("/new", function(req, res) {
   Project.create(project, function(err, successProject) {
     if (err) {
       logger.log("error", "error in project creation of error: " + err.message);
-      console.log("error in project creation ", err);
     } else {
       res.send(successProject);
     }
@@ -216,7 +213,6 @@ router.get("/", function(req, res) {
         "error",
         "error in locating all projects of error: " + err.message
       );
-      console.log("error in project get ", err);
     } else {
       res.send(allProjects);
     }
