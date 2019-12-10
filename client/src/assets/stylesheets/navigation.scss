@@ -1,23 +1,22 @@
-.nav-link, .sub-nav-link {
+.nav-link,
+.sub-nav-link {
   text-decoration: none;
-  color: black;
+  color: white;
   padding: 6px 6px;
   font-size: 1.2rem;
-  border-bottom: 1px solid rgba(0,0,0,0);
-  border-left: 1px solid rgba(0,0,0,0);
-  border-top: 1px solid rgba(0,0,0,0);
-  border-right: 1px solid rgba(0,0,0,0);
+  border: 1px solid rgba(0, 0, 0, 0);
 }
 
 .active {
-  border-left: 1px solid black;
-  border-top: 1px solid black;
-  border-right: 1px solid black;
-  border-bottom: 1px solid white;
+  border-left: 1px solid white;
+  border-top: 1px solid white;
+  border-right: 1px solid white;
+  border-bottom: 1px solid black;
 }
 
-.navbar, .sub-navbar {
+.navbar,
+.sub-navbar {
   width: 100%;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid white;
   padding-bottom: 6px;
 }

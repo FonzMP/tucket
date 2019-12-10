@@ -1,84 +1,67 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import CreateTicket from "../ticket/createTicket";
 import { ticketServices } from "../../services/ticket.service";
 import { projectServices } from "../../services/project.service";
 import GetTickets from "../ticket/getTickets";
 
-class GetProject extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      addTicket: false,
-      project: this.props.project
-    };
+function GetProject(props) {
+  const [project, setProject] = useState(props.project);
+  const [addTicket, setAddTicket] = useState(false);
+  function returnHome() {
+    props.setHome();
   }
-  returnHome = () => {
-    this.props.setHome();
-  };
-  showCreate = () => {
-    this.setState({
-      addTicket: !this.state.addTicket
-    });
-  };
+  function showCreate() {
+    setAddTicket(!addTicket);
+  }
 
-  addTicket = ticket => {
-    let project = this.props.project;
+  function addingTicket(ticket) {
     ticketServices.createTicket(project, ticket).then(response => {
-      this.setState({
-        project: response,
-        addTicket: false
-      });
-      this.props.refreshProjects();
+      setProject(response);
+      setAddTicket(false);
+      props.refreshProjects();
     });
-  };
+  }
 
-  setTicket = ticket => {
-    this.props.setTicket(ticket);
-  };
+  function setTicket(ticket) {
+    props.setTicket(ticket);
+  }
 
-  deleteTicketProject = ticketId => {
-    const projectId = this.state.project._id;
-    projectServices.deleteTicket(projectId, ticketId).then(response => {
-      this.setState({
-        project: response,
-        addTicket: false
-      });
+  function deleteTicketProject() {
+    projectServices.deleteProject(project._id).then(result => {
+      setProject(result);
+      setAddTicket(false);
     });
-  };
+  }
 
-  displayTickets = () => {
-    return this.state.project.tickets.map(ticket => {
+  function displayTickets() {
+    return project.tickets.map(ticket => {
       return (
         <GetTickets
           ticket={ticket}
           key={ticket.title}
-          setTicket={this.setTicket}
-          deleteTicket={this.deleteTicketProject}
+          setTicket={setTicket}
+          deleteTicket={deleteTicketProject}
         />
       );
     });
-  };
-
-  render() {
-    return (
-      <div className="project-wrapper">
-        <h4>{this.state.project.name}</h4>
-        <div className="link-wrapper">
-          <span className="mock-link" onClick={this.returnHome}>
-            Back
-          </span>
-          <span className="mock-link" onClick={this.showCreate}>
-            Add Ticket
-          </span>
-        </div>
-        {this.state.addTicket ? (
-          <CreateTicket addTicket={this.addTicket} />
-        ) : null}
-        {this.displayTickets()}
-      </div>
-    );
   }
+
+  return (
+    <div className="project-wrapper">
+      <h4>{project.name}</h4>
+      <div className="link-wrapper">
+        <span className="mock-link" onClick={returnHome}>
+          Back
+        </span>
+        <span className="mock-link" onClick={showCreate}>
+          Add Ticket
+        </span>
+      </div>
+      {addTicket ? <CreateTicket addTicket={addingTicket} /> : null}
+      {displayTickets()}
+    </div>
+  );
 }
 
 export default GetProject;

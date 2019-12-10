@@ -1,45 +1,38 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
 
 const p = PROJECTCONSTANTS;
 
-class EditProject extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: props.project.name
-    };
-  }
+function EditProject(props) {
+  const [project, setProject] = useState(props.project);
 
-  handleOnChange = event => {
-    this.setState({ [event.target.id]: event.target.value });
-  };
-  editProject = () => {
-    const project = { ...this.props.project, name: this.state.name };
-    this.props.getEdit(project);
-  };
-  render() {
-    return (
-      <div>
-        <div className="form-group">
-          <label htmlFor={p.NAME}>
-            Name:
-            <input
-              id={p.NAME}
-              type="text"
-              value={this.state.name}
-              onChange={this.handleOnChange}
-              placeholder={p.NAME_PLACE}
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <button onClick={this.editProject}>{p.EDIT_BUTTON}</button>
-        </div>
-      </div>
-    );
+  function handleOnChange(e) {
+    setProject({ [e.target.id]: e.target.value });
   }
+  function editProject() {
+    // modify edit
+    props.getEdit(project);
+  }
+  return (
+    <div>
+      <div className="form-group">
+        <label htmlFor={p.NAME}>
+          Name:
+          <input
+            id={p.NAME}
+            type="text"
+            value={project.name}
+            onChange={handleOnChange}
+            placeholder={p.NAME_PLACE}
+          />
+        </label>
+      </div>
+      <div className="form-group">
+        <button onClick={editProject}>{p.EDIT_BUTTON}</button>
+      </div>
+    </div>
+  );
 }
 
 export default EditProject;

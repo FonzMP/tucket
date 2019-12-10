@@ -87,14 +87,7 @@ class ProjectHome extends Component {
     });
   };
   deleteProject = id => {
-    projectServices.deleteProject(id).then(result => {
-      this.setState({
-        projects: this.state.projects.filter(
-          proj => proj._id !== result.project._id
-        ),
-        ticketsDeleted: result.deleted
-      });
-    });
+    
   };
   resetToProject = () => {
     this.setState({

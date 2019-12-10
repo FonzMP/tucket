@@ -11,7 +11,7 @@
 }
 
 .project-item-wrap {
-  border: 1px solid black;
+  border: 1px solid white;
   position: relative;
   .mock-link#first-link {
     margin-left: 8px;
@@ -20,7 +20,7 @@
     box-sizing: content-box;
     display: inline-block;
     margin-bottom: 6px;
-    border: 1px solid black;
+    border: 1px solid white;
     border-radius: 4px;
     padding: 4px 8px;
   }
@@ -36,8 +36,8 @@
 
 .view-link {
   display: block;
-  outline: 1px solid black;
-  padding: 4px 0;
+  outline: 1px solid white;
+  padding: 6px 0;
   text-align: center;
 }
 
