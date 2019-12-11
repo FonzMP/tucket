@@ -36,17 +36,20 @@ function GetTicket(props) {
 
   return ticket !== undefined ? (
     <div>
-      <span className="mock-link" onClick={() => sendProjectReset()}>
+      <span className="mock-button" onClick={() => sendProjectReset()}>
         Back
       </span>
       <div className="project-ticket-container">
         <h1>{ticket.title}</h1>
         <p>{ticket.description}</p>
         <div className="edit-delete">
-          <span className="mock-link" onClick={() => setEdit(ticket._id)}>
+          <span className="mock-button" onClick={() => setEdit(ticket._id)}>
             Edit
           </span>
-          <span className="mock-link" onClick={() => deleteTicket(ticket._id)}>
+          <span
+            className="mock-button"
+            onClick={() => deleteTicket(ticket._id)}
+          >
             Delete
           </span>
         </div>

@@ -40,7 +40,9 @@ function CreateTicket(props) {
         </label>
       </div>
       <div className="form-group">
-        <button onClick={() => sendTicket()}>{t.CREATE_BUTTON}</button>
+        <div className="mock-button" onClick={() => sendTicket()}>
+          {t.CREATE_BUTTON}
+        </div>
       </div>
     </div>
   );

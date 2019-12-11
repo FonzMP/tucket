@@ -49,15 +49,21 @@ function GetProject(props) {
 
   return (
     <div className="project-wrapper">
-      <h4>{project.name}</h4>
-      <div className="link-wrapper">
-        <span className="mock-link" onClick={returnHome}>
-          Back
+      <span className="projectButtonWrap heading">
+        <span>
+          <h1>
+            <span>Project Name:</span> {project.name}
+          </h1>
         </span>
-        <span className="mock-link" onClick={showCreate}>
-          Add Ticket
+        <span>
+          <span className="mock-button" onClick={returnHome}>
+            Back
+          </span>
+          <span className="mock-button" onClick={showCreate}>
+            Add Ticket
+          </span>
         </span>
-      </div>
+      </span>
       {addTicket ? <CreateTicket addTicket={addingTicket} /> : null}
       {displayTickets()}
     </div>

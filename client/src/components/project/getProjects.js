@@ -23,6 +23,10 @@ function GetProjects(props) {
     setEditView(false);
     setCurrentId(null);
   }
+  function cancelEdit() {
+    setEditView(false);
+    setCurrentId(null);
+  }
 
   function deleteTicket(id) {
     props.delete(id);
@@ -36,20 +40,20 @@ function GetProjects(props) {
             <h4 className="project-name">{project.name}</h4>
             <div className="projectButtonWrap">
               <span
-                className="mock-link"
+                className="mock-button"
                 onClick={() => setProjectsOne(project)}
               >
                 View
               </span>
               <div className="edit-delete">
                 <span
-                  className="mock-link"
+                  className="mock-button"
                   onClick={() => setEdit(project._id)}
                 >
                   Edit
                 </span>
                 <span
-                  className="mock-link"
+                  className="mock-button"
                   onClick={() => deleteTicket(project._id)}
                 >
                   Delete
@@ -57,7 +61,11 @@ function GetProjects(props) {
               </div>
             </div>
             {editView && project._id === currentId ? (
-              <EditProject project={project} getEdit={getEdit} />
+              <EditProject
+                project={project}
+                getEdit={getEdit}
+                cancelEdit={cancelEdit}
+              />
             ) : null}
           </div>
         );

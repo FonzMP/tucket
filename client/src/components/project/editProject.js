@@ -17,19 +17,27 @@ function EditProject(props) {
   return (
     <div>
       <div className="form-group">
-        <label htmlFor={p.NAME}>
-          Name:
-          <input
-            id={p.NAME}
-            type="text"
-            value={project.name}
-            onChange={handleOnChange}
-            placeholder={p.NAME_PLACE}
-          />
-        </label>
+        <label htmlFor={p.NAME}>{p.NAME_LABEL}</label>
+        <input
+          type="text"
+          className="editInput"
+          value={project.name}
+          onChange={handleOnChange}
+          placeholder={p.NAME_PLACE}
+        />
       </div>
       <div className="form-group">
-        <button onClick={editProject}>{p.EDIT_BUTTON}</button>
+        <span className="projectButtonWrap">
+          <span></span>
+          <span>
+            <div className="mock-button" onClick={editProject}>
+              {p.UPDATE_BUTTON}
+            </div>
+            <div className="mock-button" onClick={() => props.cancelEdit()}>
+              {p.CANCEL_BUTTON}
+            </div>
+          </span>
+        </span>
       </div>
     </div>
   );

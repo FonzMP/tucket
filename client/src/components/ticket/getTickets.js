@@ -35,21 +35,25 @@ function GetTickets(props) {
     <div className="project-ticket-container">
       <h1>{ticket.title}</h1>
       <p>{ticket.description}</p>
-      <span
-        className="mock-link"
-        id="first-link"
-        onClick={() => setTicketsOne()}
-      >
-        View
+      <span className="projectButtonWrap">
+        <span>
+          <span
+            className="mock-button"
+            id="first-link"
+            onClick={() => setTicketsOne()}
+          >
+            View
+          </span>
+        </span>
+        <div className="edit-delete">
+          <span className="mock-button" onClick={() => setEdit()}>
+            Edit
+          </span>
+          <span className="mock-button" onClick={() => deleteTicket()}>
+            Delete
+          </span>
+        </div>
       </span>
-      <div className="edit-delete">
-        <span className="mock-link" onClick={() => setEdit()}>
-          Edit
-        </span>
-        <span className="mock-link" onClick={() => deleteTicket()}>
-          Delete
-        </span>
-      </div>
       {editView && ticket._id === currentId ? (
         <EditTicket ticket={ticket} sendEdit={getEdit} />
       ) : null}

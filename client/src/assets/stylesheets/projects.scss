@@ -4,6 +4,28 @@
   margin: 12px 0;
 }
 
+label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.heading {
+  border-bottom: 1px solid white;
+}
+
+h1 {
+  span {
+    font-weight: normal;
+  }
+}
+
+.editInput {
+  padding: 4px 8px;
+  font-size: 22px;
+  line-height: 1.2rem;
+  border-radius: 8px;
+}
+
 .project-wrapper {
   h4 {
     margin: 0;
@@ -39,6 +61,7 @@
   outline: 1px solid white;
   padding: 6px 0;
   text-align: center;
+  cursor: pointer;
 }
 
 .view-link-container {
@@ -58,7 +81,7 @@
   justify-content: space-between;
 }
 
-.mock-link {
+.mock-button {
   color: black;
   margin-left: 8px;
   box-sizing: content-box;
@@ -81,7 +104,7 @@
     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.7);
   }
 
-  .mock-link#first-link {
+  .mock-button#first-link {
     margin-left: 8px;
   }
 }
