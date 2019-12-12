@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import "../../../assets/stylesheets/auth.scss";
 
 function Navbar(props) {
   function renderLinks() {
@@ -17,7 +18,21 @@ function Navbar(props) {
       ) : null;
     });
   }
-  return <div className="navbar">{renderLinks()}</div>;
+  return (
+    <div className="navbar">
+      <span className="projectButtonWrap">
+        <span>{renderLinks()}</span>
+        <span>
+          <NavLink className="nav-link" activeClassName="active" to="/login">
+            Login
+          </NavLink>
+          <NavLink className="nav-link" activeClassName="active" to="/signup">
+            Signup
+          </NavLink>
+        </span>
+      </span>
+    </div>
+  );
 }
 
 export default Navbar;

@@ -15,6 +15,8 @@ import CreateTicket from "./components/ticket/createTicket";
 import GetProject from "./components/project/getProject";
 import Home from "./components/shared/home";
 import ProjectHome from "./components/project/projectHome";
+import Login from "./components/shared/auth/login";
+import Signup from "./components/shared/auth/signup";
 
 class App extends Component {
   render() {
@@ -25,6 +27,8 @@ class App extends Component {
           <Navbar links={NAVCONSTANTS.NAV} />
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
             <Route exact path="/tickets" component={GetTickets} />
             <Route exact path="/tickets/new" component={CreateTicket} />
             <Route exact path="/tickets/:id" component={GetTicket} />

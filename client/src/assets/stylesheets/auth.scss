@@ -1,0 +1,17 @@
+.modal-content {
+  width: 80%;
+  text-align: center;
+  margin: 0 auto;
+  .mock-button {
+    max-width: 150px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    &:first-of-type {
+      margin-left: inherit;
+    }
+  }
+  input {
+    margin-bottom: 18px;
+  }
+}
