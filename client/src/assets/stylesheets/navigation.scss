@@ -10,15 +10,11 @@
 .navbar {
   border-bottom: 1px solid white;
   padding-bottom: 6px;
-}
-
-.active {
-  border-left: 1px solid white;
-  border-top: 1px solid white;
-  border-right: 1px solid white;
-  border-bottom: 1px solid black;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 1px -1px 1px rgba(255, 255, 255, 0.8);
+  .active {
+    border: 1px solid white;
+    border-bottom: 1px solid black;
+    box-shadow: 1px -1px 1px rgba(255, 255, 255, 0.9);
+  }
 }
 
 .header {
@@ -44,4 +40,30 @@
     text-decoration: none;
     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
   }
+}
+
+.view-link-container {
+  display: inline-block;
+  width: 20%;
+  a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    border: 1px solid white;
+    &.active {
+      color: black;
+      background-color: white;
+      border-radius: 0;
+      box-shadow: 1px -1px 1px rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.view-link {
+  display: block;
+  outline: 1px solid white;
+  padding: 6px 0;
+  text-align: center;
+  cursor: pointer;
 }

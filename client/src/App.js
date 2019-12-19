@@ -9,7 +9,6 @@ import "./assets/stylesheets/shared.scss";
 import "./assets/stylesheets/tickets.scss";
 import "./assets/stylesheets/projects.scss";
 
-import NAVCONSTANTS from "./_constants/NavigationConstants";
 import GetTickets from "./components/ticket/getTickets";
 import Home from "./components/shared/home";
 import Login from "./components/shared/auth/login";
@@ -24,15 +23,15 @@ class App extends Component {
       <Router>
         <Header />
         <div className="content-wrapper">
-          <Navbar links={NAVCONSTANTS.NAV} />
+          <Navbar />
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/tickets" component={GetTickets} />
+            <Route exact path="/" component={Home} />
             <Suspense fallback={<div>Loading...</div>}>
               <Route path="/projects" component={ProjectRouting} />
             </Suspense>
-            <Route exact path="/" component={Home} />
           </Switch>
         </div>
         <Footer />

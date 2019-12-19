@@ -1,6 +1,5 @@
 import Home from "../components/shared/home";
-// import TicketHome from '../components/ticket/ticketHome'
-import ProjectHome from "../components/project/projectHome";
+import ProjectRouting from "../components/project/ProjectRouting";
 
 const NAVCONSTANTS = {
   NAV: [
@@ -13,7 +12,7 @@ const NAVCONSTANTS = {
     {
       display: "Projects",
       href: "/projects",
-      component: ProjectHome,
+      component: ProjectRouting,
       key: "ProjectHomeLink"
     }
   ]

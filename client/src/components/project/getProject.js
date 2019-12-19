@@ -2,25 +2,21 @@ import React, { useState, useEffect } from "react";
 
 import CreateTicket from "../ticket/createTicket";
 import { ticketServices } from "../../services/ticket.service";
-import { projectServices } from "../../services/project.service";
+// import { projectServices } from "../../services/project.service";
 import GetTicket from "../ticket/getTicket";
 
 function GetProject({ match, props, history }) {
-  console.log("get project");
   const [project, setProject] = useState({ name: "", tickets: [] });
   const [addTicket, setAddTicket] = useState(false);
 
-  useEffect(() => {
-    fetchProject();
-  }, []);
-
-  function fetchProject() {
+  useEffect(match => {
     fetch("http://localhost:4000/projects/" + match.params.id, {
       method: "GET"
     })
       .then(resp => resp.json())
       .then(response => setProject(response.project));
-  }
+  }, []);
+
   function showCreate() {
     setAddTicket(!addTicket);
   }
@@ -33,16 +29,16 @@ function GetProject({ match, props, history }) {
     });
   }
 
-  function setTicket(ticket) {
-    props.setTicket(ticket);
-  }
+  // function setTicket(ticket) {
+  //   props.setTicket(ticket);
+  // }
 
-  function deleteTicketProject() {
-    projectServices.deleteProject(project._id).then(result => {
-      setProject(result);
-      setAddTicket(false);
-    });
-  }
+  // function deleteTicketProject() {
+  //   projectServices.deleteProject(project._id).then(result => {
+  //     setProject(result);
+  //     setAddTicket(false);
+  //   });
+  // }
 
   function displayTickets() {
     return project.tickets.map(ticket => {

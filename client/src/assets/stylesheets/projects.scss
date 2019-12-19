@@ -52,25 +52,6 @@ h1 {
   font-size: 1.5rem;
 }
 
-.view-link {
-  display: block;
-  outline: 1px solid white;
-  padding: 6px 0;
-  text-align: center;
-  cursor: pointer;
-}
-
-.view-link-container {
-  display: inline-block;
-  width: 20%;
-  a {
-    text-decoration: none;
-  }
-  .active {
-    background-color: white;
-  }
-}
-
 .project-container {
   margin: 0 0 0 5%;
   float: right;
