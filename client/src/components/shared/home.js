@@ -1,6 +1,7 @@
 import React from "react";
 
 function Home() {
+  console.log("home");
   return (
     <div>
       <h1>Tucket Ticketing</h1>

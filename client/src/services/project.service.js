@@ -9,10 +9,7 @@ export const projectServices = {
 };
 
 function getProjects() {
-  return fetch("http://localhost:4000/projects")
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on getProjects", err));
+  return fetch("http://localhost:4000/projects", { method: "GET" });
 }
 function createProject(project) {
   return fetch("http://localhost:4000/projects/new", {

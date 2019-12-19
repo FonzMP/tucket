@@ -27,7 +27,7 @@ const logger = winston.createLogger({
       filename: "./logs/error.log",
       level: "error"
     }),
-    new winston.transports.File({ filename: "combined.log" })
+    new winston.transports.File({ filename: "./logs/combined.log" })
   ]
 });
 
@@ -41,7 +41,7 @@ if (process.env.NODE_ENV !== "production") {
 
 router.get("/:id", function(req, res) {
   const id = req.params.id;
-  Project.findById(id, function(err, project) {
+  Project.findById(id, function(err, foundProject) {
     if (err) {
       console.log("error in project creation ", err);
       logger.log(
@@ -49,7 +49,7 @@ router.get("/:id", function(req, res) {
         "error retrieving project with id: " + id + " of error: " + err.message
       );
     } else {
-      res.send(project);
+      res.status(200).send({ project: foundProject });
     }
   });
 });
@@ -214,7 +214,7 @@ router.get("/", function(req, res) {
         "error in locating all projects of error: " + err.message
       );
     } else {
-      res.send(allProjects);
+      res.send({ projects: allProjects });
     }
   });
 });

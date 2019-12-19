@@ -5,6 +5,7 @@ import { projectServices } from "../../services/project.service";
 const p = PROJECTCONSTANTS;
 
 function CreateProject() {
+  console.log("create here ");
   const [project, setProject] = useState({ name: "" });
 
   function handleOnChange(e) {

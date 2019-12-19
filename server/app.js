@@ -5,14 +5,11 @@ const bodyParser = require("body-parser");
 // const schema = require("./schema/schema");
 require("dotenv").config();
 
-
-const tickets = require('./routes/tickets')
-const projects = require('./routes/projects')
+const tickets = require("./routes/tickets");
+const projects = require("./routes/projects");
 
 const app = express();
-const serverUrl = `mongodb://${process.env.mongoUser}:${
-  process.env.mongoPassword
-  }@ds255857.mlab.com:55857/tucket`;
+const serverUrl = `mongodb://${process.env.mongoUser}:${process.env.mongoPassword}@ds255857.mlab.com:55857/tucket`;
 
 app.use(
   bodyParser.urlencoded({
@@ -20,10 +17,9 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use('/tickets', tickets)
-app.use('/projects', projects)
+app.use("/tickets", tickets);
+app.use("/projects", projects);
 app.use(cors());
-
 
 // db connect configuration
 mongoose.connect(serverUrl, { useNewUrlParser: true }).catch(err => {

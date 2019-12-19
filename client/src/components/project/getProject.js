@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import CreateTicket from "../ticket/createTicket";
 import { ticketServices } from "../../services/ticket.service";
 import { projectServices } from "../../services/project.service";
-import GetTickets from "../ticket/getTickets";
+import GetTicket from "../ticket/getTicket";
 
-function GetProject(props) {
-  const [project, setProject] = useState(props.project);
+function GetProject({ match, props, history }) {
+  console.log("get project");
+  const [project, setProject] = useState({ name: "", tickets: [] });
   const [addTicket, setAddTicket] = useState(false);
-  function returnHome() {
-    props.setHome();
+
+  useEffect(() => {
+    fetchProject();
+  }, []);
+
+  function fetchProject() {
+    fetch("http://localhost:4000/projects/" + match.params.id, {
+      method: "GET"
+    })
+      .then(resp => resp.json())
+      .then(response => setProject(response.project));
   }
   function showCreate() {
     setAddTicket(!addTicket);
@@ -36,14 +46,7 @@ function GetProject(props) {
 
   function displayTickets() {
     return project.tickets.map(ticket => {
-      return (
-        <GetTickets
-          ticket={ticket}
-          key={ticket.title}
-          setTicket={setTicket}
-          deleteTicket={deleteTicketProject}
-        />
-      );
+      return <GetTicket ticket={ticket} key={ticket.title} />;
     });
   }
 
@@ -56,7 +59,10 @@ function GetProject(props) {
           </h1>
         </span>
         <span>
-          <span className="mock-button" onClick={returnHome}>
+          <span
+            className="mock-button"
+            onClick={() => history.push("/projects")}
+          >
             Back
           </span>
           <span className="mock-button" onClick={showCreate}>

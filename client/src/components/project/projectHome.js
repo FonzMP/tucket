@@ -75,56 +75,13 @@ function ProjectHome() {
     });
   }
   return (
-    <div className="projectHomeWrapper">
-      <div className="project-flex">
-        <div className="view-link-container">
-          <span
-            className={
-              (window === 1 || window === 3 ? "activeLink" : "") + " view-link"
-            }
-            onClick={() => setWindow(1)}
-          >
-            Projects
-          </span>
-          <span
-            className={(window === 2 ? "activeLink" : "") + " view-link"}
-            id="open-project-create"
-            onClick={() => openProject(2)}
-          >
-            Create Project
-          </span>
-        </div>
-        <div className="project-container">
-          {window === 1 ? (
-            loadingProjects === true ? (
-              <h3>Loading</h3>
-            ) : (
-              <GetProjects
-                projects={projects}
-                setProject={setProjectView}
-                delete={deleteProject}
-                editProject={editProject}
-              />
-            )
-          ) : null}
-          {window === 2 ? <CreateProject grabNew={grabNewProject} /> : null}
-          {window === 3 ? (
-            <GetProject
-              project={project}
-              setHome={resetHome}
-              refreshProjects={projectRefresh}
-              setTicket={setTicket}
-            />
-          ) : null}
-          {window === 4 ? (
-            <GetTicket
-              ticket={ticket}
-              resetWindow={resetToProject}
-              editTicket={sendEditTicket}
-            />
-          ) : null}
-        </div>
-      </div>
+    <div className="project-container">
+      <GetProjects
+        projects={projects}
+        setProject={setProjectView}
+        delete={deleteProject}
+        editProject={editProject}
+      />
     </div>
   );
 }

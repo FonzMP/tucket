@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import EditTicket from "./editTicket";
 
-function GetTicket(props) {
-  const [editView, setEditView] = useState(false);
+function GetTicket({ ticket, match }) {
+  const [viewTicket, setViewTicket] = useState(ticket);
   const [currentId, setCurrentId] = useState(null);
-  const [ticket, setTicket] = useState(props.ticket);
+  const [editView, setEditView] = useState(false);
 
-  function setEdit(id) {
+  function setEdit() {
+    const id = ticket._id;
     if (id === currentId) {
       setEditView(false);
       setCurrentId(null);
@@ -16,50 +18,45 @@ function GetTicket(props) {
     }
   }
 
-  function setTicketsOne(ticket) {
-    props.setTicket(ticket);
-  }
-
   function getEdit(ticket) {
-    props.editTicket(ticket);
+    // editTicket(ticket);
     setEditView(false);
     setCurrentId(null);
   }
 
-  function deleteTicket(id) {
-    props.deleteTicket(id);
-  }
-
-  function sendProjectReset() {
-    props.resetWindow();
+  function deleteTicket() {
+    deleteTicket(ticket._id);
   }
 
   return ticket !== undefined ? (
-    <div>
-      <span className="mock-button" onClick={() => sendProjectReset()}>
-        Back
-      </span>
-      <div className="project-ticket-container">
-        <h1>{ticket.title}</h1>
-        <p>{ticket.description}</p>
+    <div className="project-ticket-container">
+      <h1>{viewTicket.title}</h1>
+      <p>{viewTicket.description}</p>
+      <span className="projectButtonWrap">
+        <span>
+          <Link
+            className="mock-button"
+            id="first-link"
+            // to={"/projects/" + id + "/tickets/" + ticket.id}
+          >
+            View
+          </Link>
+        </span>
         <div className="edit-delete">
-          <span className="mock-button" onClick={() => setEdit(ticket._id)}>
+          <span className="mock-button" onClick={() => setEdit()}>
             Edit
           </span>
-          <span
-            className="mock-button"
-            onClick={() => deleteTicket(ticket._id)}
-          >
+          <span className="mock-button" onClick={() => deleteTicket()}>
             Delete
           </span>
         </div>
-        {editView && ticket._id === currentId ? (
-          <EditTicket ticket={ticket} sendEdit={getEdit} />
-        ) : null}
-      </div>
+      </span>
+      {editView && viewTicket._id === currentId ? (
+        <EditTicket ticket={viewTicket} sendEdit={getEdit} />
+      ) : null}
     </div>
   ) : (
-    <div>Error getting ticket</div>
+    <div>Loading....</div>
   );
 }
 

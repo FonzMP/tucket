@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import EditProject from "./editProject";
+import { projectServices } from "../../services/project.service";
 
 function GetProjects(props) {
+  const [projects, setProjects] = useState([]);
   const [editView, setEditView] = useState(false);
   const [currentId, setCurrentId] = useState(null);
 
-  function setProjectsOne(project) {
-    props.setProject(project);
-  }
+  useEffect(() => {
+    projectServices
+      .getProjects()
+      .then(resp => resp.json())
+      .then(response => setProjects(response.projects));
+  }, []);
 
   function setEdit(id) {
     if (id === currentId) {
@@ -33,53 +39,42 @@ function GetProjects(props) {
   }
 
   function renderProjects() {
-    if (props.projects !== null) {
-      return props.projects.map(project => {
-        return (
-          <div className="project-item-wrap" key={project.name}>
-            <h4 className="project-name">{project.name}</h4>
-            <div className="projectButtonWrap">
+    return projects.map(project => {
+      return (
+        <div className="project-item-wrap" key={project.name}>
+          <h4 className="project-name">{project.name}</h4>
+          <div className="projectButtonWrap">
+            <Link className="mock-button" to={"/projects/" + project._id}>
+              View
+            </Link>
+            <div className="edit-delete">
               <span
                 className="mock-button"
-                onClick={() => setProjectsOne(project)}
+                onClick={() => setEdit(project._id)}
               >
-                View
+                Edit
               </span>
-              <div className="edit-delete">
-                <span
-                  className="mock-button"
-                  onClick={() => setEdit(project._id)}
-                >
-                  Edit
-                </span>
-                <span
-                  className="mock-button"
-                  onClick={() => deleteTicket(project._id)}
-                >
-                  Delete
-                </span>
-              </div>
+              <span
+                className="mock-button"
+                onClick={() => deleteTicket(project._id)}
+              >
+                Delete
+              </span>
             </div>
-            {editView && project._id === currentId ? (
-              <EditProject
-                project={project}
-                getEdit={getEdit}
-                cancelEdit={cancelEdit}
-              />
-            ) : null}
           </div>
-        );
-      });
-    }
+          {editView && project._id === currentId ? (
+            <EditProject
+              project={project}
+              getEdit={getEdit}
+              cancelEdit={cancelEdit}
+            />
+          ) : null}
+        </div>
+      );
+    });
   }
 
-  return props.projects !== undefined ? (
-    <span>
-      <span>{renderProjects()}</span>
-    </span>
-  ) : (
-    <div>Loading....</div>
-  );
+  return <span>{renderProjects()}</span>;
 }
 
 export default GetProjects;
