@@ -1,4 +1,4 @@
-export const projectServices = {
+const ProjectServices = {
   getProject,
   getProjects,
   createProject,
@@ -18,17 +18,11 @@ function createProject(project) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ project })
-  })
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on ticket creation, ", err));
+  });
 }
 
 function getProject(id) {
-  return fetch(`http://localhost:4000/projects/${id}`)
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on getProjects", err));
+  return fetch(`http://localhost:4000/projects/${id}`);
 }
 
 function deleteProject(id) {
@@ -37,10 +31,7 @@ function deleteProject(id) {
     headers: {
       "Content-type": "application/json"
     }
-  })
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on ticket deletion", err));
+  });
 }
 
 function editProject(project) {
@@ -50,10 +41,7 @@ function editProject(project) {
       "Content-type": "application/json"
     },
     body: JSON.stringify({ project })
-  })
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on ticket deletion", err));
+  });
 }
 
 function editTicket(id, ticket) {
@@ -63,10 +51,7 @@ function editTicket(id, ticket) {
       "Content-type": "application/json"
     },
     body: JSON.stringify({ ticket })
-  })
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on editing ticket ", err));
+  });
 }
 
 function deleteTicket(projectId, ticketId) {
@@ -78,8 +63,7 @@ function deleteTicket(projectId, ticketId) {
         "Content-type": "application/json"
       }
     }
-  )
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on deleting ticket from project ", err));
+  );
 }
+
+export default ProjectServices;

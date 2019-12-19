@@ -1,28 +1,37 @@
 import React, { useState } from "react";
 
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
+import { Redirect } from "react-router-dom";
+import ProjectServices from "../../services/project.service";
 
 const p = PROJECTCONSTANTS;
 
 function EditProject(props) {
-  const [project, setProject] = useState(props.project);
+  const [updateProject, setUpdateProject] = useState(props.project);
+  const [redirect, setRedirect] = useState(false);
 
-  function handleOnChange(e) {
-    setProject({ [e.target.id]: e.target.value });
-  }
   function editProject() {
-    // modify edit
-    props.getEdit(project);
+    ProjectServices.editProject(updateProject)
+      .then(resp => resp.json())
+      .then(response => setRedirect(true))
+      .catch(err => console.log("error editing project"));
   }
   return (
     <div>
+      {redirect ? props.cancelEdit() : null}
       <div className="form-group">
         <label htmlFor={p.NAME}>{p.NAME_LABEL}</label>
         <input
           type="text"
           className="editInput"
-          value={project.name}
-          onChange={handleOnChange}
+          name="name"
+          value={updateProject.name}
+          onChange={e =>
+            setUpdateProject({
+              ...updateProject,
+              [e.target.name]: e.target.value
+            })
+          }
           placeholder={p.NAME_PLACE}
         />
       </div>
@@ -30,10 +39,10 @@ function EditProject(props) {
         <span className="projectButtonWrap">
           <span></span>
           <span>
-            <div className="mock-button" onClick={editProject}>
+            <div className="mock-button" onClick={() => editProject()}>
               {p.UPDATE_BUTTON}
             </div>
-            <div className="mock-button" onClick={() => props.cancelEdit()}>
+            <div className="mock-button" onClick={() => props.cancelEdit(true)}>
               {p.CANCEL_BUTTON}
             </div>
           </span>

@@ -39,84 +39,61 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
+// Gets Project with associated id and returns project and tickets
 router.get("/:id", function(req, res) {
   const id = req.params.id;
-  Project.findById(id, function(err, foundProject) {
+  Project.findOne({ _id: id })
+    .populate("tickets")
+    .exec((err, foundProject) => {
+      if (err) {
+        logger.log(
+          "error",
+          "error gathering tickets for project with id: " +
+            id +
+            " by error " +
+            err.message
+        );
+      } else {
+        res.status(200).send({ project: foundProject });
+      }
+    });
+});
+
+// Adds new project to the system
+router.post("/new", function(req, res) {
+  const project = req.body.project;
+  Project.create(project, function(err, successProject) {
     if (err) {
-      console.log("error in project creation ", err);
-      logger.log(
-        "error",
-        "error retrieving project with id: " + id + " of error: " + err.message
-      );
+      logger.log("error", "error in project creation of error: " + err);
     } else {
-      res.status(200).send({ project: foundProject });
+      res.status(200).send({ project: successProject });
     }
   });
 });
 
+// Deletes project with id of :id
 router.delete("/:id", function(req, res) {
   const id = req.params.id;
-  let deleted = [];
-  Project.findById(id, function(err, projectFound) {
-    if (projectFound && projectFound.tickets.length > 0) {
-      projectFound.tickets.map(ticket => {
-        Ticket.findByIdAndDelete(ticket._id, (errDel, ticketDeleted) => {
-          if (errDel) {
-            console.log(
-              "error deleting ticket with id in project ",
-              projectFound + ", " + errDel.message
-            );
-            logger.log(
-              "error",
-              "error deleting ticket associated with project of id: " +
-                id +
-                " by error " +
-                errDel.message
-            );
-          } else {
-            deleted.push(ticketDeleted.title);
-          }
-        });
-      });
-    }
+  Project.findByIdAndDelete(id, function(err, projectFound) {
     if (err) {
-      console.log("trouble locating project in project deletion ", err.message);
       logger.log(
         "error",
-        "trouble locating project in project deletion of id: " +
-          id +
-          " of error: " +
-          err.message
+        "Error deleting project with " + id + " with error " + err
       );
-    } else {
-      Project.findOneAndUpdate(id, function(err, project) {
-        if (err) {
-          console.log("error in project deletion", err);
-          logger.log(
-            "error",
-            "error in deleting project after ticket deletion with id: " +
-              id +
-              " of error: " +
-              err.message
-          );
-        } else {
-          if (projectFound && project) {
-            res.send({
-              project: projectFound,
-              deleted: deleted,
-              error: errDetails
-            });
-          }
-        }
+      res.status(500).send({
+        error: "Error deleting project with " + id + " with error " + err
       });
+    } else {
+      res.status(200).send({ project: {} });
     }
   });
 });
 
+// Edits a project with id of :id
 router.put("/:id", function(req, res) {
   const id = req.params.id;
-  const projectIn = req.body.project;
-  Project.findByIdAndUpdate(id, projectIn, function(err, succ) {
+  const newProject = req.body.project;
+  Project.findByIdAndUpdate(id, newProject, function(err, projectUpdated) {
     if (err) {
       logger.log(
         "error",
@@ -126,19 +103,7 @@ router.put("/:id", function(req, res) {
           err.message
       );
     } else {
-      Project.findById(id, function(err, project) {
-        if (project) {
-          res.send(project);
-        } else {
-          logger.log(
-            "error",
-            "error in project retrieval after updating for project id: " +
-              id +
-              " of error: " +
-              err.message
-          );
-        }
-      });
+      res.status(200).send({ project: projectUpdated });
     }
   });
 });
@@ -156,16 +121,14 @@ router.put("/:id/tickets", function(req, res) {
         err
       );
     } else {
-      let tickets = [];
-      projectFound.tickets.map(ticks => {
-        if (ticks._id != ticket._id) {
-          tickets.push(ticks);
-        }
-      });
-      tickets.push(ticket);
-      projectFound.tickets = tickets;
-      projectFound.save();
-      res.send(projectFound);
+      projectFound.push(ticket);
+      if (projectFound.save()) {
+        res.status(200).send({ project: projectFound });
+      } else {
+        res.status(500).send({
+          error: "error adding ticket to project with id: " + projectFound._id
+        });
+      }
     }
   });
 });
@@ -191,17 +154,6 @@ router.delete("/:id/tickets/:ticketId", function(req, res) {
       projectFound.tickets = tickets;
       projectFound.save();
       res.send(projectFound);
-    }
-  });
-});
-
-router.post("/new", function(req, res) {
-  const project = req.body.project;
-  Project.create(project, function(err, successProject) {
-    if (err) {
-      logger.log("error", "error in project creation of error: " + err.message);
-    } else {
-      res.send(successProject);
     }
   });
 });

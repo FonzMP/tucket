@@ -1,41 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import EditProject from "./editProject";
-import { projectServices } from "../../services/project.service";
+import ProjectServices from "../../services/project.service";
 
 function GetProjects(props) {
   const [projects, setProjects] = useState([]);
-  const [editView, setEditView] = useState(false);
+  const [refreshProjects, setRefreshProjects] = useState(false);
+  const [editId, setEditId] = useState(null);
   const [currentId, setCurrentId] = useState(null);
 
   useEffect(() => {
-    projectServices
-      .getProjects()
+    ProjectServices.getProjects()
       .then(resp => resp.json())
-      .then(response => setProjects(response.projects));
-  }, []);
+      .then(response => {
+        setProjects(response.projects);
+        setRefreshProjects(false);
+      });
+  }, [refreshProjects, editId]);
 
   function setEdit(id) {
     if (id === currentId) {
-      setEditView(false);
+      setEditId(false);
       setCurrentId(null);
     } else {
-      setEditView(true);
+      setEditId(true);
       setCurrentId(id);
     }
   }
   function getEdit(project) {
     props.editProject(project);
-    setEditView(false);
-    setCurrentId(null);
-  }
-  function cancelEdit() {
-    setEditView(false);
+    setEditId(false);
     setCurrentId(null);
   }
 
-  function deleteTicket(id) {
-    props.delete(id);
+  function deleteProject(id) {
+    ProjectServices.deleteProject(id)
+      .then(resp => resp.json())
+      .then(response => setRefreshProjects(true))
+      .catch(err => console.log("error deleting project"));
+  }
+
+  function setEdit(id) {
+    if (id === editId) {
+      setEditId(null);
+    } else {
+      setEditId(id);
+    }
   }
 
   function renderProjects() {
@@ -56,17 +66,17 @@ function GetProjects(props) {
               </span>
               <span
                 className="mock-button"
-                onClick={() => deleteTicket(project._id)}
+                onClick={() => deleteProject(project._id)}
               >
                 Delete
               </span>
             </div>
           </div>
-          {editView && project._id === currentId ? (
+          {editId === project._id ? (
             <EditProject
               project={project}
               getEdit={getEdit}
-              cancelEdit={cancelEdit}
+              cancelEdit={() => setEditId(null)}
             />
           ) : null}
         </div>

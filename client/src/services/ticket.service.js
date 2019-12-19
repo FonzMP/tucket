@@ -1,4 +1,4 @@
-export const ticketServices = {
+const TicketServices = {
   createTicket,
   getTicket,
   getTickets,
@@ -7,10 +7,7 @@ export const ticketServices = {
 };
 
 function getTickets() {
-  return fetch("http://localhost:4000/tickets")
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on getTickets"));
+  return fetch("http://localhost:4000/tickets");
 }
 function createTicket(project, ticket) {
   return fetch("http://localhost:4000/tickets/new", {
@@ -19,18 +16,12 @@ function createTicket(project, ticket) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ project, ticket })
-  })
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on ticket creation, ", err));
+  });
 }
 function getTicket(id) {
-  const url = `http://localhost:4000/tickets/${id}`
-  console.log('url here ', url)
-  return fetch(url)
-    .then(response => response.json())
-    .then(response => response)
-    .catch(err => console.log("error on getTicket"));
+  return fetch(`http://localhost:4000/tickets/${id}`);
 }
-function updateTicket() { }
-function deleteTicket() { }
+function updateTicket() {}
+function deleteTicket() {}
+
+export default TicketServices;

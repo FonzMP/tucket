@@ -1,10 +1,9 @@
-const mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  Ticket = require('mongoose').model('ticket').schema;
+const mongoose = require("mongoose"),
+  Schema = mongoose.Schema;
 
 const projectSchema = new Schema({
   name: { type: String, required: true },
-  tickets: [Ticket]
-})
+  tickets: [{ type: Schema.Types.ObjectId, ref: "Ticket" }]
+});
 
-module.exports = mongoose.model("project", projectSchema)
+module.exports = mongoose.model("project", projectSchema);

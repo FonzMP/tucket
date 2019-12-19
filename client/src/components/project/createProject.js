@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
-import { projectServices } from "../../services/project.service";
+import ProjectServices from "../../services/project.service";
+import { Redirect } from "react-router-dom";
 
 const p = PROJECTCONSTANTS;
 
 function CreateProject() {
   const [project, setProject] = useState({ name: "" });
+  const [successAdd, setSuccessAdd] = useState(false);
 
   function handleOnChange(e) {
     setProject({ ...project, [e.target.id]: e.target.value });
   }
   function createProject() {
-    projectServices
-      .createProject(this.state)
-      .then(result => this.props.grabNew(result));
+    ProjectServices.createProject(project)
+      .then(res => res.json())
+      .then(response => setSuccessAdd(true))
+      .catch(err => console.log("error creating new project"));
   }
   return (
     <div>
+      {successAdd ? <Redirect to="/projects" /> : null}
       <div className="form-group">
         <label htmlFor={p.NAME}>
           Project Name:

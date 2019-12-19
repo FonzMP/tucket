@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 
 import CreateTicket from "../ticket/createTicket";
-import { ticketServices } from "../../services/ticket.service";
-// import { projectServices } from "../../services/project.service";
+import TicketServices from "../../services/ticket.service";
 import GetTicket from "../ticket/getTicket";
+import ProjectServices from "../../services/project.service";
+import { Redirect } from "react-router-dom";
 
-function GetProject({ match, props, history }) {
+function GetProject({ match }) {
   const [project, setProject] = useState({ name: "", tickets: [] });
+  const [redirect, setRedirect] = useState(false);
   const [addTicket, setAddTicket] = useState(false);
 
-  useEffect(match => {
-    fetch("http://localhost:4000/projects/" + match.params.id, {
-      method: "GET"
-    })
+  useEffect(() => {
+    ProjectServices.getProject(match.params.projectId)
       .then(resp => resp.json())
       .then(response => setProject(response.project));
   }, []);
@@ -22,23 +22,11 @@ function GetProject({ match, props, history }) {
   }
 
   function addingTicket(ticket) {
-    ticketServices.createTicket(project, ticket).then(response => {
-      setProject(response);
-      setAddTicket(false);
-      props.refreshProjects();
-    });
+    TicketServices.createTicket(project, ticket)
+      .then(resp => resp.json())
+      .then(response => setProject(response.project))
+      .catch(err => console.log("error fetching project"));
   }
-
-  // function setTicket(ticket) {
-  //   props.setTicket(ticket);
-  // }
-
-  // function deleteTicketProject() {
-  //   projectServices.deleteProject(project._id).then(result => {
-  //     setProject(result);
-  //     setAddTicket(false);
-  //   });
-  // }
 
   function displayTickets() {
     return project.tickets.map(ticket => {
@@ -48,6 +36,7 @@ function GetProject({ match, props, history }) {
 
   return (
     <div className="project-wrapper">
+      {redirect ? <Redirect to="/projects" /> : null}
       <span className="projectButtonWrap heading">
         <span>
           <h1>
@@ -55,10 +44,7 @@ function GetProject({ match, props, history }) {
           </h1>
         </span>
         <span>
-          <span
-            className="mock-button"
-            onClick={() => history.push("/projects")}
-          >
+          <span className="mock-button" onClick={() => setRedirect(true)}>
             Back
           </span>
           <span className="mock-button" onClick={showCreate}>
