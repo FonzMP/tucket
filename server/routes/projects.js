@@ -111,7 +111,6 @@ router.put("/:id", function(req, res) {
 // Adds ticket to current project with id :projectId
 router.post("/:projectId/tickets/new", function(req, res) {
   const projectId = req.params.projectId;
-  const ticket = req.body.ticket;
   Project.findById(projectId, function(err, projectFound) {
     if (err) {
       logger.log(
@@ -122,35 +121,29 @@ router.post("/:projectId/tickets/new", function(req, res) {
           err.message
       );
     } else {
-      foundProject.save(err => {
-        const saveTicket = new Ticket(req.body.ticket);
-        saveTicket.save(err => {
-          if (err) {
-            res.status(500).send({ error: "Error adding ticket" });
-          } else {
-            foundProject.tickets.push(saveTicket);
-            foundProject.save(err => {
-              if (err) {
-                res.status(500).send({ error: "Error adding ticket" });
-              } else {
-                Project.findById(req.params.id)
-                  .populate("tickets")
-                  .exec((err, returnProject) => {
-                    if (err) {
-                      res
-                        .status(500)
-                        .send({
-                          error:
-                            "Error locating and populating tickets for project"
-                        });
-                    } else {
-                      res.status(200).send({ project: returnProject });
-                    }
-                  });
-              }
+      Ticket.create(req.body.ticket, (err, newTicket) => {
+        if (err) {
+          res
+            .status(500)
+            .send({
+              error: "Cannot create new ticket for project with id" + projectId
             });
+        } else {
+          projectFound.tickets.push(newTicket);
+          if (projectFound.save()) {
+            Project.findById(projectId)
+              .populate("tickets")
+              .exec((err, returnProject) => {
+                if (err) {
+                  res
+                    .status(500)
+                    .send({ error: "Error finding project after ticket add" });
+                } else {
+                  res.status(200).send({ project: returnProject });
+                }
+              });
           }
-        });
+        }
       });
     }
   });

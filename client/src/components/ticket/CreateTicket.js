@@ -6,7 +6,7 @@ const t = TICKETCONSTANTS;
 
 function CreateTicket({ project, removeCreate }) {
   const [useProject] = useState(project);
-  const [ticket, setTicket] = useState(project);
+  const [ticket, setTicket] = useState({ title: "", description: "" });
 
   function createNewTicket() {
     TicketServices.createTicket(useProject, ticket)
@@ -23,7 +23,7 @@ function CreateTicket({ project, removeCreate }) {
             id={t.TITLE}
             type="text"
             value={ticket.title}
-            name="name"
+            name="title"
             onChange={e =>
               setTicket({ ...ticket, [e.target.name]: e.target.value })
             }
