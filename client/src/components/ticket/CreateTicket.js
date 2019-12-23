@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import TICKETCONSTANTS from "../../_constants/TicketConstants";
+import ProjectServices from "../../services/project.service";
 
 const t = TICKETCONSTANTS;
 
 function CreateTicket(props) {
   const [ticket, setTicket] = useState({ title: "", description: "" });
 
-  function handleOnChange(e) {
-    setTicket({ ...ticket, [e.target.id]: e.target.value });
-  }
   function sendTicket() {
     props.addTicket(ticket);
   }
@@ -21,7 +19,7 @@ function CreateTicket(props) {
             id={t.TITLE}
             type="text"
             value={ticket.title}
-            onChange={e => handleOnChange(e)}
+            onChange={e => setTicket({ ...ticket, [e.target.id]: e.target.value })}
             placeholder={t.TITLEPLACE}
           />
         </label>
@@ -34,7 +32,7 @@ function CreateTicket(props) {
             type="text"
             rows="5"
             value={ticket.description}
-            onChange={e => handleOnChange(e)}
+            onChange={e => setTicket({ ...ticket, [e.target.id]: e.target.value })}
             placeholder={t.DESCPLACE}
           />
         </label>
