@@ -39,6 +39,20 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
+// Gets all projects
+router.get("/", function(req, res) {
+  Project.find({}, function(err, allProjects) {
+    if (err) {
+      logger.log(
+        "error",
+        "error in locating all projects of error: " + err.message
+      );
+    } else {
+      res.send({ projects: allProjects });
+    }
+  });
+});
+
 // Gets Project with associated id and returns project and tickets
 router.get("/:id", function(req, res) {
   const id = req.params.id;
@@ -71,24 +85,6 @@ router.post("/new", function(req, res) {
   });
 });
 
-// Deletes project with id of :id
-router.delete("/:id", function(req, res) {
-  const id = req.params.id;
-  Project.findByIdAndDelete(id, function(err, projectFound) {
-    if (err) {
-      logger.log(
-        "error",
-        "Error deleting project with " + id + " with error " + err
-      );
-      res.status(500).send({
-        error: "Error deleting project with " + id + " with error " + err
-      });
-    } else {
-      res.status(200).send({ project: {} });
-    }
-  });
-});
-
 // Edits a project with id of :id
 router.put("/:id", function(req, res) {
   const id = req.params.id;
@@ -104,6 +100,24 @@ router.put("/:id", function(req, res) {
       );
     } else {
       res.status(200).send({ project: projectUpdated });
+    }
+  });
+});
+
+// Deletes project with id of :id
+router.delete("/:id", function(req, res) {
+  const id = req.params.id;
+  Project.findByIdAndDelete(id, function(err, projectFound) {
+    if (err) {
+      logger.log(
+        "error",
+        "Error deleting project with " + id + " with error " + err
+      );
+      res.status(500).send({
+        error: "Error deleting project with " + id + " with error " + err
+      });
+    } else {
+      res.status(200).send({ project: {} });
     }
   });
 });
@@ -159,16 +173,14 @@ router.delete("/:id/tickets/:ticketId", function(req, res) {
   });
 });
 
-// Gets all projects
-router.get("/", function(req, res) {
-  Project.find({}, function(err, allProjects) {
+router.get("/:id/tickets/:ticketId", (req, res) => {
+  Ticket.findById(req.params.ticketId, (err, foundTicket) => {
     if (err) {
-      logger.log(
-        "error",
-        "error in locating all projects of error: " + err.message
-      );
+      res.status(500).send({
+        error: "Error locating ticket with id " + req.params.ticketId
+      });
     } else {
-      res.send({ projects: allProjects });
+      res.status(200).send({ ticket: foundTicket });
     }
   });
 });

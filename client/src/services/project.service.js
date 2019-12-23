@@ -2,9 +2,10 @@ const ProjectServices = {
   getProject,
   getProjects,
   createProject,
-  addTicket,
   deleteProject,
   editProject,
+  getTicket,
+  addTicket,
   editTicket,
   deleteTicket
 };
@@ -12,6 +13,11 @@ const ProjectServices = {
 // Fetch all projects
 function getProjects() {
   return fetch("http://localhost:4000/projects", { method: "GET" });
+}
+
+// Get Project with id of :projectId
+function getProject(projectId) {
+  return fetch(`http://localhost:4000/projects/${projectId}`);
 }
 
 // Create Project
@@ -25,6 +31,31 @@ function createProject(project) {
   });
 }
 
+// edits project with project id of project._id and accepts project
+function editProject(project) {
+  return fetch(`http://localhost:4000/projects/${project._id}`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify({ project })
+  });
+}
+
+// Deletes project with id of :projectId
+function deleteProject(projectId) {
+  return fetch(`http://localhost:4000/projects/${projectId}`, {
+    method: "DELETE"
+  });
+}
+
+function getTicket(projectId, ticketId) {
+  return fetch(
+    `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
+    { method: "GET" }
+  );
+}
+
 // Create Ticket within Project of id :id
 function addTicket(projectId, ticket) {
   return fetch(`http://localhost:4000/projects/${projectId}/tickets/new`, {
@@ -36,33 +67,7 @@ function addTicket(projectId, ticket) {
   });
 }
 
-// Get Project with id of :id
-function getProject(id) {
-  return fetch(`http://localhost:4000/projects/${id}`);
-}
-
-function deleteProject(projectId, ticketId) {
-  return fetch(
-    `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json"
-      }
-    }
-  );
-}
-
-function editProject(project) {
-  return fetch(`http://localhost:4000/projects/${project._id}`, {
-    method: "PUT",
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: JSON.stringify({ project })
-  });
-}
-
+// edits a ticket - still needs worked
 function editTicket(id, ticket) {
   return fetch(`http://localhost:4000/projects/${id}/tickets`, {
     method: "PUT",
@@ -73,14 +78,12 @@ function editTicket(id, ticket) {
   });
 }
 
+// deletes ticket with ticketId of :ticketId
 function deleteTicket(projectId, ticketId) {
   return fetch(
     `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
     {
-      method: "DELETE",
-      headers: {
-        "Content-type": "application/json"
-      }
+      method: "DELETE"
     }
   );
 }
