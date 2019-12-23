@@ -14,6 +14,9 @@ function CreateTicket({ project, removeCreate }) {
       .then(response => removeCreate())
       .catch(err => console.log("error creating ticket"));
   }
+  function sendTicket() {
+    props.addTicket(ticket);
+  }
   return (
     <div className="create-ticket-container">
       <div className="form-group">

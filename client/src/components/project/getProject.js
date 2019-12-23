@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import CreateTicket from "../ticket/createTicket";
-import TicketServices from "../../services/ticket.service";
 import GetTicket from "../ticket/getTicket";
 import ProjectServices from "../../services/project.service";
 import { Redirect } from "react-router-dom";
@@ -17,8 +16,14 @@ function GetProject({ match }) {
       .then(response => setProject(response.project));
   }, [addTicket]);
 
-  function showCreate() {
-    setAddTicket(!addTicket);
+  function addTicketToProject(ticket) {
+    ProjectServices.addTicket(project._id, ticket)
+      .then(resp => resp.json())
+      .then(response => {
+        setProject(response.project)
+        setAddTicket(!addTicket)
+      })
+      .catch(err => console.log("error fetching project"));
   }
 
   function displayTickets() {
@@ -40,7 +45,7 @@ function GetProject({ match }) {
           <span className="mock-button" onClick={() => setRedirect(true)}>
             Back
           </span>
-          <span className="mock-button" onClick={showCreate}>
+          <span className="mock-button" onClick={() => setAddTicket(!addTicket)}>
             Add Ticket
           </span>
         </span>

@@ -9,7 +9,6 @@ import "./assets/stylesheets/shared.scss";
 import "./assets/stylesheets/tickets.scss";
 import "./assets/stylesheets/projects.scss";
 
-import GetTickets from "./components/ticket/getTickets";
 import Home from "./components/shared/home";
 import Login from "./components/shared/auth/login";
 import Signup from "./components/shared/auth/signup";
@@ -27,7 +26,6 @@ class App extends Component {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
-            <Route exact path="/tickets" component={GetTickets} />
             <Route exact path="/" component={Home} />
             <Suspense fallback={<div>Loading...</div>}>
               <Route path="/projects" component={ProjectRouting} />

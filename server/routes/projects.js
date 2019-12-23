@@ -93,7 +93,7 @@ router.delete("/:id", function(req, res) {
 router.put("/:id", function(req, res) {
   const id = req.params.id;
   const newProject = req.body.project;
-  Project.findByIdAndUpdate(id, newProject, function(err, projectUpdated) {
+  Project.findByIdAndUpdate(id, newProject, (err, projectUpdated) => {
     if (err) {
       logger.log(
         "error",
@@ -116,20 +116,42 @@ router.post("/:projectId/tickets/new", function(req, res) {
     if (err) {
       logger.log(
         "error",
-        "error in finding project during ticket update with project id: " +
+        "error in adding ticket to the project with project id: " +
           id +
-          " of error: ",
-        err
+          " of error: " +
+          err.message
       );
     } else {
-      projectFound.tickets.push(new Ticket(ticket));
-      if (projectFound.save()) {
-        res.status(200).send({ project: projectFound });
-      } else {
-        res.status(500).send({
-          error: "error adding ticket to project with id: " + projectFound._id
+      foundProject.save(err => {
+        const saveTicket = new Ticket(req.body.ticket);
+        saveTicket.save(err => {
+          if (err) {
+            res.status(500).send({ error: "Error adding ticket" });
+          } else {
+            foundProject.tickets.push(saveTicket);
+            foundProject.save(err => {
+              if (err) {
+                res.status(500).send({ error: "Error adding ticket" });
+              } else {
+                Project.findById(req.params.id)
+                  .populate("tickets")
+                  .exec((err, returnProject) => {
+                    if (err) {
+                      res
+                        .status(500)
+                        .send({
+                          error:
+                            "Error locating and populating tickets for project"
+                        });
+                    } else {
+                      res.status(200).send({ project: returnProject });
+                    }
+                  });
+              }
+            });
+          }
         });
-      }
+      });
     }
   });
 });
