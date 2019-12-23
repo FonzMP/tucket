@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
-import { Redirect } from "react-router-dom";
 import ProjectServices from "../../services/project.service";
 
 const p = PROJECTCONSTANTS;

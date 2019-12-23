@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import EditTicket from "./editTicket";
+import ProjectServices from "../../services/project.service";
 
-function GetTicket({ ticket }) {
-  const [viewTicket, setViewTicket] = useState(ticket);
+function GetTicket({ project, ticket, updateProject }) {
+  const [viewTicket] = useState(ticket);
   const [currentId, setCurrentId] = useState(null);
   const [editView, setEditView] = useState(false);
 
@@ -25,7 +26,10 @@ function GetTicket({ ticket }) {
   }
 
   function deleteTicket() {
-    deleteTicket(ticket._id);
+    ProjectServices.deleteTicket(project._id, ticket._id)
+      .then(resp => resp.json())
+      .then(response => updateProject())
+      .catch(err => console.log("error deleting ticket"));
   }
 
   return ticket !== undefined ? (

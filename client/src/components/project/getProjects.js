@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import EditProject from "./editProject";
 import ProjectServices from "../../services/project.service";
 
-function GetProjects(props) {
+function GetProjects() {
   const [projects, setProjects] = useState([]);
   const [refreshProjects, setRefreshProjects] = useState(false);
   const [editId, setEditId] = useState(null);
-  const [currentId, setCurrentId] = useState(null);
 
   useEffect(() => {
     ProjectServices.getProjects()
@@ -17,21 +16,6 @@ function GetProjects(props) {
         setRefreshProjects(false);
       });
   }, [refreshProjects, editId]);
-
-  function setEdit(id) {
-    if (id === currentId) {
-      setEditId(false);
-      setCurrentId(null);
-    } else {
-      setEditId(true);
-      setCurrentId(id);
-    }
-  }
-  function getEdit(project) {
-    props.editProject(project);
-    setEditId(false);
-    setCurrentId(null);
-  }
 
   function deleteProject(id) {
     ProjectServices.deleteProject(id)
@@ -73,11 +57,7 @@ function GetProjects(props) {
             </div>
           </div>
           {editId === project._id ? (
-            <EditProject
-              project={project}
-              getEdit={getEdit}
-              cancelEdit={() => setEditId(null)}
-            />
+            <EditProject project={project} cancelEdit={() => setEditId(null)} />
           ) : null}
         </div>
       );

@@ -11,7 +11,7 @@ function Navbar() {
       currentPage = 2;
     }
     setActiveWindow(currentPage);
-  }, [window]);
+  }, []);
   return (
     <div className="navbar">
       <span className="projectButtonWrap">
@@ -19,7 +19,7 @@ function Navbar() {
           <Link
             to="/"
             key="/"
-            className={activeWindow === 1 ? "active nav-link" : "nav-link"}
+            className={(activeWindow === 1 ? "active " : "") + "nav-link"}
             onClick={() => setActiveWindow(1)}
           >
             Home
@@ -27,7 +27,7 @@ function Navbar() {
           <Link
             to="/projects"
             key="/projects"
-            className={activeWindow === 2 ? "active nav-link" : "nav-link"}
+            className={(activeWindow === 2 ? "active " : "") + "nav-link"}
             onClick={() => setActiveWindow(2)}
           >
             Projects
@@ -35,17 +35,15 @@ function Navbar() {
         </span>
         <span>
           <Link
-            className="nav-link"
             to="/login"
-            className={activeWindow === 3 ? "active nav-link" : "nav-link"}
+            className={(activeWindow === 3 ? "active " : "") + "nav-link"}
             onClick={() => setActiveWindow(3)}
           >
             Login
           </Link>
           <Link
-            className="nav-link"
             to="/signup"
-            className={activeWindow === 4 ? "active nav-link" : "nav-link"}
+            className={(activeWindow === 4 ? "active " : "") + "nav-link"}
             onClick={() => setActiveWindow(4)}
           >
             Signup
