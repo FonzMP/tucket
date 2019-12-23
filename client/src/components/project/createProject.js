@@ -22,20 +22,19 @@ function CreateProject() {
     <div>
       {successAdd ? <Redirect to="/projects" /> : null}
       <div className="form-group">
-        <label htmlFor={p.NAME}>
-          Project Name:
-          <input
-            id={p.NAME}
-            type="text"
-            value={project.projName}
-            onChange={handleOnChange}
-            placeholder={p.NAME_PLACE}
-          />
-        </label>
+        <label htmlFor={p.NAME}>Project Name:</label>
+        <input
+          className="editInput"
+          id={p.NAME}
+          type="text"
+          value={project.projName}
+          onChange={handleOnChange}
+          placeholder={p.NAME_PLACE}
+        />
       </div>
       <div className="form-group">
-        <span className="mock-link" onClick={() => createProject()}>
-          View
+        <span className="mock-button" onClick={() => createProject()}>
+          Create
         </span>
       </div>
     </div>

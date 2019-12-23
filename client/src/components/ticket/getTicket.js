@@ -19,8 +19,7 @@ function GetTicket({ project, ticket, updateProject }) {
     }
   }
 
-  function getEdit(ticket) {
-    // editTicket(ticket);
+  function getEdit() {
     setEditView(false);
     setCurrentId(null);
   }
@@ -41,7 +40,7 @@ function GetTicket({ project, ticket, updateProject }) {
           <Link
             className="mock-button"
             id="first-link"
-            // to={"/projects/" + id + "/tickets/" + ticket.id}
+            to={"/projects/" + project._id + "/tickets/" + ticket._id}
           >
             View
           </Link>

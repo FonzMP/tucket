@@ -4,6 +4,7 @@ import { Route, Link, Switch } from "react-router-dom";
 import GetProject from "./getProject";
 import GetProjects from "./getProjects";
 import CreateProject from "./createProject";
+import ViewTicket from "../ticket/viewTicket";
 
 function ProjectRouting({ match, location }) {
   const [window, setWindow] = useState(1);
@@ -35,6 +36,11 @@ function ProjectRouting({ match, location }) {
         </div>
         <div className="project-container">
           <Switch>
+            <Route
+              exact
+              path={match.url + "/:projectId/tickets/:ticketId"}
+              component={ViewTicket}
+            />
             <Route exact path={match.url + "/new"} component={CreateProject} />
             <Route
               exact
