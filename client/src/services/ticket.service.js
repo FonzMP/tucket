@@ -10,12 +10,12 @@ function getTickets() {
   return fetch("http://localhost:4000/tickets");
 }
 function createTicket(project, ticket) {
-  return fetch("http://localhost:4000/tickets/new", {
+  return fetch(`http://localhost:4000/projects/${project._id}/tickets/new`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ project, ticket })
+    body: JSON.stringify({ ticket })
   });
 }
 function getTicket(id) {

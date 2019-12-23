@@ -15,17 +15,10 @@ function GetProject({ match }) {
     ProjectServices.getProject(match.params.projectId)
       .then(resp => resp.json())
       .then(response => setProject(response.project));
-  }, []);
+  }, [addTicket]);
 
   function showCreate() {
     setAddTicket(!addTicket);
-  }
-
-  function addingTicket(ticket) {
-    TicketServices.createTicket(project, ticket)
-      .then(resp => resp.json())
-      .then(response => setProject(response.project))
-      .catch(err => console.log("error fetching project"));
   }
 
   function displayTickets() {
@@ -52,7 +45,12 @@ function GetProject({ match }) {
           </span>
         </span>
       </span>
-      {addTicket ? <CreateTicket addTicket={addingTicket} /> : null}
+      {addTicket ? (
+        <CreateTicket
+          project={project}
+          removeCreate={() => setAddTicket(false)}
+        />
+      ) : null}
       {displayTickets()}
     </div>
   );

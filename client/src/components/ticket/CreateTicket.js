@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import TICKETCONSTANTS from "../../_constants/TicketConstants";
+import TicketServices from "../../services/ticket.service";
 
 const t = TICKETCONSTANTS;
 
-function CreateTicket(props) {
-  const [ticket, setTicket] = useState({ title: "", description: "" });
+function CreateTicket({ project, removeCreate }) {
+  const [useProject] = useState(project);
+  const [ticket, setTicket] = useState(project);
 
-  function handleOnChange(e) {
-    setTicket({ ...ticket, [e.target.id]: e.target.value });
-  }
-  function sendTicket() {
-    props.addTicket(ticket);
+  function createNewTicket() {
+    TicketServices.createTicket(useProject, ticket)
+      .then(resp => resp.json())
+      .then(response => removeCreate())
+      .catch(err => console.log("error creating ticket"));
   }
   return (
     <div className="create-ticket-container">
@@ -21,7 +23,10 @@ function CreateTicket(props) {
             id={t.TITLE}
             type="text"
             value={ticket.title}
-            onChange={e => handleOnChange(e)}
+            name="name"
+            onChange={e =>
+              setTicket({ ...ticket, [e.target.name]: e.target.value })
+            }
             placeholder={t.TITLEPLACE}
           />
         </label>
@@ -34,13 +39,16 @@ function CreateTicket(props) {
             type="text"
             rows="5"
             value={ticket.description}
-            onChange={e => handleOnChange(e)}
+            name="description"
+            onChange={e =>
+              setTicket({ ...ticket, [e.target.name]: e.target.value })
+            }
             placeholder={t.DESCPLACE}
           />
         </label>
       </div>
       <div className="form-group">
-        <div className="mock-button" onClick={() => sendTicket()}>
+        <div className="mock-button" onClick={() => createNewTicket()}>
           {t.CREATE_BUTTON}
         </div>
       </div>

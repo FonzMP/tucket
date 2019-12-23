@@ -108,10 +108,11 @@ router.put("/:id", function(req, res) {
   });
 });
 
-router.put("/:id/tickets", function(req, res) {
-  const id = req.params.id;
+// Adds ticket to current project with id :projectId
+router.post("/:projectId/tickets/new", function(req, res) {
+  const projectId = req.params.projectId;
   const ticket = req.body.ticket;
-  Project.findById(id, function(err, projectFound) {
+  Project.findById(projectId, function(err, projectFound) {
     if (err) {
       logger.log(
         "error",
@@ -121,7 +122,7 @@ router.put("/:id/tickets", function(req, res) {
         err
       );
     } else {
-      projectFound.push(ticket);
+      projectFound.tickets.push(new Ticket(ticket));
       if (projectFound.save()) {
         res.status(200).send({ project: projectFound });
       } else {
@@ -158,6 +159,7 @@ router.delete("/:id/tickets/:ticketId", function(req, res) {
   });
 });
 
+// Gets all projects
 router.get("/", function(req, res) {
   Project.find({}, function(err, allProjects) {
     if (err) {

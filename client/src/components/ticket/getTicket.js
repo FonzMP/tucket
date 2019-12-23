@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import EditTicket from "./editTicket";
 
-function GetTicket({ ticket, match }) {
+function GetTicket({ ticket }) {
   const [viewTicket, setViewTicket] = useState(ticket);
   const [currentId, setCurrentId] = useState(null);
   const [editView, setEditView] = useState(false);
