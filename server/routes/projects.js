@@ -161,18 +161,7 @@ router.post("/:projectId/tickets/new", function(req, res) {
   });
 });
 
-// Deletes ticket with id :ticketId from project :id
-router.delete("/:id/tickets/:ticketId", function(req, res) {
-  const ticketId = req.params.ticketId;
-  Ticket.deleteOne({ _id: ticketId }, (err, success) => {
-    if (err) {
-      res.status(500).send({ error: "Error deleting ticket" });
-    } else {
-      res.status(200).send({ project: success });
-    }
-  });
-});
-
+// Fetches ticket from project :id with ticket id of :ticketId
 router.get("/:id/tickets/:ticketId", (req, res) => {
   Ticket.findById(req.params.ticketId, (err, foundTicket) => {
     if (err) {
@@ -181,6 +170,36 @@ router.get("/:id/tickets/:ticketId", (req, res) => {
       });
     } else {
       res.status(200).send({ ticket: foundTicket });
+    }
+  });
+});
+
+// Edits ticket of ticket id :ticketId
+router.put("/:projectId/tickets/:ticketId", (req, res) => {
+  Ticket.findByIdAndUpdate(
+    req.params.ticketId,
+    req.body.ticket,
+    (err, updatedTicket) => {
+      if (err) {
+        console.log("error updating ticket");
+        res.status(500).send({
+          error: "Error updating ticket with id " + req.params.ticketId
+        });
+      } else {
+        res.status(200).send({ ticket: updatedTicket });
+      }
+    }
+  );
+});
+
+// Deletes ticket with id :ticketId from project :id
+router.delete("/:id/tickets/:ticketId", function(req, res) {
+  const ticketId = req.params.ticketId;
+  Ticket.deleteOne({ _id: ticketId }, (err, success) => {
+    if (err) {
+      res.status(500).send({ error: "Error deleting ticket" });
+    } else {
+      res.status(200).send({ project: success });
     }
   });
 });

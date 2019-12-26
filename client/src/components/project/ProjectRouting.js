@@ -5,6 +5,7 @@ import GetProject from "./getProject";
 import GetProjects from "./getProjects";
 import CreateProject from "./createProject";
 import ViewTicket from "../ticket/viewTicket";
+import EditTicket from "../ticket/editTicket";
 
 function ProjectRouting({ match, location }) {
   const [window, setWindow] = useState(1);
@@ -40,6 +41,11 @@ function ProjectRouting({ match, location }) {
               exact
               path={match.url + "/:projectId/tickets/:ticketId"}
               component={ViewTicket}
+            />
+            <Route
+              exact
+              path={match.url + "/:projectId/tickets/:ticketId/edit"}
+              component={EditTicket}
             />
             <Route exact path={match.url + "/new"} component={CreateProject} />
             <Route

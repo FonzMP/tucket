@@ -49,6 +49,7 @@ function deleteProject(projectId) {
   });
 }
 
+// Gets ticket under :projectId with :ticketId
 function getTicket(projectId, ticketId) {
   return fetch(
     `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
@@ -68,14 +69,17 @@ function addTicket(projectId, ticket) {
 }
 
 // edits a ticket - still needs worked
-function editTicket(id, ticket) {
-  return fetch(`http://localhost:4000/projects/${id}/tickets`, {
-    method: "PUT",
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: JSON.stringify({ ticket })
-  });
+function editTicket(projectId, ticket) {
+  return fetch(
+    `http://localhost:4000/projects/${projectId}/tickets/${ticket._id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({ ticket })
+    }
+  );
 }
 
 // deletes ticket with ticketId of :ticketId

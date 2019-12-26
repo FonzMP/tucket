@@ -5,24 +5,6 @@ import ProjectServices from "../../services/project.service";
 
 function GetTicket({ project, ticket, updateProject }) {
   const [viewTicket] = useState(ticket);
-  const [currentId, setCurrentId] = useState(null);
-  const [editView, setEditView] = useState(false);
-
-  function setEdit() {
-    const id = ticket._id;
-    if (id === currentId) {
-      setEditView(false);
-      setCurrentId(null);
-    } else {
-      setEditView(true);
-      setCurrentId(id);
-    }
-  }
-
-  function getEdit() {
-    setEditView(false);
-    setCurrentId(null);
-  }
 
   function deleteTicket() {
     ProjectServices.deleteTicket(project._id, ticket._id)
@@ -46,17 +28,17 @@ function GetTicket({ project, ticket, updateProject }) {
           </Link>
         </span>
         <div className="edit-delete">
-          <span className="mock-button" onClick={() => setEdit()}>
+          <Link
+            to={`/projects/${project._id}/tickets/${ticket._id}/edit`}
+            className="mock-button"
+          >
             Edit
-          </span>
+          </Link>
           <span className="mock-button" onClick={() => deleteTicket()}>
             Delete
           </span>
         </div>
       </span>
-      {editView && viewTicket._id === currentId ? (
-        <EditTicket ticket={viewTicket} sendEdit={getEdit} />
-      ) : null}
     </div>
   ) : (
     <div>Loading....</div>
