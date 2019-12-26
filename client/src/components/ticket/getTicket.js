@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import EditTicket from "./editTicket";
 import ProjectServices from "../../services/project.service";
 
 function GetTicket({ project, ticket, updateProject }) {
