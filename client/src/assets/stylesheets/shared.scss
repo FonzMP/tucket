@@ -1,6 +1,7 @@
+@import "variables";
 body {
-  color: white;
-  background: black;
+  color: $secondary-color;
+  background: $primary-color;
 }
 
 h1,
@@ -14,6 +15,6 @@ a {
 }
 
 .activeLink {
-  color: black;
-  background-color: white;
+  color: $primary-color;
+  background-color: $secondary-color;
 }

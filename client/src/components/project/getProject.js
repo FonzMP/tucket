@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import CreateTicket from "../ticket/createTicket";
 import GetTicket from "../ticket/getTicket";
 import ProjectServices from "../../services/project.service";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 function GetProject({ match }) {
   const [project, setProject] = useState({ name: "", tickets: [] });
@@ -19,6 +19,13 @@ function GetProject({ match }) {
         setDeletedTicket(false);
       });
   }, [addTicket, deletedTicket, match]);
+
+  function deleteProject() {
+    ProjectServices.deleteProject(project._id)
+      .then(resp => resp.json())
+      .then(response => setRedirect(true))
+      .catch(err => console.log("error deleting ticket"));
+  }
 
   function displayTickets() {
     return project.tickets.map(ticket => {
@@ -43,9 +50,19 @@ function GetProject({ match }) {
           </h1>
         </span>
         <span>
-          <span className="mock-button" onClick={() => setRedirect(true)}>
-            Back
+          <Link className="mock-button" to={`/projects/${project._id}/edit`}>
+            Edit
+          </Link>
+          <span
+            className="mock-button"
+            to="/projects"
+            onClick={() => deleteProject()}
+          >
+            Delete
           </span>
+          <Link className="mock-button" to="/projects">
+            Back
+          </Link>
           <span
             className="mock-button"
             onClick={() => setAddTicket(!addTicket)}

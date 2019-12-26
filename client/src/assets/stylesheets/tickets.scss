@@ -1,3 +1,5 @@
+@import "variables";
+
 .create-ticket-container {
   box-sizing: border-box;
   padding: 16px 8px;
@@ -20,7 +22,7 @@
 }
 
 .project-ticket-container {
-  border: 1px solid black;
+  border: 1px solid $primary-color;
   position: relative;
   padding: 0 6px;
   h1,

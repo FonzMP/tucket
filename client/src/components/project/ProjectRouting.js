@@ -4,6 +4,7 @@ import { Route, Link, Switch } from "react-router-dom";
 import GetProject from "./getProject";
 import GetProjects from "./getProjects";
 import CreateProject from "./createProject";
+import EditProject from "./editProject";
 import ViewTicket from "../ticket/viewTicket";
 import EditTicket from "../ticket/editTicket";
 
@@ -52,6 +53,11 @@ function ProjectRouting({ match, location }) {
               exact
               path={match.url + "/:projectId"}
               component={GetProject}
+            />
+            <Route
+              exact
+              path={match.url + "/:projectId/edit"}
+              component={EditProject}
             />
             <Route exact path={match.url} component={GetProjects} />
           </Switch>
