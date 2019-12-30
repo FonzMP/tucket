@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+import Project from "../../models/project";
 import CreateTicket from "../ticket/createTicket";
 import GetTicket from "../ticket/getTicket";
 import ProjectServices from "../../services/project.service";
 import { Redirect, Link } from "react-router-dom";
 
 function GetProject({ match }) {
-  const [project, setProject] = useState({ name: "", tickets: [] });
+  const [project, setProject] = useState(new Project());
   const [deletedTicket, setDeletedTicket] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [addTicket, setAddTicket] = useState(false);
@@ -76,6 +77,12 @@ function GetProject({ match }) {
           project={project}
           removeCreate={() => setAddTicket(false)}
         />
+      ) : null}
+      {!!project.description ? (
+        <span>
+          <h4>Description:</h4>
+          <p>{project.description}</p>
+        </span>
       ) : null}
       {displayTickets()}
     </div>
