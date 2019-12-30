@@ -3,6 +3,7 @@ const mongoose = require("mongoose"),
 
 const projectSchema = new Schema({
   name: { type: String, required: true },
+  description: { type: String, required: false },
   tickets: [{ type: Schema.Types.ObjectId, ref: "Ticket" }]
 });
 

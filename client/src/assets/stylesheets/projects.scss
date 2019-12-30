@@ -6,7 +6,10 @@
 
 label {
   display: block;
-  margin-bottom: 6px;
+  margin: 8px 0;
+  &:first-of-type {
+    margin-top: 0;
+  }
 }
 
 .heading {
@@ -18,22 +21,34 @@ h1 {
     font-weight: normal;
   }
 }
-
-.editInput {
-  padding: 4px 8px;
-  font-size: 22px;
-  line-height: 1.2rem;
-  border-radius: 8px;
+.editInput,
+textarea {
+  font-size: 1.1rem;
+  padding: 2px 3px;
+  border-radius: 4px;
+  min-width: 200px;
+  max-width: 250px;
+  width: 30%;
+  resize: none;
 }
 
-.project-wrapper {
-  h4 {
-    margin: 0;
+button {
+  font-size: 1.1rem;
+  cursor: pointer;
+  &.create {
+    border-radius: 4px;
+  }
+}
+
+button:disabled {
+  &.create {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
 }
 
 .project-head {
-  margin: 0 0 12px 0;
+  margin-bottom: 12px;
 }
 
 .project-item-wrap {
