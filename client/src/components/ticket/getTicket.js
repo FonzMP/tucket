@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function GetTicket({ project, ticket, updateProject }) {
+function GetTicket({ project, ticket }) {
   const [viewTicket] = useState(ticket);
 
   return ticket !== undefined ? (

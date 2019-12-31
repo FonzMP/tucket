@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import Ticket from "../../models/ticket";
 import TICKETCONSTANTS from "../../_constants/TicketConstants";
 import TicketServices from "../../services/ticket.service";
 
@@ -6,7 +8,7 @@ const t = TICKETCONSTANTS;
 
 function CreateTicket({ project, removeCreate }) {
   const [useProject] = useState(project);
-  const [ticket, setTicket] = useState({ title: "", description: "" });
+  const [ticket, setTicket] = useState(new Ticket());
 
   function createNewTicket() {
     TicketServices.createTicket(useProject, ticket)

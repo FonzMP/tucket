@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
+
+import Ticket from "../../models/ticket";
 import ProjectServices from "../../services/project.service";
 import AlertModal from "../shared/alertModal";
 
 function ViewTicket({ match }) {
-  const [ticket, setTicket] = useState({ title: "", description: "" });
+  const [ticket, setTicket] = useState(new Ticket());
   const [confirm, setConfirm] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [redirect, setRedirect] = useState(false);
   useEffect(() => {
-    console.log("match url ", match.url);
     ProjectServices.getTicket(match.params.projectId, match.params.ticketId)
       .then(resp => resp.json())
       .then(response => setTicket(response.ticket))
@@ -48,6 +49,12 @@ function ViewTicket({ match }) {
       <div className="projectButtonWrap">
         <span>Ticket: {ticket.title}</span>
         <span>
+          <Link
+            className="mock-button"
+            to={`/projects/${match.params.projectId}`}
+          >
+            Back
+          </Link>
           <Link className="mock-button" to={`${match.url}/edit`}>
             Edit
           </Link>

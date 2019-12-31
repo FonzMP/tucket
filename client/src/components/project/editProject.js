@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 
+import Project from "../../models/project";
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
 import ProjectServices from "../../services/project.service";
 
 const p = PROJECTCONSTANTS;
 
 function EditProject({ match }) {
-  const [updateProject, setUpdateProject] = useState({
-    _id: "",
-    name: "",
-    description: ""
-  });
+  const [updateProject, setUpdateProject] = useState(new Project());
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {

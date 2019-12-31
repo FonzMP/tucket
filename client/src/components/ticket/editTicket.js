@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+
+import Ticket from "../../models/ticket";
 import TICKETCONSTANTS from "../../_constants/TicketConstants";
 import ProjectServices from "../../services/project.service";
 
 const t = TICKETCONSTANTS;
 
 function EditTicket({ match }) {
-  const [ticket, setTicket] = useState({ title: "", description: "" });
+  const [updateTicket, setUpdateTicket] = useState(new Ticket());
   const [successUpdate, setSuccessUpdate] = useState(false);
   useEffect(() => {
     ProjectServices.getTicket(match.params.projectId, match.params.ticketId)
       .then(resp => resp.json())
-      .then(response => setTicket(response.ticket))
+      .then(response => setUpdateTicket(response.ticket))
       .catch(err => console.log("error getting ticket"));
   }, []);
 
   function sendEdit() {
-    ProjectServices.editTicket(match.params.projectId, ticket)
+    ProjectServices.editTicket(match.params.projectId, updateTicket)
       .then(resp => resp.json())
       .then(response => setSuccessUpdate(true))
       .catch(err => console.log("error updating ticket ", err));
@@ -28,34 +30,46 @@ function EditTicket({ match }) {
         <Redirect to={`/projects/${match.params.projectId}`} />
       ) : null}
       <div className="form-group">
-        <label htmlFor={t.TITLE}>Title:</label>
+        <label htmlFor="title">Title:</label>
         <input
-          id={t.TITLE}
           type="text"
           name="title"
-          value={ticket.title}
+          value={updateTicket.title}
           onChange={e =>
-            setTicket({ ...ticket, [e.target.id]: e.target.value })
+            setUpdateTicket({
+              ...updateTicket,
+              [e.target.name]: e.target.value
+            })
           }
-          placeholder={t.TITLEPLACE}
+          placeholder="Title"
         />
       </div>
       <div className="form-group">
-        <label htmlFor={t.DESCRIPTION}>Description:</label>
+        <label htmlFor="description">Description:</label>
         <textarea
-          id={t.DESCRIPTION}
           type="text"
           rows="5"
           name="description"
-          value={ticket.description}
+          value={updateTicket.description}
           onChange={e =>
-            setTicket({ ...ticket, [e.target.id]: e.target.value })
+            setUpdateTicket({
+              ...updateTicket,
+              [e.target.name]: e.target.value
+            })
           }
-          placeholder={t.DESCPLACE}
+          placeholder="Description"
         />
       </div>
       <div className="form-group">
-        <button onClick={() => sendEdit()}>{t.EDIT_BUTTON}</button>
+        <span className="mock-button" onClick={() => sendEdit()}>
+          Edit
+        </span>
+        <Link
+          to={`/projects/${match.params.projectId}/tickets/${match.params.ticketId}`}
+          className="mock-button"
+        >
+          Back
+        </Link>
       </div>
     </div>
   );
