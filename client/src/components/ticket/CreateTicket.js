@@ -24,6 +24,7 @@ function CreateTicket({ project, removeCreate }) {
             type="text"
             value={ticket.title}
             name="title"
+            autoComplete="off"
             onChange={e =>
               setTicket({ ...ticket, [e.target.name]: e.target.value })
             }
@@ -35,6 +36,7 @@ function CreateTicket({ project, removeCreate }) {
         <label htmlFor={t.DESCRIPTION}>
           Description:
           <textarea
+            autoComplete="off"
             id={t.DESCRIPTION}
             type="text"
             rows="5"

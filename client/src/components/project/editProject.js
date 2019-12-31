@@ -45,6 +45,22 @@ function EditProject({ match }) {
           }
           placeholder={p.NAME_PLACE}
         />
+        <label htmlFor="description">Description</label>
+        <textarea
+          autoComplete="off"
+          className="editInput"
+          name="description"
+          type="text"
+          value={updateProject.description}
+          onChange={e =>
+            setUpdateProject({
+              ...updateProject,
+              [e.target.name]: e.target.value
+            })
+          }
+          placeholder="Description"
+          rows="5"
+        />
       </div>
       <div className="form-group">
         <span className="projectButtonWrap">
