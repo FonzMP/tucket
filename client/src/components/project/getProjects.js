@@ -18,8 +18,8 @@ function GetProjects() {
   function renderProjects() {
     return projects.map(project => {
       return (
-        <span>
-          <Link to={"/projects/" + project._id} key={project.name}>
+        <span key={project.name}>
+          <Link to={"/projects/" + project._id}>
             <div className="project-item-wrap">
               <h4 className="project-name">{project.name}</h4>
             </div>

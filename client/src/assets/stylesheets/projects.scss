@@ -51,7 +51,8 @@ button:disabled {
   margin-bottom: 12px;
 }
 
-.project-item-wrap {
+.project-item-wrap,
+.project-ticket-container {
   color: white;
   border: 1px solid $secondary-color;
   border-radius: 0 0 20px 0;

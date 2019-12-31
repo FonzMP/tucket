@@ -8,6 +8,7 @@ import "./assets/stylesheets/navigation.scss";
 import "./assets/stylesheets/shared.scss";
 import "./assets/stylesheets/tickets.scss";
 import "./assets/stylesheets/projects.scss";
+import "./assets/stylesheets/modal.scss";
 
 import Home from "./components/shared/home";
 import Login from "./components/shared/auth/login";
