@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 // const schema = require("./schema/schema");
 require("dotenv").config();
 
-const tickets = require("./routes/tickets");
 const projects = require("./routes/projects");
 
 const app = express();
@@ -17,7 +16,6 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-app.use("/tickets", tickets);
 app.use("/projects", projects);
 app.use(cors());
 
