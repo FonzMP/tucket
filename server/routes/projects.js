@@ -76,7 +76,7 @@ router.get("/:id", function(req, res) {
 // Adds new project to the system
 router.post("/new", function(req, res) {
   const project = req.body.project;
-  Project.create(project, function(err, successProject) {
+  Project.create(project, (err, successProject) => {
     if (err) {
       logger.log("error", "error in project creation of error: " + err);
     } else {

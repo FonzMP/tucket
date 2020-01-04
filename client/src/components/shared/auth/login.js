@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { AuthServices } from "../../../services/auth.service";
 
 function Login() {
   const [user, setUser] = useState({ username: "", password: "" });
 
   function loginUser() {
-    console.log("logging in user", user);
+    AuthServices.loginUser(user)
+      .then(resp => resp.json())
+      .then(response => console.log("response ", response))
+      .catch(err => console.log("error here in login", err));
   }
 
   return (

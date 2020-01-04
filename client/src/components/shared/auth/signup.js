@@ -5,7 +5,10 @@ function Signup() {
   const [user, setUser] = useState({ username: "", password: "" });
 
   function signupUser() {
-    AuthServices.signupUser();
+    AuthServices.signupUser(user)
+      .then(resp => resp.json())
+      .then(response => console.log("response from signup ", response))
+      .catch(err => console.log("error on signup ", err));
   }
 
   return (

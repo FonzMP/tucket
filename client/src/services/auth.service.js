@@ -3,10 +3,22 @@ export const AuthServices = {
   signupUser
 };
 
-function loginUser() {
-  console.log("working");
+function loginUser(user) {
+  return fetch("http://localhost:4000/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ user })
+  });
 }
 
-function signupUser() {
-  console.log("working");
+function signupUser(user) {
+  return fetch("http://localhost:4000/auth/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ user })
+  });
 }
