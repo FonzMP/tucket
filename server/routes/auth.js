@@ -41,7 +41,26 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 router.post("/login", (req, res) => {
-  console.log("req", req.body);
+  User.findOne({ username: req.body.user.username }, (err, userFound) => {
+    if (err) {
+      logger.log(
+        "error",
+        "error locating user with username " + req.body.user.username
+      );
+    } else {
+      if (!!userFound) {
+        if (bcrypt.compareSync(req.body.user.password, userFound.password)) {
+          res.status(200).send({ user: userFound });
+        } else {
+          res.status(200).send({ error: "Error validating password" });
+        }
+      } else {
+        res
+          .status(200)
+          .send({ error: "Error locating a user with that username" });
+      }
+    }
+  });
 });
 
 router.post("/signup", (req, res) => {
