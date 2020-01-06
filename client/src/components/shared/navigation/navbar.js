@@ -27,7 +27,7 @@ function Navbar() {
         break;
     }
     setActiveWindow(currentPage);
-  }, []);
+  }, [context.user]);
 
   function clearUserDetails() {
     AuthServices.clearStorage();
