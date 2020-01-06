@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
-
-import Ticket from "../../models/ticket";
-import TICKETCONSTANTS from "../../_constants/TicketConstants";
 import ProjectServices from "../../services/project.service";
 
-const t = TICKETCONSTANTS;
-
 function EditTicket({ match }) {
-  const [updateTicket, setUpdateTicket] = useState(new Ticket());
+  const [updateTicket, setUpdateTicket] = useState({
+    title: "",
+    description: ""
+  });
   const [successUpdate, setSuccessUpdate] = useState(false);
   useEffect(() => {
     ProjectServices.getTicket(match.params.projectId, match.params.ticketId)
