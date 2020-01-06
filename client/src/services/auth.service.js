@@ -1,6 +1,7 @@
 export const AuthServices = {
   loginUser,
-  signupUser
+  signupUser,
+  clearStorage
 };
 
 function loginUser(user) {
@@ -21,4 +22,8 @@ function signupUser(user) {
     },
     body: JSON.stringify({ user })
   });
+}
+
+function clearStorage() {
+  localStorage.removeItem("tucketUser");
 }

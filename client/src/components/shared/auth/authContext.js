@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const AuthContext = React.createContext([{}, () => {}]);
 
 const AuthContextProvider = props => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
   const state = {
     user,
     setUser

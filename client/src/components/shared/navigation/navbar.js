@@ -1,19 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 import "../../../assets/stylesheets/auth.scss";
+import { AuthContext } from "../auth/authContext";
+import { AuthServices } from "../../../services/auth.service";
 
 function Navbar() {
   const [activeWindow, setActiveWindow] = useState(1);
+  const [logout, setLogout] = useState(false);
+  const context = useContext(AuthContext);
 
   useEffect(() => {
-    let currentPage = 1;
-    if (window.location.href.includes("/projects")) {
-      currentPage = 2;
+    let currentPage;
+    let pathName = window.location.pathname;
+    switch (pathName) {
+      case "/":
+        currentPage = 1;
+        break;
+      case "/projects":
+        currentPage = 2;
+        break;
+      case "/login":
+        currentPage = 3;
+        break;
+      case "/signup":
+        currentPage = 4;
+        break;
     }
     setActiveWindow(currentPage);
   }, []);
+
+  function clearUserDetails() {
+    AuthServices.clearStorage();
+    setActiveWindow(1);
+    setLogout(true);
+    context.setUser({});
+  }
   return (
     <div className="navbar">
+      {logout ? <Redirect to="/" /> : null}
       <span className="projectButtonWrap">
         <span>
           <Link
@@ -34,13 +58,20 @@ function Navbar() {
           </Link>
         </span>
         <span>
-          <Link
-            to="/login"
-            className={(activeWindow === 3 ? "active " : "") + "nav-link"}
-            onClick={() => setActiveWindow(3)}
-          >
-            Login
-          </Link>
+          {!!context.user.username ? (
+            <span className="nav-link" onClick={() => clearUserDetails()}>
+              Logout
+            </span>
+          ) : (
+            <Link
+              to="/login"
+              className={(activeWindow === 3 ? "active " : "") + "nav-link"}
+              onClick={() => setActiveWindow(3)}
+            >
+              Login
+            </Link>
+          )}
+
           <Link
             to="/signup"
             className={(activeWindow === 4 ? "active " : "") + "nav-link"}

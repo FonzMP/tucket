@@ -12,7 +12,6 @@ function Login() {
       .then(resp => resp.json())
       .then(response => {
         setLoggedIn(true);
-        response.user.password = "";
         context.setUser(response.user);
         localStorage.setItem("tucketUser", JSON.stringify(response.user));
       })

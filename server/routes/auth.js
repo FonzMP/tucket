@@ -50,6 +50,7 @@ router.post("/login", (req, res) => {
     } else {
       if (!!userFound) {
         if (bcrypt.compareSync(req.body.user.password, userFound.password)) {
+          userFound.password = undefined;
           res.status(200).send({ user: userFound });
         } else {
           res.status(200).send({ error: "Error validating password" });
