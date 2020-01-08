@@ -6,16 +6,36 @@ import { AuthServices } from "../../../services/auth.service";
 function Login() {
   const context = useContext(AuthContext);
   const [user, setUser] = useState({ username: "", password: "" });
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
   function loginUser() {
     AuthServices.loginUser(user)
       .then(resp => resp.json())
       .then(response => {
-        setLoggedIn(true);
-        context.setUser(response.user);
-        localStorage.setItem("tucketUser", JSON.stringify(response.user));
+        if (!!response.error) {
+          setErrorMsg(response.error);
+          setShowError(true);
+          setUser({ username: "", password: "" });
+        } else {
+          setLoggedIn(true);
+          context.setUser(response.user);
+          AuthServices.setStorage(response.user);
+        }
       })
       .catch(err => console.log("error here in login", err));
+  }
+
+  function handleOnChange(e) {
+    if (
+      user.username.length > 0 &&
+      user.password.length > 0 &&
+      e.key === "Enter"
+    ) {
+      loginUser();
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
+    }
   }
 
   return (
@@ -28,17 +48,20 @@ function Login() {
         <input
           type="text"
           name="username"
-          onChange={e => setUser({ ...user, [e.target.name]: e.target.value })}
+          value={user.username}
+          onChange={e => handleOnChange(e)}
         />
         <label htmlFor="password">Password:</label>
         <input
           type="password"
           name="password"
-          onChange={e => setUser({ ...user, [e.target.name]: e.target.value })}
+          defaultValue={user.password}
+          onKeyUp={e => handleOnChange(e)}
         />
         <div className="mock-button" onClick={() => loginUser()}>
           Login
         </div>
+        {showError ? <span className="errorFlash">{errorMsg}</span> : null}
       </div>
     </span>
   );

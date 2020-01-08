@@ -1,6 +1,7 @@
 export const AuthServices = {
   loginUser,
   signupUser,
+  setStorage,
   clearStorage
 };
 
@@ -22,6 +23,10 @@ function signupUser(user) {
     },
     body: JSON.stringify({ user })
   });
+}
+
+function setStorage(userDetails) {
+  localStorage.setItem("tucketUser", JSON.stringify(userDetails));
 }
 
 function clearStorage() {

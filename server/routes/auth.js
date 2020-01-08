@@ -53,7 +53,7 @@ router.post("/login", (req, res) => {
           userFound.password = undefined;
           res.status(200).send({ user: userFound });
         } else {
-          res.status(200).send({ error: "Error validating password" });
+          res.status(200).send({ error: "Invalid username and password" });
         }
       } else {
         res
@@ -76,7 +76,9 @@ router.post("/signup", (req, res) => {
           " at " +
           Date.now()
       );
+      res.status(200).send({ error: "User already exists" });
     } else {
+      createdUser.password = undefined;
       res.status(200).send({ user: createdUser });
     }
   });
