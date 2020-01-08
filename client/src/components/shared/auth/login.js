@@ -2,9 +2,11 @@ import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { AuthContext } from "./authContext";
 import { AuthServices } from "../../../services/auth.service";
+import { NavContext } from "../navigation/navContext";
 
 function Login({ history }) {
   const context = useContext(AuthContext);
+  const navContext = useContext(NavContext);
   const [user, setUser] = useState({ username: "", password: "" });
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -13,6 +15,7 @@ function Login({ history }) {
   useEffect(() => {
     const checkState = history.location.state;
     if (!!checkState && checkState.error) {
+      navContext.setLocation(3);
       setErrorMsg(checkState.error);
       setShowError(true);
     }

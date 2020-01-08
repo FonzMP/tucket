@@ -3,11 +3,12 @@ import { Link, Redirect } from "react-router-dom";
 import "../../../assets/stylesheets/auth.scss";
 import { AuthContext } from "../auth/authContext";
 import { AuthServices } from "../../../services/auth.service";
+import { NavContext } from "./navContext";
 
 function Navbar() {
-  const [activeWindow, setActiveWindow] = useState(1);
   const [logout, setLogout] = useState(false);
   const context = useContext(AuthContext);
+  const navContext = useContext(NavContext);
 
   useEffect(() => {
     let currentPage;
@@ -26,12 +27,12 @@ function Navbar() {
         currentPage = 4;
         break;
     }
-    setActiveWindow(currentPage);
+    navContext.setLocation(currentPage);
   }, [context.user]);
 
   function clearUserDetails() {
     AuthServices.clearStorage();
-    setActiveWindow(1);
+    navContext.setLocation(1);
     setLogout(true);
     context.setUser({});
   }
@@ -43,16 +44,20 @@ function Navbar() {
           <Link
             to="/"
             key="/"
-            className={(activeWindow === 1 ? "active " : "") + "nav-link"}
-            onClick={() => setActiveWindow(1)}
+            className={
+              (navContext.location === 1 ? "active " : "") + "nav-link"
+            }
+            onClick={() => navContext.setLocation(1)}
           >
             Home
           </Link>
           <Link
             to="/projects"
             key="/projects"
-            className={(activeWindow === 2 ? "active " : "") + "nav-link"}
-            onClick={() => setActiveWindow(2)}
+            className={
+              (navContext.location === 2 ? "active " : "") + "nav-link"
+            }
+            onClick={() => navContext.setLocation(2)}
           >
             Projects
           </Link>
@@ -65,8 +70,10 @@ function Navbar() {
           ) : (
             <Link
               to="/login"
-              className={(activeWindow === 3 ? "active " : "") + "nav-link"}
-              onClick={() => setActiveWindow(3)}
+              className={
+                (navContext.location === 3 ? "active " : "") + "nav-link"
+              }
+              onClick={() => navContext.setLocation(3)}
             >
               Login
             </Link>
@@ -74,8 +81,10 @@ function Navbar() {
 
           <Link
             to="/signup"
-            className={(activeWindow === 4 ? "active " : "") + "nav-link"}
-            onClick={() => setActiveWindow(4)}
+            className={
+              (navContext.location === 4 ? "active " : "") + "nav-link"
+            }
+            onClick={() => navContext.setLocation(4)}
           >
             Signup
           </Link>

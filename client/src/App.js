@@ -14,6 +14,7 @@ import Home from "./components/shared/home";
 import Login from "./components/shared/auth/login";
 import Signup from "./components/shared/auth/signup";
 import { AuthContextProvider } from "./components/shared/auth/authContext";
+import { NavContextProvider } from "./components/shared/navigation/navContext";
 const ProjectRouting = lazy(() =>
   import("./components/project/ProjectRouting")
 );
@@ -25,15 +26,17 @@ class App extends Component {
         <AuthContextProvider>
           <Header />
           <div className="content-wrapper">
-            <Navbar />
-            <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <Route exact path="/" component={Home} />
-              <Suspense fallback={<div>Loading...</div>}>
-                <Route path="/projects" component={ProjectRouting} />
-              </Suspense>
-            </Switch>
+            <NavContextProvider>
+              <Navbar />
+              <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={Signup} />
+                <Route exact path="/" component={Home} />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Route path="/projects" component={ProjectRouting} />
+                </Suspense>
+              </Switch>
+            </NavContextProvider>
           </div>
           <Footer />
         </AuthContextProvider>
