@@ -58,6 +58,7 @@ router.get("/:id", function(req, res) {
   const id = req.params.id;
   Project.findOne({ _id: id })
     .populate("tickets")
+    .populate("owner")
     .exec((err, foundProject) => {
       if (err) {
         logger.log(
