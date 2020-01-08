@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
 import ProjectServices from "../../services/project.service";
 import { Redirect } from "react-router-dom";
 import Project from "../../models/project";
+import { AuthServices } from "../../services/auth.service";
 
 const p = PROJECTCONSTANTS;
 
@@ -16,6 +17,8 @@ function CreateProject() {
     enableSubmit(e);
   }
   function createProject() {
+    const user = AuthServices.getStorage();
+    project.owner = user._id;
     ProjectServices.createProject(project)
       .then(res => res.json())
       .then(response => setSuccessAdd(true))

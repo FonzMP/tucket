@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link, Switch } from "react-router-dom";
+import { Route, Link, Switch, Redirect } from "react-router-dom";
 
 import GetProject from "./getProject";
 import GetProjects from "./getProjects";
@@ -7,6 +7,7 @@ import CreateProject from "./createProject";
 import EditProject from "./editProject";
 import ViewTicket from "../ticket/viewTicket";
 import EditTicket from "../ticket/editTicket";
+import { AuthServices } from "../../services/auth.service";
 
 function ProjectRouting({ match, location }) {
   const [window, setWindow] = useState(1);
@@ -48,22 +49,45 @@ function ProjectRouting({ match, location }) {
               path={match.url + "/:projectId/tickets/:ticketId/edit"}
               component={EditTicket}
             />
-            <Route exact path={match.url + "/new"} component={CreateProject} />
+            <PrivateRoute path="/projects/new">
+              <CreateProject setWindow={setWindow} />
+            </PrivateRoute>
             <Route
               exact
               path={match.url + "/:projectId"}
               component={GetProject}
             />
-            <Route
-              exact
-              path={match.url + "/:projectId/edit"}
-              component={EditProject}
-            />
+            <PrivateRoute path={match.url + "/:projectId/edit"}>
+              <EditProject />
+            </PrivateRoute>
             <Route exact path={match.url} component={GetProjects} />
           </Switch>
         </div>
       </div>
     </span>
+  );
+}
+
+function PrivateRoute({ children, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        !!AuthServices.getStorage() ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: {
+                from: location,
+                error: "You must be logged in to do that"
+              }
+            }}
+          />
+        )
+      }
+    />
   );
 }
 

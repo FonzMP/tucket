@@ -1,14 +1,22 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { AuthContext } from "./authContext";
 import { AuthServices } from "../../../services/auth.service";
 
-function Login() {
+function Login({ history }) {
   const context = useContext(AuthContext);
   const [user, setUser] = useState({ username: "", password: "" });
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkState = history.location.state;
+    if (!!checkState && checkState.error) {
+      setErrorMsg(checkState.error);
+      setShowError(true);
+    }
+  }, []);
   function loginUser() {
     AuthServices.loginUser(user)
       .then(resp => resp.json())

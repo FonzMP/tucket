@@ -49,7 +49,9 @@ function GetProject({ match }) {
           <h1>
             <span>Project Name:</span> {project.name}
           </h1>
-          {!!project.owner.username && project.owner.username.length > 0 ? (
+          {!!project.owner &&
+          project.owner.username &&
+          project.owner.username.length > 0 ? (
             <h3>
               <span>Owner:</span> {project.owner.username}
             </h3>
