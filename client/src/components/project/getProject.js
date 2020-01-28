@@ -83,7 +83,7 @@ function GetProject({ match }) {
           </span>
           <Link
             className="mock-button"
-            to={`/projects/${match.params.projectId}/users/invite`}
+            to={`/projects/${match.params.projectId}/invite`}
           >
             Invite Member
           </Link>

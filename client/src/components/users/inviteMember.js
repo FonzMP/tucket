@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UserService from "../../services/user.service";
 
-function InviteMember() {
+function InviteMember({ match }) {
   const [userSearch, setUserSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
@@ -18,8 +18,27 @@ function InviteMember() {
 
   function renderResults() {
     return searchResults.map(user => {
-      return <div key={user._id}>{user.username}</div>;
+      return (
+        <div key={user._id}>
+          <span>{user.username}</span>
+          <button onClick={() => addUser(user._id)}>Add</button>
+        </div>
+      );
     });
+  }
+
+  function addUser(userId) {
+    let projectId = match.params.projectId;
+    UserService.inviteUserToProject(projectId, userId)
+      .then(resp => resp.json())
+      .then(response =>
+        console.log("successfully added user to the project ", response)
+      )
+      .catch(err =>
+        console.log(
+          "error adding user to project " + projectId + "with id " + userId
+        )
+      );
   }
   return (
     <div>
