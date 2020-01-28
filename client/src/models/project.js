@@ -2,5 +2,7 @@ export default class Project {
   name;
   description;
   tickets = [];
-  owner = [];
+  owner = {};
+  invited = [];
+  members = [];
 }

@@ -41,6 +41,10 @@ function GetProject({ match }) {
     });
   }
 
+  function inviteMember() {
+    console.log("inviting member");
+  }
+
   return (
     <div className="project-wrapper">
       {redirect ? <Redirect to="/projects" /> : null}
@@ -76,6 +80,9 @@ function GetProject({ match }) {
             onClick={() => setAddTicket(!addTicket)}
           >
             Add Ticket
+          </span>
+          <span className="mock-button" onClick={() => inviteMember()}>
+            Invite Member
           </span>
         </span>
       </span>
