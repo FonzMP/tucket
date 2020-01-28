@@ -211,10 +211,8 @@ router.post("/:id/invite/:userId", (req, res) => {
   const userId = req.params.userId;
   Project.findById(projectId, (err, foundProject) => {
     if (err) {
-      console.log("error adding user to project");
       logger.log("error", "error finding project with project id " + projectId);
     } else {
-      console.log("found project ", foundProject);
       if (!foundProject.invited.includes(userId)) {
         foundProject.invited.push(userId);
         if (foundProject.save()) {

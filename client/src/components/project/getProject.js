@@ -41,10 +41,6 @@ function GetProject({ match }) {
     });
   }
 
-  function inviteMember() {
-    console.log("inviting member");
-  }
-
   return (
     <div className="project-wrapper">
       {redirect ? <Redirect to="/projects" /> : null}
