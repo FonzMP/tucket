@@ -15,7 +15,6 @@ function EditProject({ match }) {
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
-    console.log("match ", match);
     ProjectServices.getProject(match.params.projectId)
       .then(resp => resp.json())
       .then(response => setUpdateProject(response.project))
