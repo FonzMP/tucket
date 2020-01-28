@@ -205,4 +205,34 @@ router.delete("/:id/tickets/:ticketId", function(req, res) {
   });
 });
 
+// Adds User to Project with :projectId and :userId
+router.post("/:id/invite/:userId", (req, res) => {
+  const projectId = req.params.id;
+  const userId = req.params.userId;
+  Project.findById(projectId, (err, foundProject) => {
+    if (err) {
+      logger.log("error", "error finding project with project id " + projectId);
+    } else {
+      if (!foundProject.invited.includes(userId)) {
+        foundProject.invited.push(userId);
+        if (foundProject.save()) {
+          res.status(200).send({ project: foundProject });
+        } else {
+          logger.log(
+            "error",
+            "error adding user to project " +
+              projectId +
+              " with user id " +
+              userId
+          );
+        }
+      } else {
+        res
+          .status(200)
+          .send({ error: "User is already invited to that project" });
+      }
+    }
+  });
+});
+
 module.exports = router;

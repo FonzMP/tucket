@@ -6,6 +6,7 @@ require("dotenv").config();
 
 const projects = require("./routes/projects");
 const auth = require("./routes/auth");
+const users = require("./routes/users");
 
 const app = express();
 const serverUrl = `mongodb://${process.env.mongoUser}:${process.env.mongoPassword}@ds255857.mlab.com:55857/tucket`;
@@ -18,6 +19,7 @@ app.use(
 app.use(bodyParser.json());
 app.use("/projects", projects);
 app.use("/auth", auth);
+app.use("/users", users);
 app.use(cors());
 
 // db connect configuration

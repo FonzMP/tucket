@@ -5,7 +5,9 @@ const projectSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: false },
   tickets: [{ type: Schema.Types.ObjectId, ref: "Ticket" }],
-  owner: { type: Schema.Types.ObjectId, ref: "User" }
+  owner: { type: Schema.Types.ObjectId, ref: "User" },
+  invited: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  members: [{ type: Schema.Types.ObjectId, ref: "User" }]
 });
 
 module.exports = mongoose.model("project", projectSchema);

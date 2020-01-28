@@ -8,6 +8,7 @@ import EditProject from "./editProject";
 import ViewTicket from "../ticket/viewTicket";
 import EditTicket from "../ticket/editTicket";
 import { AuthServices } from "../../services/auth.service";
+import InviteMember from "../users/inviteMember";
 
 function ProjectRouting({ match, location }) {
   const [window, setWindow] = useState(1);
@@ -49,17 +50,20 @@ function ProjectRouting({ match, location }) {
               path={match.url + "/:projectId/tickets/:ticketId/edit"}
               component={EditTicket}
             />
-            <PrivateRoute path="/projects/new">
-              <CreateProject setWindow={setWindow} />
-            </PrivateRoute>
+            <PrivateRoute path="/projects/new" component={CreateProject} />
             <Route
               exact
               path={match.url + "/:projectId"}
               component={GetProject}
             />
-            <PrivateRoute path={match.url + "/:projectId/edit"}>
-              <EditProject />
-            </PrivateRoute>
+            <PrivateRoute
+              path={match.url + "/:projectId/edit"}
+              component={EditProject}
+            />
+            <PrivateRoute
+              path={match.url + "/:projectId/invite"}
+              component={InviteMember}
+            />
             <Route exact path={match.url} component={GetProjects} />
           </Switch>
         </div>
@@ -68,19 +72,19 @@ function ProjectRouting({ match, location }) {
   );
 }
 
-function PrivateRoute({ children, ...rest }) {
+function PrivateRoute({ component: ChildComponent, ...rest }) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
+      render={props =>
         !!AuthServices.getStorage() ? (
-          children
+          <ChildComponent {...props} />
         ) : (
           <Redirect
             to={{
               pathname: "/login",
               state: {
-                from: location,
+                from: props.location,
                 error: "You must be logged in to do that"
               }
             }}
