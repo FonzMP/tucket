@@ -8,6 +8,7 @@ import EditProject from "./editProject";
 import ViewTicket from "../ticket/viewTicket";
 import EditTicket from "../ticket/editTicket";
 import { AuthServices } from "../../services/auth.service";
+import InviteMember from "../users/inviteMember";
 
 function ProjectRouting({ match, location }) {
   const [window, setWindow] = useState(1);
@@ -58,6 +59,10 @@ function ProjectRouting({ match, location }) {
             <PrivateRoute
               path={match.url + "/:projectId/edit"}
               component={EditProject}
+            />
+            <PrivateRoute
+              path={match.url + "/:projectId/users/invite"}
+              component={InviteMember}
             />
             <Route exact path={match.url} component={GetProjects} />
           </Switch>

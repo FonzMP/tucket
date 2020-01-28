@@ -48,4 +48,20 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/:username", (req, res) => {
+  User.find(
+    {
+      username: { $regex: new RegExp(req.params.username, "i") }
+    },
+    "username",
+    (err, userFound) => {
+      if (err) {
+        logger.log("error", "trouble locating all users " + err.message);
+      } else {
+        res.status(200).send({ users: userFound });
+      }
+    }
+  );
+});
+
 module.exports = router;

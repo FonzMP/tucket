@@ -81,9 +81,12 @@ function GetProject({ match }) {
           >
             Add Ticket
           </span>
-          <span className="mock-button" onClick={() => inviteMember()}>
+          <Link
+            className="mock-button"
+            to={`/projects/${match.params.projectId}/users/invite`}
+          >
             Invite Member
-          </span>
+          </Link>
         </span>
       </span>
       {addTicket ? (
