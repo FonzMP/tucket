@@ -5,6 +5,7 @@ const router = express.Router();
 const winston = require("winston");
 
 const User = require("../models/user");
+const Project = require("../models/project");
 
 router.use(cors());
 
@@ -62,6 +63,25 @@ router.get("/:username", (req, res) => {
       }
     }
   );
+});
+
+// Fetches user invites
+router.post("/:userId", (req, res) => {
+  const userId = req.params.userId;
+  Project.find({ invited: userId }, (err, projects) => {
+    if (err) {
+      logger.log(
+        "error",
+        "error locating project invites for user with id " + userId
+      );
+    } else {
+      logger.log(
+        "info",
+        "successfully located invites for user with id " + userId
+      );
+      res.status(200).send({ invites: projects });
+    }
+  });
 });
 
 module.exports = router;
