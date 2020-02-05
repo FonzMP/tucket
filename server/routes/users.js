@@ -65,21 +65,62 @@ router.get("/:username", (req, res) => {
   );
 });
 
-// Fetches user invites
-router.post("/:userId", (req, res) => {
+// Fetches user invites and projects
+router.post("/:userId/invites", (req, res) => {
   const userId = req.params.userId;
-  Project.find({ invited: userId }, (err, projects) => {
+  Project.find(
+    { $or: [{ invited: userId }, { members: userId }, { owner: userId }] },
+    (err, projects) => {
+      if (err) {
+        logger.log(
+          "error",
+          "error locating project project invites, members, or owner for user with id " +
+            userId
+        );
+      } else {
+        logger.log(
+          "info",
+          "successfully located invites, members and owner for user with id " +
+            userId
+        );
+        res.status(200).send({ projects: projects });
+      }
+    }
+  );
+});
+
+// User Accept/Decline Invite
+router.post("/:userId/invites/:projectId", (req, res) => {
+  console.log("hitting post for invite acceptance", req.params);
+  const didAccept = req.body.accepted;
+  const userId = req.params.userId;
+  const projectId = req.params.projectId;
+  Project.findById(projectId, (err, foundProject) => {
+    console.log("inside message");
     if (err) {
       logger.log(
         "error",
-        "error locating project invites for user with id " + userId
+        "error finding project with id " +
+          projectId +
+          " to remove user with id " +
+          userId
       );
     } else {
-      logger.log(
-        "info",
-        "successfully located invites for user with id " + userId
-      );
-      res.status(200).send({ invites: projects });
+      let userIndex = foundProject.invited.indexOf(userId);
+      foundProject.invited.splice(userIndex, 1);
+      logger.log("info", "removed user from invited array");
+      if (didAccept) {
+        foundProject.members.push(userId);
+        logger.log(
+          "info",
+          "user accepted invite and moved to members array with userId " +
+            userId +
+            " within project " +
+            projectId
+        );
+      }
+      foundProject.save();
+      res.status(200).send({ project: foundProject });
     }
   });
 });
