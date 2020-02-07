@@ -64,7 +64,7 @@ function ProjectRouting({ match, location }) {
               path={match.url + "/:projectId/invite"}
               component={InviteMember}
             />
-            <Route exact path={match.url} component={GetProjects} />
+            <PrivateRoute exact path={match.url} component={GetProjects} />
           </Switch>
         </div>
       </div>

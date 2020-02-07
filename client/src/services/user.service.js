@@ -1,6 +1,8 @@
 const UserService = {
   searchUsers,
-  inviteUserToProject
+  inviteUserToProject,
+  getUserInvites,
+  sendInviteResponse
 };
 
 function searchUsers(username) {
@@ -18,6 +20,25 @@ function inviteUserToProject(projectId, userId) {
     headers: {
       "Content-Type": "application/json"
     }
+  });
+}
+
+function getUserInvites(userId) {
+  return fetch(`http://localhost:4000/users/${userId}/invites`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+function sendInviteResponse(userId, projectId, didAccept) {
+  return fetch(`http://localhost:4000/users/${userId}/invites/${projectId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ accepted: didAccept })
   });
 }
 
