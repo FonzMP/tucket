@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PROJECTCONSTANTS from "../../_constants/ProjectConstants";
 import ProjectServices from "../../services/project.service";
 import { Redirect } from "react-router-dom";

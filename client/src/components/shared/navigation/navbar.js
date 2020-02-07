@@ -26,9 +26,12 @@ function Navbar() {
       case "/signup":
         currentPage = 4;
         break;
+      default:
+        currentPage = 1;
+        break;
     }
     navContext.setLocation(currentPage);
-  }, [context.user]);
+  }, [context.user, navContext]);
 
   function clearUserDetails() {
     AuthServices.clearStorage();

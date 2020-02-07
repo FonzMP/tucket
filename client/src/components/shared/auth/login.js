@@ -19,7 +19,7 @@ function Login({ history }) {
       setErrorMsg(checkState.error);
       setShowError(true);
     }
-  }, []);
+  }, [history.location.state, navContext]);
   function loginUser() {
     AuthServices.loginUser(user)
       .then(resp => resp.json())
