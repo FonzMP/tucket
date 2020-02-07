@@ -40,7 +40,10 @@ function Login({ history }) {
             AuthServices.setStorage(response.user);
           }
         })
-        .catch(err => console.log("error here in login", err));
+        .catch(err => {
+          setErrorMsg("Sorry, we had issues with our login, please try again");
+          setShowError(true);
+        });
     } else {
       setErrorMsg(
         "Username and password must be 8-14 chars and consist of letters and numbers only."
