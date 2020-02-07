@@ -13,7 +13,7 @@ function EditTicket({ match }) {
       .then(resp => resp.json())
       .then(response => setUpdateTicket(response.ticket))
       .catch(err => console.log("error getting ticket"));
-  }, []);
+  }, [match.params.projectId, match.params.ticketId]);
 
   function sendEdit() {
     ProjectServices.editTicket(match.params.projectId, updateTicket)

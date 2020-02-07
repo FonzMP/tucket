@@ -15,7 +15,7 @@ function ViewTicket({ match }) {
       .then(resp => resp.json())
       .then(response => setTicket(response.ticket))
       .catch(err => console.log("error getting ticket ", err));
-  }, []);
+  }, [match.params.projectId, match.params.ticketId]);
 
   function deleteTicket() {
     if (confirm) {

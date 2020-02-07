@@ -19,7 +19,7 @@ function EditProject({ match }) {
       .then(resp => resp.json())
       .then(response => setUpdateProject(response.project))
       .catch(err => console.log("error getting project"));
-  }, []);
+  }, [match.params.projectId]);
 
   function editProject() {
     ProjectServices.editProject(updateProject)
