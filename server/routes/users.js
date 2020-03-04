@@ -2,10 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const router = express.Router();
-const winston = require("winston");
 
 const User = require("../models/user");
 const Project = require("../models/project");
+const logger = require("../config/logger");
 
 router.use(cors());
 
@@ -15,35 +15,13 @@ router.use(
   })
 );
 
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.combine(
-    winston.format.json(),
-    winston.format.colorize({ all: true })
-  ),
-  defaultMeta: { service: "user-service" },
-  transports: [
-    new winston.transports.File({
-      filename: "./logs/error.log",
-      level: "error"
-    }),
-    new winston.transports.File({ filename: "./logs/combined.log" })
-  ]
-});
-
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple()
-    })
-  );
-}
-
 router.get("/", (req, res) => {
   User.find({}, "username", (err, allUsers) => {
     if (err) {
       logger.log("error", "trouble locating all users " + err.message);
+      res.status(200).send({ error: "Error locating all users" });
     } else {
+      logger.log("info", "sending back all users");
       res.status(200).send({ users: allUsers });
     }
   });
@@ -58,7 +36,14 @@ router.get("/:username", (req, res) => {
     (err, userFound) => {
       if (err) {
         logger.log("error", "trouble locating all users " + err.message);
+        res.status(200).send({
+          error: "Error locating user with username " + req.params.username
+        });
       } else {
+        logger.log(
+          "info",
+          "user located in DB of username " + userFound.username
+        );
         res.status(200).send({ users: userFound });
       }
     }
@@ -77,6 +62,12 @@ router.post("/:userId/invites", (req, res) => {
           "error locating project project invites, members, or owner for user with id " +
             userId
         );
+        res
+          .status(200)
+          .send({
+            error:
+              "Error locating project and all invited, members, and owner details"
+          });
       } else {
         logger.log(
           "info",
@@ -91,12 +82,10 @@ router.post("/:userId/invites", (req, res) => {
 
 // User Accept/Decline Invite
 router.post("/:userId/invites/:projectId", (req, res) => {
-  console.log("hitting post for invite acceptance", req.params);
   const didAccept = req.body.accepted;
   const userId = req.params.userId;
   const projectId = req.params.projectId;
   Project.findById(projectId, (err, foundProject) => {
-    console.log("inside message");
     if (err) {
       logger.log(
         "error",
@@ -105,6 +94,7 @@ router.post("/:userId/invites/:projectId", (req, res) => {
           " to remove user with id " +
           userId
       );
+      res.status(200).send({ error: "Error finding a project with that id" });
     } else {
       let userIndex = foundProject.invited.indexOf(userId);
       foundProject.invited.splice(userIndex, 1);

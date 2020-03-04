@@ -3,10 +3,10 @@ const express = require("express"),
   bodyParser = require("body-parser"),
   cors = require("cors"),
   router = express.Router(),
-  winston = require("winston"),
   saltRounds = parseInt(process.env.saltRounds);
 
 const User = require("../models/user");
+const logger = require("../config/logger");
 
 router.use(cors());
 
@@ -15,30 +15,6 @@ router.use(
     extended: true
   })
 );
-
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.combine(
-    winston.format.json(),
-    winston.format.colorize({ all: true })
-  ),
-  defaultMeta: { service: "user-service" },
-  transports: [
-    new winston.transports.File({
-      filename: "./logs/error.log",
-      level: "error"
-    }),
-    new winston.transports.File({ filename: "./logs/combined.log" })
-  ]
-});
-
-if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple()
-    })
-  );
-}
 
 router.post("/login", (req, res) => {
   User.findOne({ username: req.body.user.username }, (err, userFound) => {
@@ -51,11 +27,20 @@ router.post("/login", (req, res) => {
       if (!!userFound) {
         if (bcrypt.compareSync(req.body.user.password, userFound.password)) {
           userFound.password = undefined;
+          logger.log(
+            "info",
+            "returning found user after login " + userFound.username
+          );
           res.status(200).send({ user: userFound });
         } else {
+          logger.log("error", "invalid username and password combo");
           res.status(200).send({ error: "Invalid username and password" });
         }
       } else {
+        logger.log(
+          "error",
+          "error locating user with username " + req.body.user.username
+        );
         res
           .status(200)
           .send({ error: "Error locating a user with that username" });
@@ -79,6 +64,11 @@ router.post("/signup", (req, res) => {
       res.status(200).send({ error: "User already exists" });
     } else {
       createdUser.password = undefined;
+      logger.log(
+        "info",
+        "sending user back after creation with username " +
+          req.body.user.username
+      );
       res.status(200).send({ user: createdUser });
     }
   });
