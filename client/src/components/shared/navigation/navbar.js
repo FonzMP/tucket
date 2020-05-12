@@ -71,26 +71,27 @@ function Navbar() {
               Logout
             </span>
           ) : (
-            <Link
-              to="/login"
-              className={
-                (navContext.location === 3 ? "active " : "") + "nav-link"
-              }
-              onClick={() => navContext.setLocation(3)}
-            >
-              Login
-            </Link>
+            <span>
+              <Link
+                to="/login"
+                className={
+                  (navContext.location === 3 ? "active " : "") + "nav-link"
+                }
+                onClick={() => navContext.setLocation(3)}
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                className={
+                  (navContext.location === 4 ? "active " : "") + "nav-link"
+                }
+                onClick={() => navContext.setLocation(4)}
+              >
+                Signup
+              </Link>
+            </span>
           )}
-
-          <Link
-            to="/signup"
-            className={
-              (navContext.location === 4 ? "active " : "") + "nav-link"
-            }
-            onClick={() => navContext.setLocation(4)}
-          >
-            Signup
-          </Link>
         </span>
       </span>
     </div>
