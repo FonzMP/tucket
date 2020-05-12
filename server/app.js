@@ -23,7 +23,7 @@ app.use("/users", users);
 app.use(cors());
 
 // db connect configuration
-mongoose.connect(serverUrl, { useNewUrlParser: true }).catch(err => {
+mongoose.connect(serverUrl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }).catch(err => {
   console.log("server error on connect ", err);
 });
 mongoose.connection
@@ -31,7 +31,7 @@ mongoose.connection
     console.log("connected to the database");
   })
   .catch(err => {
-    console.log("error connecting ");
+    console.log("error connecting ", err);
   });
 
 app.listen(4000, () => {
