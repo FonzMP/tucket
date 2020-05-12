@@ -13,7 +13,7 @@ function InviteMember({ match }) {
 
   function search() {
     setErrorDisplay("");
-    if (userSearch.length == 0) {
+    if (userSearch.length === 0) {
       setSearchResults([]);
       return;
     }
@@ -21,7 +21,7 @@ function InviteMember({ match }) {
     UserService.searchUsers(userSearch.toLowerCase())
       .then(resp => resp.json())
       .then(resp => {
-        if (resp.users.length == 0) {
+        if (resp.users.length === 0) {
           setErrorDisplay("No users found");
         }
         setSearchResults(resp.users);
