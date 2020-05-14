@@ -2,6 +2,7 @@ const express = require("express"),
   bcrypt = require("bcrypt"),
   bodyParser = require("body-parser"),
   cors = require("cors"),
+  jwt = require('jsonwebtoken'),
   router = express.Router(),
   saltRounds = parseInt(process.env.saltRounds);
 
@@ -27,14 +28,18 @@ router.post("/login", (req, res) => {
       if (!!userFound) {
         if (bcrypt.compareSync(req.body.user.password, userFound.password)) {
           userFound.password = undefined;
-          logger.log(
-            "info",
-            "returning found user after login " + userFound.username
-          );
-          res.status(200).send({ user: userFound });
-        } else {
-          logger.log("error", "invalid username and password combo");
-          res.status(200).send({ error: "Invalid username and password" });
+          jwt.sign({ token: userFound.username }, process.env.jwt_secret, { expiresIn: 60 * 60 }, (err, token) => {
+            if (err) {
+              logger.log("error", "invalid username and password combo");
+              res.status(200).send({ error: "Invalid username and password" });
+            } else {
+              logger.log(
+                "info",
+                "returning found user after login " + userFound.username
+              );
+            }
+            res.status(200).send({ token: token, user: userFound });
+          })
         }
       } else {
         logger.log(
@@ -57,9 +62,9 @@ router.post("/signup", (req, res) => {
       logger.log(
         "error",
         "error creating new user with username " +
-          req.body.user.username +
-          " at " +
-          Date.now()
+        req.body.user.username +
+        " at " +
+        Date.now()
       );
       res.status(200).send({ error: "User already exists" });
     } else {
@@ -67,7 +72,7 @@ router.post("/signup", (req, res) => {
       logger.log(
         "info",
         "sending user back after creation with username " +
-          req.body.user.username
+        req.body.user.username
       );
       res.status(200).send({ user: createdUser });
     }

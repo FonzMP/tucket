@@ -27,7 +27,7 @@ function signupUser(user) {
 }
 
 function setStorage(userDetails) {
-  localStorage.setItem("tucketUser", JSON.stringify(userDetails));
+  localStorage.setItem("tucketUser", JSON.stringify({ user: userDetails.user, token: userDetails.token }));
 }
 
 function clearStorage() {

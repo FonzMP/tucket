@@ -1,7 +1,8 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const router = express.Router();
+const express = require("express"),
+  bodyParser = require("body-parser"),
+  jwtMiddleware = require('../middleware/jwt_middleware'),
+  cors = require("cors"),
+  router = express.Router();
 
 const Project = require("../models/project");
 const Ticket = require("../models/ticket");
@@ -16,8 +17,8 @@ router.use(
 );
 
 // Gets all projects
-router.get("/", function(req, res) {
-  Project.find({}, function(err, allProjects) {
+router.get("/", [jwtMiddleware.validateToken], function (req, res) {
+  Project.find({}, function (err, allProjects) {
     if (err) {
       logger.log(
         "error",
@@ -32,7 +33,7 @@ router.get("/", function(req, res) {
 });
 
 // Gets Project with associated id and returns project and tickets
-router.get("/:id", function(req, res) {
+router.get("/:id", [jwtMiddleware.validateToken], function (req, res) {
   const id = req.params.id;
   Project.findOne({ _id: id })
     .populate("tickets")
@@ -42,9 +43,9 @@ router.get("/:id", function(req, res) {
         logger.log(
           "error",
           "error gathering tickets for project with id: " +
-            id +
-            " by error " +
-            err.message
+          id +
+          " by error " +
+          err.message
         );
         res.status(200).send({ error: "Cannot find project" });
       } else {
@@ -55,7 +56,7 @@ router.get("/:id", function(req, res) {
 });
 
 // Adds new project to the system
-router.post("/new", function(req, res) {
+router.post("/new", [jwtMiddleware.validateToken], function (req, res) {
   const project = req.body.project;
   Project.create(project, (err, successProject) => {
     if (err) {
@@ -72,7 +73,7 @@ router.post("/new", function(req, res) {
 });
 
 // Edits a project with id of :id
-router.put("/:id", function(req, res) {
+router.put("/:id", [jwtMiddleware.validateToken], function (req, res) {
   const id = req.params.id;
   const newProject = req.body.project;
   Project.findByIdAndUpdate(id, newProject, (err, projectUpdated) => {
@@ -80,9 +81,9 @@ router.put("/:id", function(req, res) {
       logger.log(
         "error",
         "error in project update for project id: " +
-          id +
-          " of error: " +
-          err.message
+        id +
+        " of error: " +
+        err.message
       );
       res.status(200).send({ error: "Cannot edit project with id " + id });
     } else {
@@ -93,9 +94,9 @@ router.put("/:id", function(req, res) {
 });
 
 // Deletes project with id of :id
-router.delete("/:id", function(req, res) {
+router.delete("/:id", [jwtMiddleware.validateToken], function (req, res) {
   const id = req.params.id;
-  Project.findByIdAndDelete(id, function(err, projectFound) {
+  Project.findByIdAndDelete(id, function (err, projectFound) {
     if (err) {
       logger.log(
         "error",
@@ -112,16 +113,16 @@ router.delete("/:id", function(req, res) {
 });
 
 // Adds ticket to current project with id :projectId
-router.post("/:projectId/tickets/new", function(req, res) {
+router.post("/:projectId/tickets/new", [jwtMiddleware.validateToken], function (req, res) {
   const projectId = req.params.projectId;
-  Project.findById(projectId, function(err, projectFound) {
+  Project.findById(projectId, function (err, projectFound) {
     if (err) {
       logger.log(
         "error",
         "error in adding ticket to the project with project id: " +
-          id +
-          " of error: " +
-          err.message
+        id +
+        " of error: " +
+        err.message
       );
       res.status(200).send({
         error: "Error creating ticket for project with id " + projectId
@@ -137,9 +138,9 @@ router.post("/:projectId/tickets/new", function(req, res) {
           logger.log(
             "info",
             "added new ticket to project " +
-              projectId +
-              " with id " +
-              newTicket._id
+            projectId +
+            " with id " +
+            newTicket._id
           );
           if (projectFound.save()) {
             Project.findById(projectId)
@@ -157,9 +158,9 @@ router.post("/:projectId/tickets/new", function(req, res) {
                   logger.log(
                     "info",
                     "Created new ticket with id " +
-                      newTicket._id +
-                      " inside project with id " +
-                      returnProject._id
+                    newTicket._id +
+                    " inside project with id " +
+                    returnProject._id
                   );
                   res.status(200).send({ project: returnProject });
                 }
@@ -172,7 +173,7 @@ router.post("/:projectId/tickets/new", function(req, res) {
 });
 
 // Fetches ticket from project :id with ticket id of :ticketId
-router.get("/:id/tickets/:ticketId", (req, res) => {
+router.get("/:id/tickets/:ticketId", [jwtMiddleware.validateToken], (req, res) => {
   Ticket.findById(req.params.ticketId, (err, foundTicket) => {
     if (err) {
       logger.log(
@@ -193,7 +194,7 @@ router.get("/:id/tickets/:ticketId", (req, res) => {
 });
 
 // Edits ticket of ticket id :ticketId
-router.put("/:projectId/tickets/:ticketId", (req, res) => {
+router.put("/:projectId/tickets/:ticketId", [jwtMiddleware.validateToken], (req, res) => {
   Ticket.findByIdAndUpdate(
     req.params.ticketId,
     req.body.ticket,
@@ -215,7 +216,7 @@ router.put("/:projectId/tickets/:ticketId", (req, res) => {
 });
 
 // Deletes ticket with id :ticketId from project :id
-router.delete("/:id/tickets/:ticketId", function(req, res) {
+router.delete("/:id/tickets/:ticketId", [jwtMiddleware.validateToken], function (req, res) {
   const ticketId = req.params.ticketId;
   Ticket.deleteOne({ _id: ticketId }, (err, success) => {
     if (err) {
@@ -229,7 +230,7 @@ router.delete("/:id/tickets/:ticketId", function(req, res) {
 });
 
 // Adds User to Project with :projectId and :userId
-router.post("/:id/invite/:userId", (req, res) => {
+router.post("/:id/invite/:userId", [jwtMiddleware.validateToken], (req, res) => {
   const projectId = req.params.id;
   const userId = req.params.userId;
   Project.findById(projectId, (err, foundProject) => {
@@ -243,18 +244,18 @@ router.post("/:id/invite/:userId", (req, res) => {
           logger.log(
             "info",
             "found project and invited user with project id " +
-              foundProject._id +
-              " with user ID " +
-              userId
+            foundProject._id +
+            " with user ID " +
+            userId
           );
           res.status(200).send({ project: foundProject });
         } else {
           logger.log(
             "error",
             "error adding user to project " +
-              projectId +
-              " with user id " +
-              userId
+            projectId +
+            " with user id " +
+            userId
           );
           res
             .status(200)
@@ -264,10 +265,10 @@ router.post("/:id/invite/:userId", (req, res) => {
         logger.log(
           "info",
           "User with id " +
-            userId +
-            " inside project " +
-            projectId +
-            " is already in invites"
+          userId +
+          " inside project " +
+          projectId +
+          " is already in invites"
         );
         res
           .status(200)

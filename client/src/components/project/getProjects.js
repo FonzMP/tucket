@@ -7,33 +7,35 @@ function GetProjects() {
   const [userInvites, setUserInvites] = useState([]);
   const [userMembers, setUserMembers] = useState([]);
   const [refreshProjects, setRefreshProjects] = useState(false);
-  let { _id } = AuthServices.getStorage();
+  const { user, token } = AuthServices.getStorage();
 
   useEffect(() => {
     let invites = [];
     let members = [];
-    UserService.getUserInvites(_id)
-      .then(resp => resp.json())
-      .then(response => {
-        response.projects.map(project => {
-          if (project.invited.includes(_id)) {
-            invites.push(project);
-          } else {
-            members.push(project);
-          }
+    if (!!user._id) {
+      UserService.getUserInvites(user._id)
+        .then(resp => resp.json())
+        .then(response => {
+          response.projects.map(project => {
+            if (project.invited.includes(user._id)) {
+              invites.push(project);
+            } else {
+              members.push(project);
+            }
+          });
+          setUserMembers(members);
+          setUserInvites(invites);
+          setRefreshProjects(false);
+        })
+        .catch(err => {
+          console.log("error getting user invites ", err);
+          setRefreshProjects(false);
         });
-        setUserMembers(members);
-        setUserInvites(invites);
-        setRefreshProjects(false);
-      })
-      .catch(err => {
-        console.log("error getting user invites ", err);
-        setRefreshProjects(false);
-      });
-  }, [refreshProjects]);
+    }
+  }, [refreshProjects, user._id, token]);
 
   function sendInvResponse(projectId, didAccept) {
-    UserService.sendInviteResponse(_id, projectId, didAccept)
+    UserService.sendInviteResponse(user._id, projectId, didAccept)
       .then(resp => resp.json())
       .then(response => setRefreshProjects(true))
       .catch(err => console.log("error sending invite response"));

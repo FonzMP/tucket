@@ -1,3 +1,5 @@
+import { AuthServices } from "./auth.service";
+
 const ProjectServices = {
   getProject,
   getProjects,
@@ -9,23 +11,37 @@ const ProjectServices = {
   editTicket,
   deleteTicket
 };
+const { token } = AuthServices.getStorage();
 
 // Fetch all projects
 function getProjects() {
-  return fetch("http://localhost:4000/projects", { method: "GET" });
+  return fetch("http://localhost:4000/projects", {
+    method: "GET", headers: {
+      "content-type": "application/json",
+      "Authorization": token
+    }
+  });
 }
 
 // Get Project with id of :projectId
 function getProject(projectId) {
-  return fetch(`http://localhost:4000/projects/${projectId}`);
+  return fetch(`http://localhost:4000/projects/${projectId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token
+    }
+  });
 }
+
 
 // Create Project
 function createProject(project) {
   return fetch("http://localhost:4000/projects/new", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": token
     },
     body: JSON.stringify({ project })
   });
@@ -36,7 +52,8 @@ function editProject(project) {
   return fetch(`http://localhost:4000/projects/${project._id}`, {
     method: "PUT",
     headers: {
-      "Content-type": "application/json"
+      "Content-type": "application/json",
+      "Authorization": token
     },
     body: JSON.stringify({ project })
   });
@@ -45,7 +62,11 @@ function editProject(project) {
 // Deletes project with id of :projectId
 function deleteProject(projectId) {
   return fetch(`http://localhost:4000/projects/${projectId}`, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+      "Authorization": token
+    }
   });
 }
 
@@ -53,7 +74,13 @@ function deleteProject(projectId) {
 function getTicket(projectId, ticketId) {
   return fetch(
     `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
-    { method: "GET" }
+    {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+        "Authorization": token
+      }
+    }
   );
 }
 
@@ -62,7 +89,8 @@ function addTicket(projectId, ticket) {
   return fetch(`http://localhost:4000/projects/${projectId}/tickets/new`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": token
     },
     body: JSON.stringify({ ticket: ticket })
   });
@@ -75,7 +103,8 @@ function editTicket(projectId, ticket) {
     {
       method: "PUT",
       headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        "Authorization": token
       },
       body: JSON.stringify({ ticket })
     }
@@ -87,7 +116,11 @@ function deleteTicket(projectId, ticketId) {
   return fetch(
     `http://localhost:4000/projects/${projectId}/tickets/${ticketId}`,
     {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        "Authorization": token
+      }
     }
   );
 }

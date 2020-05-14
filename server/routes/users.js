@@ -1,7 +1,8 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const router = express.Router();
+const express = require("express"),
+  bodyParser = require("body-parser"),
+  cors = require("cors"),
+  jwtMiddleware = require('../middleware/jwt_middleware'),
+  router = express.Router();
 
 const User = require("../models/user");
 const Project = require("../models/project");
@@ -15,7 +16,7 @@ router.use(
   })
 );
 
-router.get("/", (req, res) => {
+router.get("/", [jwtMiddleware.validateToken], (req, res) => {
   User.find({}, "username", (err, allUsers) => {
     if (err) {
       logger.log("error", "trouble locating all users " + err.message);
@@ -27,7 +28,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.get("/:username", (req, res) => {
+router.get("/:username", [jwtMiddleware.validateToken], (req, res) => {
   User.find(
     {
       username: { $regex: new RegExp(req.params.username, "i") }
@@ -51,7 +52,7 @@ router.get("/:username", (req, res) => {
 });
 
 // Fetches user invites and projects
-router.post("/:userId/invites", (req, res) => {
+router.post("/:userId/invites", [jwtMiddleware.validateToken], (req, res) => {
   const userId = req.params.userId;
   Project.find(
     { $or: [{ invited: userId }, { members: userId }, { owner: userId }] },
@@ -60,7 +61,7 @@ router.post("/:userId/invites", (req, res) => {
         logger.log(
           "error",
           "error locating project project invites, members, or owner for user with id " +
-            userId
+          userId
         );
         res
           .status(200)
@@ -72,7 +73,7 @@ router.post("/:userId/invites", (req, res) => {
         logger.log(
           "info",
           "successfully located invites, members and owner for user with id " +
-            userId
+          userId
         );
         res.status(200).send({ projects: projects });
       }
@@ -81,7 +82,7 @@ router.post("/:userId/invites", (req, res) => {
 });
 
 // User Accept/Decline Invite
-router.post("/:userId/invites/:projectId", (req, res) => {
+router.post("/:userId/invites/:projectId", [jwtMiddleware.validateToken], (req, res) => {
   const didAccept = req.body.accepted;
   const userId = req.params.userId;
   const projectId = req.params.projectId;
@@ -90,9 +91,9 @@ router.post("/:userId/invites/:projectId", (req, res) => {
       logger.log(
         "error",
         "error finding project with id " +
-          projectId +
-          " to remove user with id " +
-          userId
+        projectId +
+        " to remove user with id " +
+        userId
       );
       res.status(200).send({ error: "Error finding a project with that id" });
     } else {
@@ -104,9 +105,9 @@ router.post("/:userId/invites/:projectId", (req, res) => {
         logger.log(
           "info",
           "user accepted invite and moved to members array with userId " +
-            userId +
-            " within project " +
-            projectId
+          userId +
+          " within project " +
+          projectId
         );
       }
       foundProject.save();

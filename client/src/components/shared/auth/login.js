@@ -12,7 +12,7 @@ function Login({ history }) {
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const tester = new RegExp(/^[a-zA-Z0-9]{8,14}$/);
+  const tester = new RegExp(/^[a-zA-Z0-9]{6,14}$/);
 
   useEffect(() => {
     const checkState = history.location.state;
@@ -37,7 +37,7 @@ function Login({ history }) {
           } else {
             setLoggedIn(true);
             context.setUser(response.user);
-            AuthServices.setStorage(response.user);
+            AuthServices.setStorage(response);
           }
         })
         .catch(err => {
