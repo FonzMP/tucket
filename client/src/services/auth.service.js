@@ -3,16 +3,17 @@ export const AuthServices = {
   signupUser,
   setStorage,
   clearStorage,
-  getStorage
+  getStorage,
+  getToken,
 };
 
 function loginUser(user) {
   return fetch("http://localhost:4000/auth/login", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ user })
+    body: JSON.stringify({ user }),
   });
 }
 
@@ -20,14 +21,17 @@ function signupUser(user) {
   return fetch("http://localhost:4000/auth/signup", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ user })
+    body: JSON.stringify({ user }),
   });
 }
 
 function setStorage(userDetails) {
-  localStorage.setItem("tucketUser", JSON.stringify({ user: userDetails.user, token: userDetails.token }));
+  localStorage.setItem(
+    "tucketUser",
+    JSON.stringify({ user: userDetails.user, token: userDetails.token })
+  );
 }
 
 function clearStorage() {
@@ -35,5 +39,17 @@ function clearStorage() {
 }
 
 function getStorage() {
-  return JSON.parse(localStorage.getItem("tucketUser"));
+  const tucketUser = JSON.parse(localStorage.getItem("tucketUser"));
+  if (!!tucketUser) {
+    return tucketUser;
+  }
+  return null;
+}
+
+function getToken() {
+  const { token } = AuthServices.getStorage();
+  if (!!token) {
+    return token;
+  }
+  return null;
 }

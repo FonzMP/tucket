@@ -35,9 +35,9 @@ function Login({ history }) {
             setShowError(true);
             setUser(initialLogin);
           } else {
+            AuthServices.setStorage(response);
             setLoggedIn(true);
             context.setUser(response.user);
-            AuthServices.setStorage(response);
           }
         })
         .catch(err => {
