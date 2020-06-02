@@ -10,11 +10,15 @@ function CreateTicket({ project, removeCreate }) {
   const [useProject] = useState(project);
   const [ticket, setTicket] = useState(new Ticket());
 
+  function handleOnChange(e) {
+    setTicket({ ...ticket, [e.target.name]: e.target.value });
+  }
+
   function createNewTicket() {
     TicketServices.createTicket(useProject, ticket)
-      .then(resp => resp.json())
-      .then(response => removeCreate())
-      .catch(err => console.log("error creating ticket"));
+      .then((resp) => resp.json())
+      .then((response) => removeCreate())
+      .catch((err) => console.log("error creating ticket"));
   }
   return (
     <div className="create-ticket-container">
@@ -27,9 +31,7 @@ function CreateTicket({ project, removeCreate }) {
             value={ticket.title}
             name="title"
             autoComplete="off"
-            onChange={e =>
-              setTicket({ ...ticket, [e.target.name]: e.target.value })
-            }
+            onChange={(e) => handleOnChange(e)}
             placeholder={t.TITLEPLACE}
           />
         </label>
@@ -44,9 +46,7 @@ function CreateTicket({ project, removeCreate }) {
             rows="5"
             value={ticket.description}
             name="description"
-            onChange={e =>
-              setTicket({ ...ticket, [e.target.name]: e.target.value })
-            }
+            onChange={(e) => handleOnChange(e)}
             placeholder={t.DESCPLACE}
           />
         </label>

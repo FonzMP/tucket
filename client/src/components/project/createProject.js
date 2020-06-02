@@ -17,12 +17,12 @@ function CreateProject() {
     enableSubmit(e);
   }
   function createProject() {
-    const user = AuthServices.getStorage();
-    project.owner = user._id;
+    const tucketUser = AuthServices.getStorage();
+    project.owner = tucketUser.user._id;
     ProjectServices.createProject(project)
-      .then(res => res.json())
-      .then(response => setSuccessAdd(true))
-      .catch(err => console.log("error creating new project"));
+      .then((res) => res.json())
+      .then((response) => setSuccessAdd(true))
+      .catch((err) => console.log("error creating new project"));
   }
 
   function enableSubmit(e) {
@@ -43,7 +43,7 @@ function CreateProject() {
           name="name"
           type="text"
           value={project.projName}
-          onChange={e => handleOnChange(e)}
+          onChange={(e) => handleOnChange(e)}
           placeholder={p.NAME_PLACE}
         />
         <label htmlFor="description">Description:</label>
@@ -53,7 +53,7 @@ function CreateProject() {
           name="description"
           type="text"
           value={project.description}
-          onChange={e => handleOnChange(e)}
+          onChange={(e) => handleOnChange(e)}
           placeholder="Description"
           rows="5"
         />
