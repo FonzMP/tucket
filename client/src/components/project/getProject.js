@@ -24,6 +24,9 @@ function GetProject({ match }) {
         if (!!response.error) {
           setMessage(response.error);
           setShowError(true);
+        } else if (!response.success) {
+          setMessage("Sorry, there seems to have been an error.");
+          setShowError(true);
         } else {
           setProject(response.project);
           setDeletedTicket(false);
