@@ -47,9 +47,9 @@ function getStorage() {
 }
 
 function getToken() {
-  const { token } = AuthServices.getStorage();
-  if (!!token) {
-    return token;
+  const user = AuthServices.getStorage();
+  if (user && user.token) {
+    return user.token;
   }
   return null;
 }
