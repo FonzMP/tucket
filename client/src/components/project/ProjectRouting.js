@@ -40,18 +40,18 @@ function ProjectRouting({ match, location }) {
         </div>
         <div className="project-container">
           <Switch>
-            <Route
+            <PrivateRoute
               exact
               path={match.url + "/:projectId/tickets/:ticketId"}
               component={ViewTicket}
             />
-            <Route
+            <PrivateRoute
               exact
               path={match.url + "/:projectId/tickets/:ticketId/edit"}
               component={EditTicket}
             />
             <PrivateRoute path="/projects/new" component={CreateProject} />
-            <Route
+            <PrivateRoute
               exact
               path={match.url + "/:projectId"}
               component={GetProject}
@@ -76,7 +76,7 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
   return (
     <Route
       {...rest}
-      render={props =>
+      render={(props) =>
         !!AuthServices.getStorage() ? (
           <ChildComponent {...props} />
         ) : (
@@ -85,8 +85,8 @@ function PrivateRoute({ component: ChildComponent, ...rest }) {
               pathname: "/login",
               state: {
                 from: props.location,
-                error: "You must be logged in to do that"
-              }
+                error: "You must be logged in to do that",
+              },
             }}
           />
         )
