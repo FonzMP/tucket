@@ -41,59 +41,62 @@ function Navbar() {
   }
   return (
     <div className="navbar">
-      {logout ? <Redirect to="/" /> : null}
-      <span className="projectButtonWrap">
-        <span>
-          <Link
-            to="/"
-            key="/"
-            className={
-              (navContext.location === 1 ? "active " : "") + "nav-link"
-            }
-            onClick={() => navContext.setLocation(1)}
-          >
-            Home
-          </Link>
-          <Link
-            to="/projects"
-            key="/projects"
-            className={
-              (navContext.location === 2 ? "active " : "") + "nav-link"
-            }
-            onClick={() => navContext.setLocation(2)}
-          >
-            Projects
-          </Link>
+      {logout ? (
+        <Redirect to="/" />
+      ) : (
+        <span className="projectButtonWrap">
+          <span>
+            <Link
+              to="/"
+              key="/"
+              className={
+                (navContext.location === 1 ? "active " : "") + "nav-link"
+              }
+              onClick={() => navContext.setLocation(1)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/projects"
+              key="/projects"
+              className={
+                (navContext.location === 2 ? "active " : "") + "nav-link"
+              }
+              onClick={() => navContext.setLocation(2)}
+            >
+              Projects
+            </Link>
+          </span>
+          <span>
+            {!!context.user.username ? (
+              <span className="nav-link" onClick={() => clearUserDetails()}>
+                Logout
+              </span>
+            ) : (
+              <span>
+                <Link
+                  to="/login"
+                  className={
+                    (navContext.location === 3 ? "active " : "") + "nav-link"
+                  }
+                  onClick={() => navContext.setLocation(3)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className={
+                    (navContext.location === 4 ? "active " : "") + "nav-link"
+                  }
+                  onClick={() => navContext.setLocation(4)}
+                >
+                  Signup
+                </Link>
+              </span>
+            )}
+          </span>
         </span>
-        <span>
-          {!!context.user.username ? (
-            <span className="nav-link" onClick={() => clearUserDetails()}>
-              Logout
-            </span>
-          ) : (
-            <span>
-              <Link
-                to="/login"
-                className={
-                  (navContext.location === 3 ? "active " : "") + "nav-link"
-                }
-                onClick={() => navContext.setLocation(3)}
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className={
-                  (navContext.location === 4 ? "active " : "") + "nav-link"
-                }
-                onClick={() => navContext.setLocation(4)}
-              >
-                Signup
-              </Link>
-            </span>
-          )}
-        </span>
-      </span>
+      )}
     </div>
   );
 }

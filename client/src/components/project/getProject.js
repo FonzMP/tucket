@@ -5,7 +5,9 @@ import CreateTicket from "../ticket/createTicket";
 import AlertModal from "../shared/alertModal";
 import GetTicket from "../ticket/getTicket";
 import ProjectServices from "../../services/project.service";
+import UserService from "../../services/user.service";
 import { Redirect, Link } from "react-router-dom";
+import { AuthServices } from "../../services/auth.service";
 
 function GetProject({ match }) {
   const [message, setMessage] = useState("");
@@ -16,15 +18,18 @@ function GetProject({ match }) {
   const [deletedTicket, setDeletedTicket] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [addTicket, setAddTicket] = useState(false);
+  const [refreshProjects, setRefreshProjects] = useState(false);
+  const [userId, setUserId] = useState();
 
   useEffect(() => {
     ProjectServices.getProject(match.params.projectId)
       .then((resp) => resp.json())
       .then((response) => {
+        setUserId(AuthServices.getUserID());
         if (!!response.error) {
           setMessage(response.error);
           setShowError(true);
-        } else if (!response.success) {
+        } else if (!!response.success && !response.success) {
           setMessage("Sorry, there seems to have been an error.");
           setShowError(true);
         } else {
@@ -32,7 +37,7 @@ function GetProject({ match }) {
           setDeletedTicket(false);
         }
       });
-  }, [addTicket, deletedTicket, match]);
+  }, [refreshProjects, addTicket, deletedTicket, match]);
 
   function deleteProject() {
     if (!confirm) {
@@ -62,6 +67,15 @@ function GetProject({ match }) {
         />
       );
     });
+  }
+
+  function sendInvResponse(projectId, didAccept) {
+    const id = AuthServices.getUserID();
+    UserService.sendInviteResponse(id, projectId, didAccept)
+      .then((resp) => resp.json())
+      .then((response) => setRefreshProjects(true))
+      .catch((err) => console.log("error sending invite response"));
+    console.log("accepted ", didAccept);
   }
 
   return (
@@ -135,6 +149,23 @@ function GetProject({ match }) {
             </span>
           ) : null}
           {displayTickets()}
+          {project.invited.includes(userId) ? (
+            <div>
+              <div>Invite accept?</div>
+              <span
+                className="mock-button"
+                onClick={() => sendInvResponse(project._id, true)}
+              >
+                Accept
+              </span>
+              <span
+                className="mock-button"
+                onClick={() => sendInvResponse(project._id, false)}
+              >
+                Decline
+              </span>
+            </div>
+          ) : null}
         </div>
       )}
     </div>

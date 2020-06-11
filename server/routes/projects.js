@@ -62,11 +62,13 @@ router.get("/:id", [jwtMiddleware.validateToken], (req, res) => {
             if (user._id.toString() == foundProject.owner._id.toString()) {
               found = true;
             }
-            foundProject.members.map((member) => {
-              if (member._id.toString() === user._id.toString()) {
-                found = true;
-              }
-            });
+            console.log("is member ", foundProject);
+            if (foundProject.members.includes(user._id.toString())) {
+              found = true;
+            }
+            if (foundProject.invited.includes(user._id.toString())) {
+              found = true;
+            }
             if (!found) {
               logger.log(
                 "info",

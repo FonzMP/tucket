@@ -5,6 +5,7 @@ export const AuthServices = {
   clearStorage,
   getStorage,
   getToken,
+  getUserID,
 };
 
 function loginUser(user) {
@@ -50,6 +51,14 @@ function getToken() {
   const user = AuthServices.getStorage();
   if (user && user.token) {
     return user.token;
+  }
+  return null;
+}
+
+function getUserID() {
+  const { user } = AuthServices.getStorage();
+  if (user && user._id) {
+    return user._id;
   }
   return null;
 }
