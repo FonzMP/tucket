@@ -9,27 +9,39 @@ function Signup() {
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const tester = new RegExp(/^[a-zA-Z0-9]{6,14}$/);
 
   function signupUser() {
-    AuthServices.signupUser(user)
-      .then(resp => resp.json())
-      .then(response => {
-        if (!!response.error) {
-          setErrorMsg(response.error);
-          setShowError(true);
-        } else {
-          setLoggedIn(true);
-          context.setUser(response.user);
-          AuthServices.setStorage(response.user);
-        }
-      })
-      .catch(err => console.log("error on signup ", err));
+    if (
+      (user.username.match(tester) && user.password.match(tester)) ||
+      user.username.toLowerCase() === process.env.REACT_APP_ADMIN_USERNAME
+    ) {
+      AuthServices.signupUser(user)
+        .then((resp) => resp.json())
+        .then((response) => {
+          if (!!response.error) {
+            setErrorMsg(response.error);
+            setShowError(true);
+          } else {
+            context.setUser(response.user);
+            context.setToken(response.token);
+            AuthServices.setStorage(response);
+            setLoggedIn(true);
+          }
+        })
+        .catch((err) => console.log("error on signup ", err));
+    } else {
+      setErrorMsg(
+        "Please input a valid username. (6 - 14 characters with numbers and letters only)"
+      );
+      setShowError(true);
+    }
   }
 
   function handleOnChange(e) {
     if (
-      user.username.length > 0 &&
-      user.password.length > 0 &&
+      user.username.length > 5 &&
+      user.password.length > 5 &&
       e.key === "Enter"
     ) {
       signupUser();
@@ -44,12 +56,16 @@ function Signup() {
       <div className="modal-content">
         <h1>Signup</h1>
         <label htmlFor="username">Username:</label>
-        <input type="text" name="username" onKeyDown={e => handleOnChange(e)} />
+        <input
+          type="text"
+          name="username"
+          onKeyDown={(e) => handleOnChange(e)}
+        />
         <label htmlFor="password">Password:</label>
         <input
           type="password"
           name="password"
-          onKeyDown={e => handleOnChange(e)}
+          onKeyDown={(e) => handleOnChange(e)}
         />
         <div className="mock-button" onClick={() => signupUser()}>
           Signup

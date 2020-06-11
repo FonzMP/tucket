@@ -29,10 +29,7 @@ function signupUser(user) {
 }
 
 function setStorage(userDetails) {
-  localStorage.setItem(
-    "tucketUser",
-    JSON.stringify({ user: userDetails.user, token: userDetails.token })
-  );
+  localStorage.setItem("tucketUser", JSON.stringify(userDetails));
 }
 
 function clearStorage() {
@@ -41,6 +38,7 @@ function clearStorage() {
 
 function getStorage() {
   const tucketUser = JSON.parse(localStorage.getItem("tucketUser"));
+  console.log("tucket user ", tucketUser);
   if (!!tucketUser) {
     return tucketUser;
   }

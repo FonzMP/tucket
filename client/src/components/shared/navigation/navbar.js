@@ -69,7 +69,7 @@ function Navbar() {
             </Link>
           </span>
           <span>
-            {!!context.user.username ? (
+            {!!context.user && !!context.user.username ? (
               <span className="nav-link" onClick={() => clearUserDetails()}>
                 Logout
               </span>

@@ -12,7 +12,7 @@ function Header() {
         </Link>
       </span>
       <span>
-        {!!context.user.username ? (
+        {!!context.user && !!context.user.username ? (
           <h5>Logged in as: {context.user.username.toUpperCase()}</h5>
         ) : null}
       </span>

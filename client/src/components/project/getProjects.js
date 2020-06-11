@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthServices } from "../../services/auth.service";
 import UserService from "../../services/user.service";
+import { AuthContext } from "../shared/auth/authContext";
 
 function GetProjects() {
   const [userInvites, setUserInvites] = useState([]);
   const [userMembers, setUserMembers] = useState([]);
   const [refreshProjects, setRefreshProjects] = useState(false);
-  const { user, token } = AuthServices.getStorage();
+  const context = useContext(AuthContext);
 
   useEffect(() => {
     let invites = [];
     let members = [];
-    if (!!user._id) {
-      UserService.getUserInvites(user._id)
-        .then(resp => resp.json())
-        .then(response => {
-          response.projects.map(project => {
-            if (project.invited.includes(user._id)) {
+    if (!!context.user._id) {
+      UserService.getUserInvites(context.user._id)
+        .then((resp) => resp.json())
+        .then((response) => {
+          response.projects.map((project) => {
+            if (project.invited.includes(context.user._id)) {
               invites.push(project);
             } else {
               members.push(project);
@@ -27,22 +28,21 @@ function GetProjects() {
           setUserInvites(invites);
           setRefreshProjects(false);
         })
-        .catch(err => {
-          console.log("error getting user invites ", err);
+        .catch((err) => {
           setRefreshProjects(false);
         });
     }
-  }, [refreshProjects, user._id, token]);
+  }, [refreshProjects]);
 
   function sendInvResponse(projectId, didAccept) {
-    UserService.sendInviteResponse(user._id, projectId, didAccept)
-      .then(resp => resp.json())
-      .then(response => setRefreshProjects(true))
-      .catch(err => console.log("error sending invite response"));
+    UserService.sendInviteResponse(context.user._id, projectId, didAccept)
+      .then((resp) => resp.json())
+      .then((response) => setRefreshProjects(true))
+      .catch((err) => console.log("error sending invite response"));
   }
 
   function renderProjects() {
-    return userMembers.map(project => {
+    return userMembers.map((project) => {
       return (
         <span key={project.name}>
           <Link to={"/projects/" + project._id}>
@@ -56,7 +56,7 @@ function GetProjects() {
   }
 
   function renderInvites() {
-    return userInvites.map(project => {
+    return userInvites.map((project) => {
       return (
         <span key={project.name}>
           <div className="project-item-wrap">

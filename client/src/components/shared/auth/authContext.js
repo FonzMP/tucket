@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-const AuthContext = React.createContext([{}, () => { }]);
+const AuthContext = React.createContext([{}, () => {}]);
 
-const AuthContextProvider = props => {
+const AuthContextProvider = (props) => {
   const [user, setUser] = useState({});
-  const [token, setToken] = useState('')
+  const [token, setToken] = useState("");
   const state = {
     user,
     setUser,
     token,
-    setToken
+    setToken,
   };
 
   useEffect(() => {
     const tucketUser = JSON.parse(localStorage.getItem("tucketUser"));
+    console.log("tucket user ", tucketUser);
     if (!!tucketUser) {
       setUser(tucketUser.user);
       setToken(tucketUser.token);

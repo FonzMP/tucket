@@ -19,7 +19,6 @@ router.use(
 
 router.post("/login", (req, res) => {
   User.findOne({ username: req.body.user.username }, (err, userFound) => {
-    console.log("hit login");
     if (err) {
       logger.log(
         "error",
@@ -39,15 +38,24 @@ router.post("/login", (req, res) => {
                   .send({ error: "Invalid username and password" });
                 return;
               }
-              console.log("before token ");
-              userFound.password = undefined;
-              const token = jwt.sign(
-                { token: userFound.username },
-                process.env.jwt_secret,
-                { expiresIn: 60 * 60 }
-              );
-              console.log("token going ", token);
-              res.status(200).send({ token: token, user: userFound });
+              if (!result) {
+                logger.log("info", "invalid username and password combo");
+                res
+                  .status(200)
+                  .send({ error: "Invalid username and password" });
+              } else {
+                userFound.password = undefined;
+                const token = jwt.sign(
+                  { token: userFound.username },
+                  process.env.jwt_secret,
+                  { expiresIn: 60 * 60 }
+                );
+                logger.log(
+                  "info",
+                  "user logged in with username: " + userFound.username
+                );
+                res.status(200).send({ token: token, user: userFound });
+              }
             }
           }
         );
@@ -79,12 +87,18 @@ router.post("/signup", (req, res) => {
       res.status(200).send({ error: "User already exists" });
     } else {
       createdUser.password = undefined;
+      const token = jwt.sign(
+        { token: createdUser.username },
+        process.env.jwt_secret,
+        { expiresIn: 60 * 60 }
+      );
       logger.log(
         "info",
         "sending user back after creation with username " +
           req.body.user.username
       );
-      res.status(200).send({ user: createdUser });
+
+      res.status(200).send({ token: token, user: createdUser });
     }
   });
 });
