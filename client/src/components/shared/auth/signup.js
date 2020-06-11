@@ -46,7 +46,6 @@ function Signup() {
     ) {
       signupUser();
     }
-    setUser({ ...user, [e.target.name]: e.target.value });
   }
 
   return (
@@ -59,12 +58,20 @@ function Signup() {
         <input
           type="text"
           name="username"
+          onChange={(e) => {
+            handleOnChange(e);
+            setUser({ ...user, username: e.target.value });
+          }}
           onKeyDown={(e) => handleOnChange(e)}
         />
         <label htmlFor="password">Password:</label>
         <input
           type="password"
           name="password"
+          onChange={(e) => {
+            handleOnChange(e);
+            setUser({ ...user, password: e.target.value });
+          }}
           onKeyDown={(e) => handleOnChange(e)}
         />
         <div className="mock-button" onClick={() => signupUser()}>
