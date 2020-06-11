@@ -10,6 +10,7 @@ const ProjectServices = {
   addTicket,
   editTicket,
   deleteTicket,
+  leaveProject,
 };
 
 // Fetch all projects
@@ -69,6 +70,17 @@ function deleteProject(projectId) {
     method: "DELETE",
     headers: {
       "content-type": "application/json",
+      Authorization: token,
+    },
+  });
+}
+
+function leaveProject(projectId) {
+  const token = AuthServices.getToken();
+  return fetch(`http://localhost:4000/projects/${projectId}/leave`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
       Authorization: token,
     },
   });

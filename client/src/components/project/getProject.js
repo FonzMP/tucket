@@ -20,6 +20,7 @@ function GetProject({ match }) {
   const [addTicket, setAddTicket] = useState(false);
   const [refreshProjects, setRefreshProjects] = useState(false);
   const [userId, setUserId] = useState();
+  const [leftProject, setLeftProject] = useState(false);
 
   useEffect(() => {
     ProjectServices.getProject(match.params.projectId)
@@ -78,8 +79,18 @@ function GetProject({ match }) {
     console.log("accepted ", didAccept);
   }
 
+  function leaveProject() {
+    ProjectServices.leaveProject(project._id)
+      .then((resp) => resp.json())
+      .then((response) => {
+        setRefreshProjects(true);
+        setLeftProject(true);
+      });
+  }
+
   return (
     <div>
+      {leftProject ? <Redirect to="/projects" /> : null}
       {showModal ? (
         <AlertModal
           message={"Delete this Project?"}
@@ -168,6 +179,11 @@ function GetProject({ match }) {
           ) : null}
         </div>
       )}
+      {project.members.includes(userId) ? (
+        <div class="mock-button" onClick={() => leaveProject()}>
+          Leave Project
+        </div>
+      ) : null}
     </div>
   );
 }

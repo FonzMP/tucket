@@ -57,12 +57,9 @@ router.get("/:id", [jwtMiddleware.validateToken], (req, res) => {
           }
           if (!!user) {
             let found = false;
-            console.log("user ", user._id);
-            console.log("project ", foundProject.owner._id);
             if (user._id.toString() == foundProject.owner._id.toString()) {
               found = true;
             }
-            console.log("is member ", foundProject);
             if (foundProject.members.includes(user._id.toString())) {
               found = true;
             }
@@ -124,6 +121,44 @@ router.put("/:id", [jwtMiddleware.validateToken], function (req, res) {
     } else {
       logger.log("info", "Updated project with id " + id);
       res.status(200).send({ project: projectUpdated });
+    }
+  });
+});
+
+// Removes member from the project
+router.post("/:id/leave", [jwtMiddleware.validateToken], (req, res) => {
+  const id = req.params.id;
+  User.findOne({ username: req.decoded.token }, (err, user) => {
+    if (err) {
+      logger.log(
+        "error",
+        "Error locating user for removal from project with id: " + id
+      );
+      res.status(200).send({ error: "Could not locate user" });
+    } else {
+      Project.findById(id, (err, projectFound) => {
+        if (err) {
+          logger.log(
+            "error",
+            "Error locating project with id: " +
+              id +
+              " to remove user with user id: " +
+              user._id
+          );
+        } else {
+          let index = projectFound.members.indexOf(user._id);
+          projectFound.members.splice(index, 1);
+          projectFound.save();
+          logger.log(
+            "info",
+            "removing user with id: " +
+              user._id +
+              " from members list of project with id: " +
+              id
+          );
+          res.status(200).send({ project: projectFound });
+        }
+      });
     }
   });
 });
