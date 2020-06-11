@@ -36,7 +36,6 @@ router.get("/", [jwtMiddleware.validateToken], function (req, res) {
 // Gets Project with associated id and returns project and tickets
 router.get("/:id", [jwtMiddleware.validateToken], (req, res) => {
   const id = req.params.id;
-  console.log("req ", req.decoded);
   Project.findOne({ _id: id })
     .populate("tickets")
     .populate("owner")
