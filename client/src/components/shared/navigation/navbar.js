@@ -31,6 +31,7 @@ function Navbar() {
         break;
     }
     navContext.setLocation(currentPage);
+    setLogout(false);
   }, [context.user, navContext]);
 
   function clearUserDetails() {
